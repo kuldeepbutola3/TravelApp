@@ -6,18 +6,17 @@ import {
 } from 'src/redux/hooks';
 import {Toast} from '../../components/Toast';
 import {toastSlice, useToast} from './ToastSlice';
-import {useAuraTranslation} from 'src/utils/i18n';
 
 export const ToastProvider: React.FC = ({children}) => {
   const showToast = useToast();
   const {currentToast, currentId} = useSliceSelector('toast');
   const removeToast = useBindAction(toastSlice.actions.removeToast);
-  const {t} = useAuraTranslation();
+
   const dispatchThunk = useThunkDispatch();
 
   const completion = useCallback(async () => {
     removeToast();
-  }, [removeToast, currentToast]);
+  }, [removeToast]);
   const undoTapped = useCallback(async (): Promise<undefined> => {
     // if (!currentToast?.addCallBackRequest) {
     // return new Promise(resolve => resolve());
@@ -33,7 +32,7 @@ export const ToastProvider: React.FC = ({children}) => {
     const message = 'un done';
     showToast({message});
     return new Promise((resolve) => resolve());
-  }, [currentToast, dispatchThunk, showToast, t]);
+  }, [currentToast, dispatchThunk, showToast]);
 
   return (
     <>

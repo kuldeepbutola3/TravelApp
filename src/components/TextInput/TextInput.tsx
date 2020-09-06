@@ -21,7 +21,6 @@ export type TextInputProps = InputProps & {
 };
 
 export const TextInput: FC<TextInputProps> = ({
-  translucent,
   containerStyle,
   inputStyle,
   labelStyle,

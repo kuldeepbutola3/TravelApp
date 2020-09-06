@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-  ViewStyle,
-  StyleSheet,
-  View,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import {ViewStyle, StyleSheet, View, ScrollView} from 'react-native';
 
 import {Icon as ThemedIcon} from 'react-native-elements';
 import {Text} from 'src/components/Text';
-import {useAuraTranslation} from 'src/utils/i18n';
 import {Button} from 'react-native-elements';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
 import {Overlay, OverlayProps} from './Overlay';
 
 export type HelperModalProps = {

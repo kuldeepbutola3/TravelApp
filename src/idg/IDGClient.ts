@@ -48,6 +48,18 @@ export const configureBaseUrl = (env: IDGEnvType) => {
     test: 'http://testapi.besttoursofindia.in',
   };
   client.defaults.baseURL = BaseURL[env];
+  // configureDefault();
+  client.defaults.headers = {
+    Authorization:
+      'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
+  };
+};
+
+export const configureDefault = () => {
+  getClient().defaults.headers = {
+    Authorization:
+      'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
+  };
 };
 
 configureBaseUrl('test');
@@ -66,6 +78,11 @@ export const getClient = <Endpoint extends string>(): IDGAxiosInstance<
 > => {
   return client;
 };
+
+// export const setTokens = (tokens: string) => {
+//   // getClient().defaults.headers.Authorization = `Bearer ${tokens.accessToken}`;
+//   getClient().defaults.headers = {Authorization: `Bearer ${tokens}`};
+// };
 
 /**
  * Configures various options after initialization

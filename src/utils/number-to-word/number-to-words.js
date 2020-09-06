@@ -37,7 +37,7 @@ export function convertNumToWord(num) {
   ];
 
   var numString = num.toString();
-  /*eslint curly: [2, "multi-or-nest"]*/
+
   if (num < 0) {
     throw new Error('Negative numbers are not supported.');
   }

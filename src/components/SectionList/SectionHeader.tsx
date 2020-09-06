@@ -18,7 +18,6 @@ export type SectionHeaderProps = {
   containerStyle?: StyleProp<ViewStyle>;
 };
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
-  styleVariant,
   children,
   containerStyle,
 }) => {

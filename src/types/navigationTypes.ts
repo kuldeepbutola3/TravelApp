@@ -1,7 +1,10 @@
-import { RouteProp, ParamListBase, useRoute } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
+import {RouteProp, ParamListBase, useRoute} from '@react-navigation/native';
+import {StackScreenProps} from '@react-navigation/stack';
 
-export const useParams = <ParamList extends ParamListBase, RouteName extends keyof ParamList>() => {
+export const useParams = <
+  ParamList extends ParamListBase,
+  RouteName extends keyof ParamList
+>() => {
   type Params = RouteProp<ParamList, RouteName>['params'];
   return useRoute<RouteProp<ParamList, RouteName>>().params as Params;
 };

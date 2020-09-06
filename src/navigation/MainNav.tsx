@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
 
 // Components
-import {useAuraTranslation} from 'src/utils/i18n';
+// import {useAuraTranslation} from 'src/utils/i18n';
 // import {AlertStack, AlertsRoutes} from 'src/idg/home/screens/HomeScreen';
 // import {DrawerNavItem} from 'src/idg/DrawerNavItem/DrawerNavItem';
-import {Alert, SafeAreaView, StyleSheet, View, ViewStyle} from 'react-native';
+import {SafeAreaView, StyleSheet, ViewStyle} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
 // eslint wants navigationTypes after components
@@ -12,17 +12,13 @@ import {
   useNavigation,
   NavigationProp,
   CompositeNavigationProp,
-  DrawerActions,
+  // DrawerActions,
   ParamListBase,
 } from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerNavigationProp,
 } from '@react-navigation/drawer';
-import {
-  createStackNavigator,
-  StackNavigationOptions,
-} from '@react-navigation/stack';
 import {Icon} from 'react-native-elements';
 import {ApptNavigationProp} from './RootNav';
 import {
@@ -42,27 +38,27 @@ type CustomDrawerProp = CompositeNavigationProp<
 >;
 
 const DrawerMenu = () => {
-  const navigation = useNavigation<CustomDrawerProp>();
-  const {t} = useAuraTranslation();
+  // const navigation = useNavigation<CustomDrawerProp>();
+  // const {t} = useAuraTranslation();
 
-  const logoutClick = (): void => {};
+  // const logoutClick = (): void => {};
 
-  const settingsClicked = (): void => {
-    navigation.dispatch(DrawerActions.closeDrawer());
-    // TODO: deal with this timeout hack
-    setTimeout(function () {}, 100);
-  };
-  const supportClicked = (): void => {
-    Alert.alert('Yet to be implemented');
-  };
-  const myAccountClicked = (): void => {
-    navigation.dispatch(DrawerActions.closeDrawer());
-    setTimeout(function () {}, 100);
-  };
+  // const settingsClicked = (): void => {
+  //   navigation.dispatch(DrawerActions.closeDrawer());
+  //   // TODO: deal with this timeout hack
+  //   setTimeout(function () {}, 100);
+  // };
+  // const supportClicked = (): void => {
+  //   Alert.alert('Yet to be implemented');
+  // };
+  // const myAccountClicked = (): void => {
+  //   navigation.dispatch(DrawerActions.closeDrawer());
+  //   setTimeout(function () {}, 100);
+  // };
 
   return (
     <SafeAreaView>
-      <ScrollView></ScrollView>
+      <ScrollView />
     </SafeAreaView>
   );
 };
@@ -116,7 +112,7 @@ export type MainNavigationProp = NavigationProp<MainRoutes>;
 
 export type MainTabBarProp = BottomTabBarProps<MainRoutes>;
 
-const Stack = createStackNavigator<MainRoutes>();
+// const Stack = createStackNavigator<MainRoutes>();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -127,17 +123,17 @@ export const homeHeaderOptionsWithDrawer = {
 export const MainNav = () => {
   // const insets = useSafeArea();
 
-  const featureStackOptions: StackNavigationOptions = {
-    // headerShown: false,
-    // cardOverlayEnabled: true,
-    // cardStyle: {
-    //   marginTop: insets.top + 10,
-    //   flex: 1,
-    //   borderTopLeftRadius: 20,
-    //   borderTopRightRadius: 20,
-    // },
-    cardOverlay: () => <View style={styles.overlay} />,
-  };
+  // const featureStackOptions: StackNavigationOptions = {
+  //   // headerShown: false,
+  //   // cardOverlayEnabled: true,
+  //   // cardStyle: {
+  //   //   marginTop: insets.top + 10,
+  //   //   flex: 1,
+  //   //   borderTopLeftRadius: 20,
+  //   //   borderTopRightRadius: 20,
+  //   // },
+  //   cardOverlay: () => <View style={styles.overlay} />,
+  // };
 
   const drawerContent = useCallback(() => <DrawerMenu />, []);
 

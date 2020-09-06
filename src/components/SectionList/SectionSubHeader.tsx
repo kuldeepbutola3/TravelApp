@@ -10,7 +10,6 @@ type SectionSubHeaderProps = {
 };
 
 export const SectionSubHeader: React.FC<SectionSubHeaderProps> = ({
-  variant,
   textStyle,
   containerStyle,
   children,

@@ -4,6 +4,7 @@
 
 import {SessionEndpoint} from './session/sessionAPI';
 import {AlertEndpoint} from './home/homeAPI';
+import {FlightEndpoint} from './flight/flightApi';
 
 export type IDGDateTimeString = string;
 
@@ -14,4 +15,4 @@ export interface IDGName {
   suffix?: string;
 }
 
-export type IDGEndpoint = SessionEndpoint | AlertEndpoint;
+export type IDGEndpoint = SessionEndpoint | AlertEndpoint | FlightEndpoint;

@@ -35,7 +35,7 @@ export const genericSlice = createSlice({
           state.loading = 'pending';
         }
       })
-      .addCase(fetchPlans.fulfilled, (state, action) => {
+      .addCase(fetchPlans.fulfilled, (state, _) => {
         if (state.loading === 'pending') {
           state.loading = 'idle';
         }

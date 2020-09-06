@@ -1,20 +1,15 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {ViewStyle, StyleSheet, ScrollView, TextStyle} from 'react-native';
 import {AuraStackScreen} from 'src/types/navigationTypes';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 
 import {Screen} from 'src/components/Screen';
 
 import {Text} from 'src/components/Text';
 
-import {MainNavigationProp, MainRoutes} from './MainNav';
+// import {MainNavigationProp, MainRoutes} from './MainNav';
 
 export const Extra: AuraStackScreen = () => {
-  const useNavRoute = (route: keyof MainRoutes) => {
-    const navigation = useNavigation<MainNavigationProp>();
-    return useCallback(() => navigation.navigate(route), [navigation, route]);
-  };
-
   return (
     <Screen>
       <ScrollView contentInset={{bottom: 30}} style={styles.container}>

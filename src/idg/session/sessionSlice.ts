@@ -1,134 +1,119 @@
 import {
   createAsyncThunk,
   createSlice,
-  PayloadAction,
-  unwrapResult,
-  createAction,
+  // PayloadAction,
+  // unwrapResult,
+  // createAction,
 } from '@reduxjs/toolkit';
-import {RootStateObj, RootState} from 'src/redux/rootReducer';
-import {useThunkDispatch, useBindAction, useStore} from 'src/redux/hooks';
+import {RootStateObj} from 'src/redux/rootReducer';
+// import {useThunkDispatch, useBindAction, useStore} from 'src/redux/hooks';
 // import jwtDecode from 'jwt-decode';
-import {appSlice} from 'src/appSlice';
-import {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
-// import {
-//   getMoniteredItemsUserIds,
-//   fetchPlans,
-//   fetchDashboardSummary,
-// } from '../generic/genericSlice';
-// import {fetchMonitoredItems} from '../monitoredItems/monitoredItemSlice';
-// import {CreditProductCode} from '../credit-score/CreditScoreModel';
-// import {
-//   registerRemoteNotifications,
-//   unregisterRemoteNotifications,
-// } from '../notifications/util';
-// import {doRegisterDevice} from '../notifications/notificationsSlice';
-import {
-  LoginParams,
-  login,
-  ProfileResponse,
-  AuthenticationResponse,
-  fetchProfile,
-} from './sessionAPI';
-import {SessionState, Tokens} from './SessionModel';
+// import {appSlice} from 'src/appSlice';
+// import {useState, useEffect} from 'react';
+// import {useSelector} from 'react-redux';
 
-export const initialTokens = (): Tokens => ({
-  refreshToken: {value: '', expiration: null},
-  accessToken: {value: '', expiration: null},
-});
+// import {
+//   LoginParams,
+//   login,
+//   ProfileResponse,
+//   AuthenticationResponse,
+//   fetchProfile,
+// } from './sessionAPI';
+import {IDGSession, SessionState} from './SessionModel';
+import {refreshToken} from './sessionAPI';
+import {configureDefault} from '../IDGClient';
+// import {fetchFlight} from '../flight/flightSlice';
+
+// export const initialTokens = (): Tokens => ({
+//   refreshToken: {value: '', expiration: null},
+//   accessToken: {value: '', expiration: null},
+// });
 
 // Requesting a session with loading state, and only one request at a time
 const initialState: SessionState = {
-  session: {tokens: initialTokens()},
+  session: undefined,
   loading: 'idle',
   error: null,
 };
 
-export const useIsLoggedIn = () => {
-  const isRefreshValid = (
-    token: SessionState['session']['tokens']['refreshToken'],
-  ) => token.value !== '';
-  const refreshTokenSelector = (state: RootState) =>
-    state.session.session.tokens.refreshToken;
-  const refreshToken = useSelector(refreshTokenSelector);
-  const [isLoggedIn, setIsLoggedIn] = useState(isRefreshValid(refreshToken));
-  useEffect(() => {
-    setIsLoggedIn(isRefreshValid(refreshToken));
-  }, [refreshToken]);
-  return isLoggedIn;
-};
+// export const useIsLoggedIn = () => {
+//   const isRefreshValid = (
+//     token: SessionState['session']['tokens']['refreshToken'],
 
-export const useLogin = () => {
-  const dispatch = useThunkDispatch();
+//   ) => token.value !== '';
+//   const refreshTokenSelector = (state: RootState) =>
+//     state.session.session.tokens.refreshToken;
+//   const refreshToken = useSelector(refreshTokenSelector);
+//   const [isLoggedIn, setIsLoggedIn] = useState(isRefreshValid(refreshToken));
+//   useEffect(() => {
+//     setIsLoggedIn(isRefreshValid(refreshToken));
+//   }, [refreshToken]);
+//   return isLoggedIn;
+// };
 
-  return (params: LoginParams) =>
-    dispatch(doLogin(params))
-      .then(unwrapResult)
-      .then(async (authResult) => {
-        const {accessToken} = authResult;
-        console.log(accessToken);
-        // const decoded = jwtDecode<JWTResponse>(accessToken);
-        // if (!decoded.sub) {
-        //   return Promise.reject('unable to parse user id');
-        // }
+// export const useRefreshToken = () => {
+//   const dispatch = useThunkDispatch();
+//   // console.log('aaaaaaa');
+//   configureDefault();
 
-        // // Note: we intentionally do not await this to complete
-        // registerRemoteNotifications()
-        //   .then((deviceParams) => {
-        //     dispatch(doRegisterDevice(deviceParams));
-        //   })
-        //   .catch((error) => {
-        //     console.log('registerRemoteNotificationsError: ', error); // this will be an error in the iOS simulator
-        //   });
+//   return async () => {
+//     await dispatch(doFetchRefreshToken())
+//       .then(unwrapResult)
+//       .then(async (authResult) => {
+//         // const {} = authResult;
+//         // console.log('authResult', authResult);
+//         configureClient({
+//           headers: {
+//             Authorization: `Basic ${authResult.tokenId}`,
+//           },
+//         });
 
-        // await dispatch(doFetchProfile(decoded.sub));
-        // await dispatch(getMoniteredItemsUserIds());
-        // await dispatch(fetchPlans());
-        // await dispatch(fetchMonitoredItems());
-        // await dispatch(fetchDashboardSummary());
-        return Promise.resolve(authResult);
-      });
-};
+//         await dispatch(fetchFlight());
+//         return Promise.resolve(authResult);
+//       });
+//   };
+// };
 
-export const doLogin = createAsyncThunk<
+// export const doLogin = createAsyncThunk<
+//   // Return type of the payload creator
+//   AuthenticationResponse,
+//   // First argument to the payload creator (provide void if there isn't one)
+//   LoginParams,
+//   // Types for ThunkAPI
+//   RootStateObj
+// >('session/login', async (params) => {
+//   return await login(params);
+// });
+
+// export const LOGOUT_ACTION = 'session/logout';
+
+// export const useLogout = () => {
+//   const logout = useBindAction(createAction(LOGOUT_ACTION));
+//   const store = useStore();
+//   const {setAppState} = appSlice.actions;
+//   const restoreAppState = useBindAction(setAppState);
+//   return () => {
+//     const currentApp = store.getState().app;
+//     logout();
+//     // unregisterRemoteNotifications();
+//     restoreAppState(currentApp);
+//   };
+// };
+
+export const doFetchRefreshToken = createAsyncThunk<
   // Return type of the payload creator
-  AuthenticationResponse,
+  IDGSession,
   // First argument to the payload creator (provide void if there isn't one)
-  LoginParams,
+  void,
   // Types for ThunkAPI
   RootStateObj
->('session/login', async (params) => {
-  return await login(params);
+>('session/refreshToken', async () => {
+  configureDefault();
+  return refreshToken();
 });
 
-export const LOGOUT_ACTION = 'session/logout';
-
-export const useLogout = () => {
-  const logout = useBindAction(createAction(LOGOUT_ACTION));
-  const store = useStore();
-  const {setAppState} = appSlice.actions;
-  const restoreAppState = useBindAction(setAppState);
-  return () => {
-    const currentApp = store.getState().app;
-    logout();
-    // unregisterRemoteNotifications();
-    restoreAppState(currentApp);
-  };
-};
-
-export const doFetchProfile = createAsyncThunk<
-  // Return type of the payload creator
-  ProfileResponse,
-  // First argument to the payload creator (provide void if there isn't one)
-  string,
-  // Types for ThunkAPI
-  RootStateObj
->('session/profile', async (userId) => {
-  return fetchProfile(userId);
-});
-
-export const CreditEntitlementKey = 'itps:credit_score';
-export const EntitlementKey = 'aurasvc:entitlements';
+// export const CreditEntitlementKey = 'itps:credit_score';
+// export const EntitlementKey = 'aurasvc:entitlements';
 // export type JWTResponse = {
 //   sub?: string;
 //   exp?: string;
@@ -168,66 +153,36 @@ export const EntitlementKey = 'aurasvc:entitlements';
 //   }
 // };
 
-type UpdateTokens = {
-  accessToken?: Partial<Tokens['accessToken']>;
-  refreshToken?: Partial<Tokens['refreshToken']>;
-};
+// type UpdateTokens = {
+//   accessToken?: Partial<Tokens['accessToken']>;
+//   refreshToken?: Partial<Tokens['refreshToken']>;
+// };
 
 export const sessionSlice = createSlice({
   name: 'session',
   initialState,
   reducers: {
-    updateTokens: (
-      state: SessionState,
-      action: PayloadAction<UpdateTokens>,
-    ) => {
-      const newTokens = action.payload;
-      const {refreshToken, accessToken} = state.session.tokens;
-
-      if (newTokens.accessToken?.expiration !== undefined) {
-        accessToken.expiration = newTokens.accessToken.expiration;
-      }
-      if (newTokens.accessToken?.value !== undefined) {
-        accessToken.value = newTokens.accessToken.value;
-      }
-      if (newTokens.refreshToken?.expiration !== undefined) {
-        refreshToken.expiration = newTokens.refreshToken.expiration;
-      }
-      if (newTokens.refreshToken?.value !== undefined) {
-        refreshToken.value = newTokens.refreshToken.value;
-      }
-    },
+    // updateTokens: (
+    //   state: SessionState,
+    //   action: PayloadAction<string>,
+    // ) => {
+    //   const newTokens = action.payload;
+    // },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(doLogin.pending, (state) => {
+      .addCase(doFetchRefreshToken.pending, (state) => {
         if (state.loading === 'idle') {
           state.loading = 'pending';
         }
       })
-      .addCase(doLogin.fulfilled, (state) => {
+      .addCase(doFetchRefreshToken.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle';
         }
+        state.session = action.payload;
       })
-      .addCase(doLogin.rejected, (state, action) => {
-        if (state.loading === 'pending') {
-          state.loading = 'idle';
-          state.error = action.error.message || null;
-        }
-      })
-      .addCase(doFetchProfile.pending, (state) => {
-        if (state.loading === 'idle') {
-          state.loading = 'pending';
-        }
-      })
-      .addCase(doFetchProfile.fulfilled, (state, action) => {
-        if (state.loading === 'pending') {
-          state.loading = 'idle';
-        }
-        state.session.profile = action.payload;
-      })
-      .addCase(doFetchProfile.rejected, (state, action) => {
+      .addCase(doFetchRefreshToken.rejected, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle';
           state.error = action.error.message || null;

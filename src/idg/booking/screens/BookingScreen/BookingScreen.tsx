@@ -25,7 +25,7 @@ export type AlertNavigationProp = NavigationProp<BookingRoutes>;
 
 const Stack = createStackNavigator<BookingRoutes>();
 export const BookingStack = () => {
-  const {screenOptions, titleOption, homeScreenOptions} = useStackOptions();
+  const {screenOptions, homeScreenOptions} = useStackOptions();
 
   return (
     <Stack.Navigator screenOptions={screenOptions()}>
