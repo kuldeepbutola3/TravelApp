@@ -1,10 +1,8 @@
-import {Platform, Linking, Alert} from 'react-native';
+import { Platform, Linking, Alert } from 'react-native';
 
 export const callUs = (callingNumber: string) => {
   const phoneNumber =
-    Platform.OS === 'android'
-      ? `tel:${callingNumber}`
-      : `telprompt:${callingNumber}`;
+    Platform.OS === 'android' ? `tel:${callingNumber}` : `telprompt:${callingNumber}`;
 
   Linking.canOpenURL(phoneNumber)
     .then((supported) => {

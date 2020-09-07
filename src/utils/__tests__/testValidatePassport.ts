@@ -1,4 +1,4 @@
-import {isPassportValid} from '../validatePassport';
+import { isPassportValid } from '../validatePassport';
 
 describe('isPassportValid()', () => {
   test('correct passport number', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, ViewStyle} from 'react-native';
-import {flatten, borderStyle, horizontalAlignmentStyle} from './util';
-import {BaseTableCellProps} from './types';
+import { StyleSheet, View, ViewStyle } from 'react-native';
+import { flatten, borderStyle, horizontalAlignmentStyle } from './util';
+import { BaseTableCellProps } from './types';
 
 export const TableCell: React.FC<BaseTableCellProps> = ({
   containerStyle,
@@ -16,8 +16,9 @@ export const TableCell: React.FC<BaseTableCellProps> = ({
         styles.cell,
         borderStyle(borders, borderWidth),
         containerStyle,
-        horizontalAlignmentStyle(horizontalAlignment),
-      )}>
+        horizontalAlignmentStyle(horizontalAlignment)
+      )}
+    >
       {children}
     </View>
   );

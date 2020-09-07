@@ -1,11 +1,7 @@
 import moment from 'moment';
-import {AuraTFunction} from './i18n';
+import { AuraTFunction } from './i18n';
 
-export const formatDate = (
-  date: string,
-  format: string,
-  inputFormat?: string,
-): string => {
+export const formatDate = (date: string, format: string, inputFormat?: string): string => {
   if (inputFormat) {
     return moment(date, inputFormat).format(format);
   }

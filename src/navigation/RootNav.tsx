@@ -1,17 +1,14 @@
 import React from 'react';
-import {NavigationContainer, NavigationProp} from '@react-navigation/native';
-import {
-  createStackNavigator,
-  StackNavigationOptions,
-} from '@react-navigation/stack';
+import { NavigationContainer, NavigationProp } from '@react-navigation/native';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 
 // import {useIsLoggedIn} from 'src/idg/session/sessionSlice';
 // import {SettingsScreen} from '../idg/settings/screens/SettingsScreen';
 // import {MyAccountScreen} from '../idg/account/screens/MyAccountScreen';
 // import {AccountDetailsScreen} from '../idg/account/screens/AccountDetailsScreen';
 
-import {MainNav} from './MainNav';
-import {navigationRef} from './NavigationService';
+import { MainNav } from './MainNav';
+import { navigationRef } from './NavigationService';
 
 export type AppRoutes = {
   Main: undefined;
@@ -30,11 +27,7 @@ const AppNav = () => {
 
   return (
     <Stack.Navigator initialRouteName="Main" screenOptions={childScreenOptions}>
-      <Stack.Screen
-        name="Main"
-        component={MainNav}
-        options={{headerShown: false}}
-      />
+      <Stack.Screen name="Main" component={MainNav} options={{ headerShown: false }} />
       {/* <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="MyAccount" component={MyAccountScreen} />
       <Stack.Screen name="AccountDetail" component={AccountDetailsScreen} /> */}
@@ -48,7 +41,8 @@ export const RootNav = () => {
       linking={{
         prefixes: ['TravelApp://'],
       }}
-      ref={navigationRef}>
+      ref={navigationRef}
+    >
       <AppNav />
     </NavigationContainer>
   );

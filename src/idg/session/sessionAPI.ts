@@ -1,5 +1,5 @@
-import {getClient} from 'src/idg/IDGClient';
-import {IDGSession} from './SessionModel';
+import { getClient } from 'src/idg/IDGClient';
+import { IDGSession } from './SessionModel';
 
 // export const E_LOGIN = '/api/client/sessions/login';
 // export const E_PROFILES = 'api/client/users/';
@@ -42,6 +42,6 @@ export async function refreshToken(): Promise<IDGSession> {
     password: 'Flight@12340',
     superAdmin: '16flightapi.besttoursofindia.in',
   };
-  const {data} = await getSessionClient().post<IDGSession>(E_REFRESH, dict);
+  const { data } = await getSessionClient().post<IDGSession>(E_REFRESH, dict);
   return data;
 }

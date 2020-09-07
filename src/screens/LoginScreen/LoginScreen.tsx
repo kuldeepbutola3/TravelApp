@@ -8,7 +8,7 @@ import React from 'react';
 
 // import {useThunkDispatch} from 'src/redux/hooks';
 
-import {Screen} from '../../components/Screen';
+import { Screen } from '../../components/Screen';
 
 export function LoginScreen() {
   // const dispatch = useThunkDispatch();

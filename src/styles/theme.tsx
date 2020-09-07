@@ -1,5 +1,5 @@
-import {fonts} from './fonts';
-import {margins, space, radii, radius} from './margins';
+import { fonts } from './fonts';
+import { margins, space, radii, radius } from './margins';
 
 export const theme = {
   fontFamilies: fonts,

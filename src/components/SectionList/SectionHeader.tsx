@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, ViewStyle, StyleSheet, StyleProp} from 'react-native';
-import {Text} from 'src/components/Text';
+import { View, ViewStyle, StyleSheet, StyleProp } from 'react-native';
+import { Text } from 'src/components/Text';
 
 /**
  * The visual difference between the first large section header
@@ -17,10 +17,7 @@ export type SectionHeaderProps = {
   children?: string;
   containerStyle?: StyleProp<ViewStyle>;
 };
-export const SectionHeader: React.FC<SectionHeaderProps> = ({
-  children,
-  containerStyle,
-}) => {
+export const SectionHeader: React.FC<SectionHeaderProps> = ({ children, containerStyle }) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <Text>{children}</Text>

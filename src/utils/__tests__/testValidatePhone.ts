@@ -1,4 +1,4 @@
-import {isPhoneNumberValid} from '../validatePhone';
+import { isPhoneNumberValid } from '../validatePhone';
 
 describe('isPhoneNumberValid()', () => {
   test('correct phone number', () => {

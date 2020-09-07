@@ -1,4 +1,4 @@
-import {isDriverLicenseValid} from '../validateDriverLicense';
+import { isDriverLicenseValid } from '../validateDriverLicense';
 
 describe('isDriverLicenseValid()', () => {
   test('correct license', () => {

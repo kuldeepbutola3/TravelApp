@@ -1,18 +1,11 @@
-import {RootState} from 'src/redux/rootReducer';
-import {useSelector, useDispatch, useStore as useReduxStore} from 'react-redux';
-import {
-  ActionCreator,
-  bindActionCreators,
-  Action,
-  AnyAction,
-} from '@reduxjs/toolkit';
-import {Store} from 'src/redux/store';
-import {persistStore, Persistor} from 'redux-persist';
-import {useEffect, EffectCallback} from 'react';
+import { RootState } from 'src/redux/rootReducer';
+import { useSelector, useDispatch, useStore as useReduxStore } from 'react-redux';
+import { ActionCreator, bindActionCreators, Action, AnyAction } from '@reduxjs/toolkit';
+import { Store } from 'src/redux/store';
+import { persistStore, Persistor } from 'redux-persist';
+import { useEffect, EffectCallback } from 'react';
 
-export const useSliceSelector = <Slice extends keyof RootState>(
-  slice: Slice,
-): RootState[Slice] => {
+export const useSliceSelector = <Slice extends keyof RootState>(slice: Slice): RootState[Slice] => {
   return useSelector<RootState, RootState[Slice]>((state) => state[slice]);
 };
 
@@ -38,8 +31,7 @@ export const useBindAction = <A, C extends ActionCreator<A>>(creator: C) => {
   return bindActionCreators(creator, dispatch);
 };
 
-export const useStore = <A extends Action = AnyAction>() =>
-  useReduxStore<RootState, A>();
+export const useStore = <A extends Action = AnyAction>() => useReduxStore<RootState, A>();
 
 let _persistor: Persistor;
 export const usePersistor = () => {

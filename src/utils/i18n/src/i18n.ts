@@ -1,14 +1,12 @@
-import i18n, {
-  Resource,
-  LanguageDetectorModule,
-  ResourceLanguage,
-} from 'i18next';
-import {initReactI18next} from 'react-i18next';
+import i18n, { Resource, LanguageDetectorModule, ResourceLanguage } from 'i18next';
+import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 import en from '../locales/en';
 import fr from '../locales/fr';
 
-const lang = (translations: ResourceLanguage) => ({translation: translations});
+const lang = (translations: ResourceLanguage) => ({
+  translation: translations,
+});
 
 const resources: Resource = {
   en: lang(en),
@@ -16,9 +14,7 @@ const resources: Resource = {
 };
 
 const nativeLanguageCode = () => {
-  const languageInfo = RNLocalize.findBestAvailableLanguage(
-    Object.keys(resources),
-  );
+  const languageInfo = RNLocalize.findBestAvailableLanguage(Object.keys(resources));
   return (languageInfo && languageInfo.languageTag) || 'en';
 };
 

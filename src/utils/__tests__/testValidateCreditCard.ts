@@ -1,4 +1,4 @@
-import {cardTypeFromCardNumberString} from '../validateCreditCard';
+import { cardTypeFromCardNumberString } from '../validateCreditCard';
 
 describe('cardTypeFromCardNumberString()', () => {
   test('should accept valid Visa test number', () => {

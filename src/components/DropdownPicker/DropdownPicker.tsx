@@ -1,14 +1,6 @@
-import React, {useState, useCallback} from 'react';
-import {
-  View,
-  ViewStyle,
-  StyleSheet,
-  Platform,
-  Picker,
-  PickerIOS,
-  StyleProp,
-} from 'react-native';
-import {IOSPicker} from '../IOSPicker';
+import React, { useState, useCallback } from 'react';
+import { View, ViewStyle, StyleSheet, Platform, Picker, PickerIOS, StyleProp } from 'react-native';
+import { IOSPicker } from '../IOSPicker';
 
 export type PickerItem = {
   // `value` must be the unique "id" of the element selected
@@ -38,9 +30,7 @@ export type DropdownPickerProps<Item extends PickerItem = PickerItem> = {
  * which is leading to brittle inconsistencies. But on the other hand, trying to share the
  * random resuable parts would make this component quite confusing.
  */
-export const DropdownPicker = <Item extends PickerItem>(
-  props: DropdownPickerProps<Item>,
-) => {
+export const DropdownPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>) => {
   return (
     Platform.select({
       ios: <IOSDropdownPicker<Item> {...props} />,
@@ -49,10 +39,8 @@ export const DropdownPicker = <Item extends PickerItem>(
   );
 };
 
-const AndroidPicker = <Item extends PickerItem>(
-  props: DropdownPickerProps<Item>,
-) => {
-  const {onValueChange, items, children, selectedItem, style} = props;
+const AndroidPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>) => {
+  const { onValueChange, items, children, selectedItem, style } = props;
 
   const _onValueChanged = useCallback(
     (value: React.ReactText) => {
@@ -60,7 +48,7 @@ const AndroidPicker = <Item extends PickerItem>(
       const item = items[index];
       onValueChange && onValueChange(item, index);
     },
-    [items, onValueChange],
+    [items, onValueChange]
   );
 
   return (
@@ -69,23 +57,18 @@ const AndroidPicker = <Item extends PickerItem>(
       <Picker
         style={[styles.androidPicker]}
         selectedValue={selectedItem?.value}
-        onValueChange={_onValueChanged}>
+        onValueChange={_onValueChanged}
+      >
         {items.map((item) => (
-          <Picker.Item
-            key={item.value}
-            label={item.label || item.value}
-            value={item.value}
-          />
+          <Picker.Item key={item.value} label={item.label || item.value} value={item.value} />
         ))}
       </Picker>
     </View>
   );
 };
 
-const IOSDropdownPicker = <Item extends PickerItem>(
-  props: DropdownPickerProps<Item>,
-) => {
-  const {onValueChange, items, selectedItem, style, children} = props;
+const IOSDropdownPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>) => {
+  const { onValueChange, items, selectedItem, style, children } = props;
   const [showPicker, setShowPicker] = useState(false);
   const onDropDownPress = useCallback(() => setShowPicker(true), []);
   const onRequestClose = useCallback(() => setShowPicker(false), []);
@@ -97,7 +80,7 @@ const IOSDropdownPicker = <Item extends PickerItem>(
       const keepOpen = onValueChange && onValueChange(item, index);
       setShowPicker(!!keepOpen);
     },
-    [items, onValueChange],
+    [items, onValueChange]
   );
 
   return (
@@ -106,16 +89,11 @@ const IOSDropdownPicker = <Item extends PickerItem>(
       style={style}
       showPicker={showPicker}
       onPress={onDropDownPress}
-      onRequestClose={onRequestClose}>
-      <PickerIOS
-        selectedValue={selectedItem?.value}
-        onValueChange={_onValueChanged}>
+      onRequestClose={onRequestClose}
+    >
+      <PickerIOS selectedValue={selectedItem?.value} onValueChange={_onValueChanged}>
         {items.map((item) => (
-          <Picker.Item
-            key={item.value}
-            label={item.label || item.value}
-            value={item.value}
-          />
+          <Picker.Item key={item.value} label={item.label || item.value} value={item.value} />
         ))}
       </PickerIOS>
     </IOSPicker>

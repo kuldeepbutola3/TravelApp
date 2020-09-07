@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   ViewStyle,
@@ -13,10 +13,8 @@ export type InfiniteScrollListProps<Item> = FlatListProps<Item> & {
   loading: boolean;
 };
 
-export const InfiniteScrollList = <Item,>(
-  props: InfiniteScrollListProps<Item>,
-) => {
-  const {loadMore, loading, ...flatlistProps} = props;
+export const InfiniteScrollList = <Item,>(props: InfiniteScrollListProps<Item>) => {
+  const { loadMore, loading, ...flatlistProps } = props;
 
   const _loadMore = useCallback(() => {
     !loading && loadMore();

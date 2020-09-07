@@ -2,9 +2,9 @@
 // It is important to note that we should put absolutely no runtime code in this file.
 // This is a very declarative and definitive module.
 
-import {SessionEndpoint} from './session/sessionAPI';
-import {AlertEndpoint} from './home/homeAPI';
-import {FlightEndpoint} from './flight/flightApi';
+import { SessionEndpoint } from './session/sessionAPI';
+import { AlertEndpoint } from './home/homeAPI';
+import { FlightEndpoint } from './flight/flightApi';
 
 export type IDGDateTimeString = string;
 

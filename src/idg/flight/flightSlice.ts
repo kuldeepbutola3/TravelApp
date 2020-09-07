@@ -1,7 +1,7 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {RootStateObj} from 'src/redux/rootReducer';
-import {getFlight, PlacesParam, searchPlaces} from './flightApi';
-import {FlightModel, FlightPlaces} from './FlightModel';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootStateObj } from 'src/redux/rootReducer';
+import { getFlight, PlacesParam, searchPlaces } from './flightApi';
+import { FlightModel, FlightPlaces } from './FlightModel';
 
 // Requesting one page of alerts with loading state, and only one request at a time
 

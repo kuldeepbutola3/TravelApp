@@ -1,18 +1,18 @@
 import React from 'react';
-import {ViewStyle, StyleSheet, ScrollView, TextStyle} from 'react-native';
-import {AuraStackScreen} from 'src/types/navigationTypes';
+import { ViewStyle, StyleSheet, ScrollView, TextStyle } from 'react-native';
+import { AuraStackScreen } from 'src/types/navigationTypes';
 // import {useNavigation} from '@react-navigation/native';
 
-import {Screen} from 'src/components/Screen';
+import { Screen } from 'src/components/Screen';
 
-import {Text} from 'src/components/Text';
+import { Text } from 'src/components/Text';
 
 // import {MainNavigationProp, MainRoutes} from './MainNav';
 
 export const Extra: AuraStackScreen = () => {
   return (
     <Screen>
-      <ScrollView contentInset={{bottom: 30}} style={styles.container}>
+      <ScrollView contentInset={{ bottom: 30 }} style={styles.container}>
         <Text style={styles.title}>Travel App</Text>
       </ScrollView>
     </Screen>

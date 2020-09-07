@@ -1,5 +1,5 @@
-import {selectContact} from 'react-native-select-contact';
-import {PermissionsAndroid, Platform} from 'react-native';
+import { selectContact } from 'react-native-select-contact';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 interface ContactBook {
   firstName?: string;
@@ -12,9 +12,7 @@ async function requestContactPermission(): Promise<boolean> {
     return true;
   }
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-    );
+    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS);
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       return true;
     } else {
@@ -34,7 +32,7 @@ export async function openContactList(): Promise<ContactBook | undefined> {
     return {};
   }
 
-  const {name, emails} = selection;
+  const { name, emails } = selection;
   const nameArray = name.split(' ');
   const lname = nameArray.length > 1 ? nameArray.pop() : undefined;
   const contact = {

@@ -1,14 +1,11 @@
 import React from 'react';
-import {TranslationKeys, useAuraTranslation} from 'src/utils/i18n';
-import {
-  StackNavigationOptions,
-  TransitionPresets,
-} from '@react-navigation/stack';
-import {Icon} from 'react-native-elements';
-import {StyleSheet, TextStyle} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { TranslationKeys, useAuraTranslation } from 'src/utils/i18n';
+import { StackNavigationOptions, TransitionPresets } from '@react-navigation/stack';
+import { Icon } from 'react-native-elements';
+import { StyleSheet, TextStyle } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 // import {homeHeaderOptionsWithDrawer} from './MainNav';
-import {DrawerNavigationProp} from '@react-navigation/drawer';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 export const useScreenOptions = () => {
   return () => {
@@ -26,7 +23,7 @@ export const useScreenOptions = () => {
 };
 
 export const useTitleOption = () => {
-  const {t} = useAuraTranslation();
+  const { t } = useAuraTranslation();
   return (title: TranslationKeys) => {
     const options: StackNavigationOptions = {
       title: t(title),

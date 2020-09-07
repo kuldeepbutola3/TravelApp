@@ -1,22 +1,14 @@
-import React, {useState, useRef, useCallback} from 'react';
-import {
-  Text,
-  StyleSheet,
-  TextStyle,
-  ViewStyle,
-  View,
-  Platform,
-  StatusBar,
-} from 'react-native';
+import React, { useState, useRef, useCallback } from 'react';
+import { Text, StyleSheet, TextStyle, ViewStyle, View, Platform, StatusBar } from 'react-native';
 import Popover from 'react-native-popover-view';
-import {Icon} from 'react-native-elements';
-import {fonts} from 'src/styles';
+import { Icon } from 'react-native-elements';
+import { fonts } from 'src/styles';
 
 type AlertTooltipProps = {
   text: string;
 };
 
-export const AlertTooltip: React.FC<AlertTooltipProps> = ({text}) => {
+export const AlertTooltip: React.FC<AlertTooltipProps> = ({ text }) => {
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const alertRef = useRef<View | null>(null);
 
@@ -25,10 +17,7 @@ export const AlertTooltip: React.FC<AlertTooltipProps> = ({text}) => {
 
   return (
     <>
-      <View
-        ref={alertRef}
-        renderToHardwareTextureAndroid={true}
-        collapsable={false}>
+      <View ref={alertRef} renderToHardwareTextureAndroid={true} collapsable={false}>
         <Icon
           onPress={show}
           type="aura-icons"
@@ -46,7 +35,8 @@ export const AlertTooltip: React.FC<AlertTooltipProps> = ({text}) => {
         verticalOffset={Platform.select({
           android: -(StatusBar.currentHeight ? StatusBar.currentHeight : 0),
         })}
-        onRequestClose={hide}>
+        onRequestClose={hide}
+      >
         <Text style={styles.popoverText}>{text}</Text>
       </Popover>
     </>

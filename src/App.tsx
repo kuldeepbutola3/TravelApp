@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 // import SplashScreen from 'react-native-splash-screen';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {StoreProvider} from './provider';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StoreProvider } from './provider';
 import I18Provider from './utils/i18n/src/Provider';
-import {RootNav} from './navigation/RootNav';
-import {ToastProvider} from './idg/toast/ToastProvider';
+import { RootNav } from './navigation/RootNav';
+import { ToastProvider } from './idg/toast/ToastProvider';
 
 // NOTE: Change this boolean to true to render the Storybook view for development!
 // This will work with the Storybook server once this storybook PR merges:
 // https://github.com/storybookjs/react-native/pull/30
 
 class App extends Component<{}> {
-  public state = {store: {}};
+  public state = { store: {} };
 
   public async componentDidMount() {
     this.setupApp();

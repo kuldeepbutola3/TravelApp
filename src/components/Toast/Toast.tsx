@@ -1,8 +1,8 @@
-import React, {useEffect, useCallback, useMemo, useRef} from 'react';
-import {View, Dimensions, Animated, StyleSheet, ViewStyle} from 'react-native';
-import {Button} from 'react-native-elements';
-import {Text} from 'src/components/Text';
-import {useAuraTranslation} from 'src/utils/i18n';
+import React, { useEffect, useCallback, useMemo, useRef } from 'react';
+import { View, Dimensions, Animated, StyleSheet, ViewStyle } from 'react-native';
+import { Button } from 'react-native-elements';
+import { Text } from 'src/components/Text';
+import { useAuraTranslation } from 'src/utils/i18n';
 
 type ToastType = 'general' | 'undo';
 
@@ -18,13 +18,8 @@ type ToastProps = {
   undoTapped: () => Promise<undefined>;
 };
 
-let timerReference: number = 0;
-export const Toast: React.FC<ToastProps> = ({
-  currentToast,
-  toastId,
-  completion,
-  undoTapped,
-}) => {
+let timerReference: any;
+export const Toast: React.FC<ToastProps> = ({ currentToast, toastId, completion, undoTapped }) => {
   /**
    * Toast duration for 30 sec
    */
@@ -35,7 +30,7 @@ export const Toast: React.FC<ToastProps> = ({
   // const { currentToast, currentId } = useSliceSelector('toast');
   const isNewToast = toastId !== usePrevious(toastId) && toastId !== 0;
 
-  const {t} = useAuraTranslation();
+  const { t } = useAuraTranslation();
 
   function usePrevious(value: number) {
     const ref = useRef<number>();
@@ -56,7 +51,7 @@ export const Toast: React.FC<ToastProps> = ({
     /*
      * check if user hit close multiple times before close animation ends
      */
-    if (timerReference === 0) {
+    if (timerReference && timerReference === 0) {
       return;
     }
     timerReference = 0;
@@ -72,7 +67,7 @@ export const Toast: React.FC<ToastProps> = ({
   }, [animatedValue, completion]);
 
   const showToast = useCallback(() => {
-    Animated.timing(animatedValue, {toValue: 1, useNativeDriver: true});
+    Animated.timing(animatedValue, { toValue: 1, useNativeDriver: true });
     const animatedComposition = Animated.timing(animatedValue, {
       toValue: 1,
       duration: 350,
@@ -83,7 +78,7 @@ export const Toast: React.FC<ToastProps> = ({
         closeToast();
       }, toastDuration);
       //need to rectify
-      // timerReference = timerReferenc;
+      timerReference = timerReferenc;
     });
   }, [closeToast, toastDuration, animatedValue]);
 
@@ -106,6 +101,7 @@ export const Toast: React.FC<ToastProps> = ({
     }
   }, [isNewToast, showToast]);
 
+  const col = { backgroundColor: typeUndo ? 'green' : 'red' };
   return (
     <Animated.View
       style={[
@@ -121,22 +117,16 @@ export const Toast: React.FC<ToastProps> = ({
             },
           ],
         },
-      ]}>
-      <View
-        style={[
-          styles.container,
-          {backgroundColor: typeUndo ? 'green' : 'red'},
-        ]}>
+      ]}
+    >
+      <View style={[styles.container, col]}>
         <Text style={styles.textStyle}>{currentToast?.message}</Text>
 
         <View>
           {typeUndo ? (
             <Button title={t('undo')} onPress={undoClicked} />
           ) : (
-            <Button
-              icon={{name: 'close', color: 'white'}}
-              onPress={crossTapped}
-            />
+            <Button icon={{ name: 'close', color: 'white' }} onPress={crossTapped} />
           )}
         </View>
       </View>

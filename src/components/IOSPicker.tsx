@@ -30,11 +30,7 @@ export const IOSPicker: React.FC<IOSPickerProps> = ({
       <TouchableOpacity onPress={onPress}>
         <View style={styles.touchableContent}>{touchableContent}</View>
       </TouchableOpacity>
-      <Modal
-        animationType="fade"
-        transparent
-        visible={showPicker}
-        onRequestClose={onRequestClose}>
+      <Modal animationType="fade" transparent visible={showPicker} onRequestClose={onRequestClose}>
         <View style={[styles.modal]}>
           <TouchableWithoutFeedback onPress={onRequestClose}>
             <View style={[styles.modalSpacer]} />

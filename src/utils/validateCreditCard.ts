@@ -1,9 +1,4 @@
-export type CreditCardType =
-  | 'american express'
-  | 'discover'
-  | 'mastercard'
-  | 'visa'
-  | 'unknown';
+export type CreditCardType = 'american express' | 'discover' | 'mastercard' | 'visa' | 'unknown';
 
 export const cardTypeFromCardNumberString = (value: string): CreditCardType => {
   const MASK_CHARACTERS = /[_()-\s]/g;

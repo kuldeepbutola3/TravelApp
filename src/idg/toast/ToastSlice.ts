@@ -1,10 +1,10 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {useBindAction} from 'src/redux/hooks';
-import {ToastModel} from '../../components/Toast';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useBindAction } from 'src/redux/hooks';
+import { ToastModel } from '../../components/Toast';
 
 export interface ReqType {
   // deleteAdult?: { id: string };
-  deleteChild?: {id: string};
+  deleteChild?: { id: string };
   // AlertDetails: AlertDetailsScreenParams;
   // WhatShouldIDo: WhatShouldIDoParams;
   // CaseCreated: CaseCreatedScreenParams;

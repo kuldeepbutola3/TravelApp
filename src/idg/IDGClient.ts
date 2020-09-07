@@ -1,10 +1,5 @@
-import axios, {
-  AxiosInstance,
-  AxiosResponse,
-  AxiosRequestConfig,
-  AxiosError,
-} from 'axios';
-import {IDGEndpoint} from './IDGTypes';
+import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
+import { IDGEndpoint } from './IDGTypes';
 
 /**
  * The valid types of IDG endpoint environments
@@ -13,14 +8,11 @@ export type IDGEnvType = 'prod' | 'staging' | 'test';
 
 export type ClientOptions = {
   env?: IDGEnvType;
-  requestCallback?: (
-    requestConfig: AxiosRequestConfig,
-    instance: AxiosInstance,
-  ) => void;
+  requestCallback?: (requestConfig: AxiosRequestConfig, instance: AxiosInstance) => void;
   responseCallback?: (
     response: AxiosResponse,
     instance: AxiosInstance,
-    error?: AxiosError,
+    error?: AxiosError
   ) => Promise<AxiosResponse>;
   headers?: object;
 };
@@ -50,15 +42,13 @@ export const configureBaseUrl = (env: IDGEnvType) => {
   client.defaults.baseURL = BaseURL[env];
   // configureDefault();
   client.defaults.headers = {
-    Authorization:
-      'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
+    Authorization: 'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
   };
 };
 
 export const configureDefault = () => {
   getClient().defaults.headers = {
-    Authorization:
-      'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
+    Authorization: 'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
   };
 };
 
@@ -73,9 +63,7 @@ const _options = {
  * Gets an Axios client that is configured for the current IDG environment.
  * If the client has not already been constructed, this call will construct it.
  */
-export const getClient = <Endpoint extends string>(): IDGAxiosInstance<
-  Endpoint
-> => {
+export const getClient = <Endpoint extends string>(): IDGAxiosInstance<Endpoint> => {
   return client;
 };
 
@@ -88,14 +76,13 @@ export const getClient = <Endpoint extends string>(): IDGAxiosInstance<
  * Configures various options after initialization
  */
 export const configureClient = (options: ClientOptions) => {
-  const {env, responseCallback, requestCallback, headers} = options;
+  const { env, responseCallback, requestCallback, headers } = options;
   if (env) {
     configureBaseUrl(env);
   }
 
   if (responseCallback) {
-    _options.responseHandlerId &&
-      client.interceptors.response.eject(_options.responseHandlerId);
+    _options.responseHandlerId && client.interceptors.response.eject(_options.responseHandlerId);
     _options.responseHandlerId = client.interceptors.response.use(
       (response) => {
         return responseCallback(response, getClient());
@@ -105,13 +92,12 @@ export const configureClient = (options: ClientOptions) => {
           return responseCallback(error.response, getClient(), error);
         }
         return Promise.reject(error);
-      },
+      }
     );
   }
 
   if (requestCallback) {
-    _options.requestHandlerId &&
-      client.interceptors.response.eject(_options.requestHandlerId);
+    _options.requestHandlerId && client.interceptors.response.eject(_options.requestHandlerId);
     _options.requestHandlerId = client.interceptors.request.use((config) => {
       requestCallback(config, getClient());
       return config;
@@ -135,7 +121,7 @@ export const logErrorAndReject = (error: AxiosError) => {
       'response error',
       error.response.data,
       error.response.status,
-      error.response.headers,
+      error.response.headers
     );
   } else if (error.request) {
     console.log('request error', error.request);
@@ -148,53 +134,51 @@ export const logErrorAndReject = (error: AxiosError) => {
 
 export async function getIDGData<T>(
   url: IDGEndpoint,
-  params?: AxiosRequestConfig['params'],
+  params?: AxiosRequestConfig['params']
 ): Promise<T> {
   return getClient<IDGEndpoint>()
-    .get<T>(url, {params})
+    .get<T>(url, { params })
     .then((response: AxiosResponse) => {
-      const {data} = response;
+      const { data } = response;
       return data;
     })
     .catch(logErrorAndReject);
 }
 
-export interface IDGAxiosInstance<Endpoint extends string>
-  extends AxiosInstance {
+export interface IDGAxiosInstance<Endpoint extends string> extends AxiosInstance {
   get<T = unknown, R = AxiosResponse<T>>(
     url: Endpoint,
-    config?: IDGAxiosRequestConfig<Endpoint>,
+    config?: IDGAxiosRequestConfig<Endpoint>
   ): Promise<R>;
   delete<T = unknown, R = AxiosResponse<T>>(
     url: Endpoint,
-    config?: IDGAxiosRequestConfig<Endpoint>,
+    config?: IDGAxiosRequestConfig<Endpoint>
   ): Promise<R>;
   head<T = unknown, R = AxiosResponse<T>>(
     url: Endpoint,
-    config?: IDGAxiosRequestConfig<Endpoint>,
+    config?: IDGAxiosRequestConfig<Endpoint>
   ): Promise<R>;
   options<T = unknown, R = AxiosResponse<T>>(
     url: Endpoint,
-    config?: IDGAxiosRequestConfig<Endpoint>,
+    config?: IDGAxiosRequestConfig<Endpoint>
   ): Promise<R>;
   post<T = unknown, R = AxiosResponse<T>>(
     url: Endpoint,
     data?: unknown,
-    config?: IDGAxiosRequestConfig<Endpoint>,
+    config?: IDGAxiosRequestConfig<Endpoint>
   ): Promise<R>;
   put<T = unknown, R = AxiosResponse<T>>(
     url: Endpoint,
     data?: unknown,
-    config?: IDGAxiosRequestConfig<Endpoint>,
+    config?: IDGAxiosRequestConfig<Endpoint>
   ): Promise<R>;
   patch<T = unknown, R = AxiosResponse<T>>(
     url: Endpoint,
     data?: unknown,
-    config?: IDGAxiosRequestConfig<Endpoint>,
+    config?: IDGAxiosRequestConfig<Endpoint>
   ): Promise<R>;
 }
 
-export interface IDGAxiosRequestConfig<Endpoint extends string>
-  extends AxiosRequestConfig {
+export interface IDGAxiosRequestConfig<Endpoint extends string> extends AxiosRequestConfig {
   url?: Endpoint;
 }

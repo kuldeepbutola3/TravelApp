@@ -1,4 +1,4 @@
-import {isFinancialAccountValid} from '../validateFinancialAccount';
+import { isFinancialAccountValid } from '../validateFinancialAccount';
 
 describe('isFinancialAccountValid()', () => {
   test('correct financial account', () => {
@@ -14,10 +14,7 @@ describe('isFinancialAccountValid()', () => {
     expect(result).toBe(false);
   });
   test('financial account number greater than 30 characters', () => {
-    const result = isFinancialAccountValid(
-      '54875487123265987845122356897845',
-      'checking',
-    );
+    const result = isFinancialAccountValid('54875487123265987845122356897845', 'checking');
     expect(result).toBe(false);
   });
   test('no financial account type', () => {

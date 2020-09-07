@@ -1,4 +1,4 @@
-import {convertNumToWord} from '../number-to-word/number-to-words';
+import { convertNumToWord } from '../number-to-word/number-to-words';
 
 describe('convertNumToWord()', () => {
   test('single digit number', () => {

@@ -1,4 +1,4 @@
-import {ViewStyle, StyleProp} from 'react-native';
+import { ViewStyle, StyleProp } from 'react-native';
 
 export type ColumnHeading = string;
 export type DataValue = string | number | boolean | Date;
@@ -6,13 +6,7 @@ export type DataValue = string | number | boolean | Date;
 export type Border = 'top' | 'right' | 'bottom' | 'left';
 export type BorderSetting = Border[];
 export type BorderStyle = Required<
-  Pick<
-    ViewStyle,
-    | 'borderTopWidth'
-    | 'borderRightWidth'
-    | 'borderBottomWidth'
-    | 'borderLeftWidth'
-  >
+  Pick<ViewStyle, 'borderTopWidth' | 'borderRightWidth' | 'borderBottomWidth' | 'borderLeftWidth'>
 >;
 
 export type BaseTableCellProps = {

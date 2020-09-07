@@ -1,9 +1,9 @@
 import React from 'react';
-import {ViewStyle, StyleSheet, TextStyle} from 'react-native';
-import {IconProps, Icon as ThemedIcon} from 'react-native-elements';
+import { ViewStyle, StyleSheet, TextStyle } from 'react-native';
+import { IconProps, Icon as ThemedIcon } from 'react-native-elements';
 
-import {Touchable} from 'src/components/Touchable';
-import {Text} from 'src/components/Text';
+import { Touchable } from 'src/components/Touchable';
+import { Text } from 'src/components/Text';
 
 type DrawerNavItemProps = {
   iconName: IconProps['name'];

@@ -1,12 +1,5 @@
-import React, {ReactNode, FC} from 'react';
-import {
-  View,
-  ViewStyle,
-  StyleSheet,
-  StatusBar,
-  ViewProps,
-  StatusBarProps,
-} from 'react-native';
+import React, { ReactNode, FC } from 'react';
+import { View, ViewStyle, StyleSheet, StatusBar, ViewProps, StatusBarProps } from 'react-native';
 
 interface ScreenProps extends ViewProps {
   /** the content to render within the screen */
@@ -15,7 +8,7 @@ interface ScreenProps extends ViewProps {
 }
 
 export const Screen: FC<ScreenProps> = (props) => {
-  const {children, statusBarProps} = props;
+  const { children, statusBarProps } = props;
 
   return (
     <View {...props} style={[styles.container, props.style]}>

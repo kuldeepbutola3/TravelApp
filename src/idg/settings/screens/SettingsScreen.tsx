@@ -1,22 +1,22 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, ViewStyle, View, TextStyle, Platform} from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, ViewStyle, View, TextStyle, Platform } from 'react-native';
 // import {useDispatch} from 'react-redux';
 // import {appSlice} from 'src/appSlice';
-import {Text} from 'src/components/Text';
+import { Text } from 'src/components/Text';
 // import DeviceInfo from 'react-native-device-info';
-import {useAuraTranslation} from 'src/utils/i18n';
+import { useAuraTranslation } from 'src/utils/i18n';
 // import {useSliceSelector} from 'src/redux/hooks';
 
 // import {Switch} from 'src/components/Switch';
 
-import {Screen} from '../../../components/Screen';
+import { Screen } from '../../../components/Screen';
 
 export const SettingsScreen = () => {
   // const {username} = useSliceSelector('app');
   // const dispatch = useDispatch();
   // const {actions} = appSlice;
 
-  const {t} = useAuraTranslation();
+  const { t } = useAuraTranslation();
 
   // const [modalVisible, setModalVisible] = useState(false);
   // const [auth, setAuth] = useState('');

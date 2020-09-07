@@ -1,13 +1,7 @@
-import React, {useState, useCallback} from 'react';
-import {
-  ViewStyle,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-  StyleProp,
-} from 'react-native';
-import {Icon as ThemedIcon} from 'react-native-elements';
-import {HelperModal, HelperModalProps} from './HelperModal';
+import React, { useState, useCallback } from 'react';
+import { ViewStyle, StyleSheet, TouchableWithoutFeedback, View, StyleProp } from 'react-native';
+import { Icon as ThemedIcon } from 'react-native-elements';
+import { HelperModal, HelperModalProps } from './HelperModal';
 
 type HelperModalButtonProps = {
   /**
@@ -45,8 +39,7 @@ export const HelperModalButton: React.FC<HelperModalButtonProps> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   const _onMainPress = () => {
-    const shouldStayOpen =
-      mainActionProps?.onPress && mainActionProps?.onPress();
+    const shouldStayOpen = mainActionProps?.onPress && mainActionProps?.onPress();
     if (shouldStayOpen) {
       return;
     }
@@ -58,9 +51,7 @@ export const HelperModalButton: React.FC<HelperModalButtonProps> = ({
   return (
     <>
       <TouchableWithoutFeedback onPress={onPress}>
-        <View style={[styles.container, style]}>
-          {children || <ThemedIcon name="question" />}
-        </View>
+        <View style={[styles.container, style]}>{children || <ThemedIcon name="question" />}</View>
       </TouchableWithoutFeedback>
       <HelperModal
         isVisible={isVisible}
@@ -68,7 +59,7 @@ export const HelperModalButton: React.FC<HelperModalButtonProps> = ({
         headline={modalHeadline}
         message={modalMessage}
         onDismiss={onDismiss}
-        mainActionProps={{...mainActionProps, onPress: _onMainPress}}
+        mainActionProps={{ ...mainActionProps, onPress: _onMainPress }}
       />
     </>
   );

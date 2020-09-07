@@ -1,4 +1,4 @@
-import {formatCurrency} from '../currencyFormatter';
+import { formatCurrency } from '../currencyFormatter';
 
 describe('formatCurrency()', () => {
   test('should convert to US currency with default 2 place of decimal', () => {

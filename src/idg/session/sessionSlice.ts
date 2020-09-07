@@ -5,7 +5,7 @@ import {
   // unwrapResult,
   // createAction,
 } from '@reduxjs/toolkit';
-import {RootStateObj} from 'src/redux/rootReducer';
+import { RootStateObj } from 'src/redux/rootReducer';
 // import {useThunkDispatch, useBindAction, useStore} from 'src/redux/hooks';
 // import jwtDecode from 'jwt-decode';
 // import {appSlice} from 'src/appSlice';
@@ -19,9 +19,9 @@ import {RootStateObj} from 'src/redux/rootReducer';
 //   AuthenticationResponse,
 //   fetchProfile,
 // } from './sessionAPI';
-import {IDGSession, SessionState} from './SessionModel';
-import {refreshToken} from './sessionAPI';
-import {configureDefault} from '../IDGClient';
+import { IDGSession, SessionState } from './SessionModel';
+import { refreshToken } from './sessionAPI';
+import { configureDefault } from '../IDGClient';
 // import {fetchFlight} from '../flight/flightSlice';
 
 // export const initialTokens = (): Tokens => ({

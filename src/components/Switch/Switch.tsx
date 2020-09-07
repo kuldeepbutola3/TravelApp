@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useCallback} from 'react';
+import React, { FC, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   ViewStyle,
@@ -8,16 +8,16 @@ import {
   Animated,
 } from 'react-native';
 
-import {useAuraTranslation} from 'src/utils/i18n';
-import {Text} from '../Text';
+import { useAuraTranslation } from 'src/utils/i18n';
+import { Text } from '../Text';
 
 interface SwitchProps extends ViewProps {
   onValueChange: (value: boolean) => void;
   value: boolean;
 }
 
-export const Switch: FC<SwitchProps> = ({value, onValueChange}) => {
-  const {t} = useAuraTranslation();
+export const Switch: FC<SwitchProps> = ({ value, onValueChange }) => {
+  const { t } = useAuraTranslation();
 
   const left = useRef(new Animated.Value(2)).current;
   useEffect(() => {
@@ -32,9 +32,7 @@ export const Switch: FC<SwitchProps> = ({value, onValueChange}) => {
   //   ? theme.viewStyles.toggleOn
   //   : theme.viewStyles.toggleOff;
 
-  const labelPosition = value
-    ? {paddingRight: KNOB_SIZE + 2}
-    : {paddingLeft: KNOB_SIZE + 2};
+  const labelPosition = value ? { paddingRight: KNOB_SIZE + 2 } : { paddingLeft: KNOB_SIZE + 2 };
   const label = value ? t('on') : t('off');
 
   const onPressOut = useCallback(() => onValueChange && onValueChange(!value), [
@@ -48,7 +46,7 @@ export const Switch: FC<SwitchProps> = ({value, onValueChange}) => {
         <View style={[styles.labelContainer, labelPosition]}>
           <Text>{label}</Text>
         </View>
-        <Animated.View style={[styles.knob, {left}]} />
+        <Animated.View style={[styles.knob, { left }]} />
       </View>
     </TouchableWithoutFeedback>
   );

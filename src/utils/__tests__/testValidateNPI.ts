@@ -1,4 +1,4 @@
-import {isNPIValid} from '../validateNPI';
+import { isNPIValid } from '../validateNPI';
 
 describe('isNPIValid()', () => {
   test('correct NPI', () => {

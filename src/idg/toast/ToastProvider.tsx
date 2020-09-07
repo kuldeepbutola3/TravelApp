@@ -1,18 +1,12 @@
-import React, {useCallback} from 'react';
-import {
-  useSliceSelector,
-  useBindAction,
-  useThunkDispatch,
-} from 'src/redux/hooks';
-import {Toast} from '../../components/Toast';
-import {toastSlice, useToast} from './ToastSlice';
+import React, { useCallback } from 'react';
+import { useSliceSelector, useBindAction } from 'src/redux/hooks';
+import { Toast } from '../../components/Toast';
+import { toastSlice, useToast } from './ToastSlice';
 
-export const ToastProvider: React.FC = ({children}) => {
+export const ToastProvider: React.FC = ({ children }) => {
   const showToast = useToast();
-  const {currentToast, currentId} = useSliceSelector('toast');
+  const { currentToast, currentId } = useSliceSelector('toast');
   const removeToast = useBindAction(toastSlice.actions.removeToast);
-
-  const dispatchThunk = useThunkDispatch();
 
   const completion = useCallback(async () => {
     removeToast();
@@ -30,9 +24,9 @@ export const ToastProvider: React.FC = ({children}) => {
     // }
 
     const message = 'un done';
-    showToast({message});
+    showToast({ message });
     return new Promise((resolve) => resolve());
-  }, [currentToast, dispatchThunk, showToast]);
+  }, [showToast]);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, TouchableOpacityProps} from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 type TouchableProps = TouchableOpacityProps & {};
 

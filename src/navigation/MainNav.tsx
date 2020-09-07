@@ -1,11 +1,11 @@
-import React, {useCallback} from 'react';
+import React, { useCallback } from 'react';
 
 // Components
 // import {useAuraTranslation} from 'src/utils/i18n';
 // import {AlertStack, AlertsRoutes} from 'src/idg/home/screens/HomeScreen';
 // import {DrawerNavItem} from 'src/idg/DrawerNavItem/DrawerNavItem';
-import {SafeAreaView, StyleSheet, ViewStyle} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // eslint wants navigationTypes after components
 import {
@@ -15,27 +15,18 @@ import {
   // DrawerActions,
   ParamListBase,
 } from '@react-navigation/native';
-import {
-  createDrawerNavigator,
-  DrawerNavigationProp,
-} from '@react-navigation/drawer';
-import {Icon} from 'react-native-elements';
-import {ApptNavigationProp} from './RootNav';
-import {
-  BottomTabBarProps,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
-import {HomeStack} from 'src/idg/home/screens/HomeScreen';
-import {BookingStack} from 'src/idg/booking/screens/BookingScreen';
+import { createDrawerNavigator, DrawerNavigationProp } from '@react-navigation/drawer';
+import { Icon } from 'react-native-elements';
+import { ApptNavigationProp } from './RootNav';
+import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { HomeStack } from 'src/idg/home/screens/HomeScreen';
+import { BookingStack } from 'src/idg/booking/screens/BookingScreen';
 
 /*
  * Drawer stuff
  */
 
-type CustomDrawerProp = CompositeNavigationProp<
-  DrawerNavigationProp<{}>,
-  ApptNavigationProp
->;
+type CustomDrawerProp = CompositeNavigationProp<DrawerNavigationProp<{}>, ApptNavigationProp>;
 
 const DrawerMenu = () => {
   // const navigation = useNavigation<CustomDrawerProp>();
@@ -87,12 +78,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'center',
   },
-  overlay: {flex: 1, backgroundColor: '#00000080'} as ViewStyle,
+  overlay: { flex: 1, backgroundColor: '#00000080' } as ViewStyle,
 });
 
 // https://github.com/react-navigation/react-navigation/issues/6931
 type SubNavigator<T extends ParamListBase> = {
-  [K in keyof T]: {screen: K; params?: T[K]; initial?: boolean};
+  [K in keyof T]: { screen: K; params?: T[K]; initial?: boolean };
 }[keyof T];
 
 /**

@@ -1,6 +1,6 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {RootStateObj} from 'src/redux/rootReducer';
-import {getPlans} from './genericApi';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootStateObj } from 'src/redux/rootReducer';
+import { getPlans } from './genericApi';
 
 interface GenericState {
   loading: 'idle' | 'pending';

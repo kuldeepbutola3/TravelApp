@@ -1,7 +1,7 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {RootStateObj} from 'src/redux/rootReducer';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootStateObj } from 'src/redux/rootReducer';
 
-import {DispositonActionParams, hitapi} from './homeAPI';
+import { DispositonActionParams, hitapi } from './homeAPI';
 
 // Requesting one page of alerts with loading state, and only one request at a time
 

@@ -1,10 +1,5 @@
-export const formatCurrency = (
-  amount: string,
-  fractionDigit?: number,
-): string => {
-  const amountInDecimal: string = parseFloat(amount).toFixed(
-    fractionDigit ?? 2,
-  );
+export const formatCurrency = (amount: string, fractionDigit?: number): string => {
+  const amountInDecimal: string = parseFloat(amount).toFixed(fractionDigit ?? 2);
   const amountSplit = amountInDecimal.split('.');
 
   let beforeDec = amountSplit[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');

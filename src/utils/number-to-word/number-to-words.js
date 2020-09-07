@@ -23,18 +23,7 @@ export function convertNumToWord(num) {
     'eighteen',
     'nineteen',
   ];
-  var tens = [
-    '',
-    '',
-    'twenty',
-    'thirty',
-    'forty',
-    'fifty',
-    'sixty',
-    'seventy',
-    'eighty',
-    'ninety',
-  ];
+  var tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
   var numString = num.toString();
 
