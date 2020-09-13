@@ -41,9 +41,20 @@ export const configureBaseUrl = (env: IDGEnvType) => {
   };
   client.defaults.baseURL = BaseURL[env];
   // configureDefault();
-  client.defaults.headers = {
-    Authorization: 'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
-  };
+  // client.defaults.headers = {
+  //   Authorization: 'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
+  // };
+  // client.defaults.headers = {
+  //   Authorization: 'Bearer 48fd089d-2b6b-4183-9d0e-b8bb23ea7f47',
+  // };
+};
+
+export const setTokens = (tokens: string) => {
+  // return (tokens: string) =>
+  // getClient().defaults.headers.Authorization = `Bearer ${tokens.accessToken}`;
+  // (
+  getClient().defaults.headers = { Authorization: `Bearer ${tokens}` };
+  // );
 };
 
 export const configureDefault = () => {
@@ -66,11 +77,6 @@ const _options = {
 export const getClient = <Endpoint extends string>(): IDGAxiosInstance<Endpoint> => {
   return client;
 };
-
-// export const setTokens = (tokens: string) => {
-//   // getClient().defaults.headers.Authorization = `Bearer ${tokens.accessToken}`;
-//   getClient().defaults.headers = {Authorization: `Bearer ${tokens}`};
-// };
 
 /**
  * Configures various options after initialization

@@ -27,7 +27,7 @@ export const fetchFlight = createAsyncThunk<
   // Types for ThunkAPI
   RootStateObj
 >('flight/search', async () => {
-  return await getFlight();
+  return getFlight();
 });
 export const fetchFlightPlaces = createAsyncThunk<
   // Return type of the payload creator
@@ -37,7 +37,7 @@ export const fetchFlightPlaces = createAsyncThunk<
   // Types for ThunkAPI
   RootStateObj
 >('flight/searchPlaces', async (param) => {
-  return await searchPlaces(param);
+  return searchPlaces(param);
 });
 
 export const flightSlice = createSlice({

@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 // import { TokenManager } from './idg/session/TokenManager';
 import { store } from './redux/store';
+import { TokenManager } from './idg/session/TokenManager/TokenManager';
 
 const persistor = persistStore(store);
 
@@ -15,7 +16,7 @@ export function StoreProvider(props: Props): JSX.Element {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        {children}
+        <TokenManager>{children}</TokenManager>
       </PersistGate>
     </Provider>
   );
