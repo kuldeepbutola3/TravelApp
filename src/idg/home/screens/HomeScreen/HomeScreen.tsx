@@ -8,19 +8,18 @@ import { useStackOptions } from 'src/navigation/stackOptions';
 import { Text } from 'src/components/Text';
 import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
 import { fetchFlightPlaces } from 'src/idg/flight/flightSlice';
-import { FlightListScreen } from 'src/idg/flight/screens/FlightListScreen';
+
 import { Button } from 'react-native-elements';
 import { ScrollView } from 'react-native';
-
-// import {configureClient} from 'src/idg/IDGClient';
+import { ApptNavigationProp } from 'src/navigation/RootNav';
 
 const HomeScreen: AuraStackScreen = () => {
-  const navigation = useNavigation<HomeNavigationProp>();
+  const navigation = useNavigation<ApptNavigationProp>();
   const dispatch = useThunkDispatch();
 
   const { places } = useSliceSelector('flight');
 
-  const searchTapped = useCallback(() => navigation.navigate('FlightList'), [navigation]);
+  const searchTapped = useCallback(() => navigation.navigate('FlightSearch'), [navigation]);
 
   useEffect(() => {
     dispatch(fetchFlightPlaces({ term: 'del' }));
@@ -38,23 +37,22 @@ const HomeScreen: AuraStackScreen = () => {
 
 export type HomeRoutes = {
   Home: undefined;
-  FlightList: undefined;
 };
 
 export type HomeNavigationProp = NavigationProp<HomeRoutes>;
 
 const Stack = createStackNavigator<HomeRoutes>();
 export const HomeStack = () => {
-  const { screenOptions, titleOption, homeScreenOptions } = useStackOptions();
+  const { screenOptions, homeScreenOptions } = useStackOptions();
 
   return (
     <Stack.Navigator screenOptions={screenOptions()}>
       <Stack.Screen name="Home" component={HomeScreen} options={homeScreenOptions('homeTitle')} />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="FlightList"
         component={FlightListScreen}
         options={titleOption('searchListTitle')}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };
