@@ -22,8 +22,8 @@ export const fetchApi = createAsyncThunk<
   DispositonActionParams,
   // Types for ThunkAPI
   RootStateObj
->('alerts/fetch', async (params) => {
-  return await hitapi(params);
+>('home/fetch', async (params) => {
+  return hitapi(params);
 });
 
 export const homeSlice = createSlice({

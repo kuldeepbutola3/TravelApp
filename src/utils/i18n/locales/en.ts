@@ -29,6 +29,7 @@ export default {
 
   homeTitle: 'Home',
   bookingtitle: 'Booking',
+  searchListTitle: 'Search Flight',
 
   saveChanges: 'SAVE CHANGES',
   accountType: 'Account Type',

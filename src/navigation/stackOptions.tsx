@@ -34,7 +34,6 @@ export const useTitleOption = () => {
 
 export const useHomeScreenOptions = () => {
   const titleOption = useTitleOption();
-  // const theme = useTheme();
   // const navigation = useNavigation();
   const navigation = useNavigation<DrawerNavigationProp<{}>>();
   return (title?: TranslationKeys) => {
