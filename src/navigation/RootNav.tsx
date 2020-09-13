@@ -9,9 +9,11 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 
 import { MainNav } from './MainNav';
 import { navigationRef } from './NavigationService';
+import { FlightListScreen } from 'src/idg/flight/screens/FlightListScreen';
 
-export type AppRoutes = {
+type AppRoutes = {
   Main: undefined;
+  FlightSearch: undefined;
   // Settings: undefined;
   // MyAccount: undefined;
   // AccountDetail: undefined;
@@ -28,6 +30,11 @@ const AppNav = () => {
   return (
     <Stack.Navigator initialRouteName="Main" screenOptions={childScreenOptions}>
       <Stack.Screen name="Main" component={MainNav} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="FlightSearch"
+        component={FlightListScreen}
+        options={{ headerShown: false }}
+      />
       {/* <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="MyAccount" component={MyAccountScreen} />
       <Stack.Screen name="AccountDetail" component={AccountDetailsScreen} /> */}
