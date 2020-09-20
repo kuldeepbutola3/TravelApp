@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootStateObj } from 'src/redux/rootReducer';
 import { getFlight, PlacesParam, searchPlaces } from './flightApi';
-import { FlightModel, FlightPlaces } from './FlightModel';
+import { FlightPlaces, FlightResponse } from './FlightModel';
 
 // Requesting one page of alerts with loading state, and only one request at a time
 
 interface FlightState {
-  flightDetail?: FlightModel;
+  flightDetail?: FlightResponse;
   places?: Array<FlightPlaces>;
   loading: 'idle' | 'pending';
   error: string | null;
@@ -21,7 +21,7 @@ const initialState: FlightState = {
 
 export const fetchFlight = createAsyncThunk<
   // Return type of the payload creator
-  FlightModel,
+  FlightResponse,
   // First argument to the payload creator (provide void if there isn't one)
   void,
   // Types for ThunkAPI

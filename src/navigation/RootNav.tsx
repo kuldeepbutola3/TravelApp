@@ -2,21 +2,15 @@ import React from 'react';
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 
-// import {useIsLoggedIn} from 'src/idg/session/sessionSlice';
-// import {SettingsScreen} from '../idg/settings/screens/SettingsScreen';
-// import {MyAccountScreen} from '../idg/account/screens/MyAccountScreen';
-// import {AccountDetailsScreen} from '../idg/account/screens/AccountDetailsScreen';
-
 import { MainNav } from './MainNav';
 import { navigationRef } from './NavigationService';
 import { FlightListScreen } from 'src/idg/flight/screens/FlightListScreen';
+import { ReviewFlightScreen } from 'src/idg/flight/screens/ReviewFlightScreen';
 
 type AppRoutes = {
   Main: undefined;
   FlightSearch: undefined;
-  // Settings: undefined;
-  // MyAccount: undefined;
-  // AccountDetail: undefined;
+  ReviewFlight: undefined;
 };
 
 export type ApptNavigationProp = NavigationProp<AppRoutes>;
@@ -35,9 +29,11 @@ const AppNav = () => {
         component={FlightListScreen}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen name="Settings" component={SettingsScreen} />
-      <Stack.Screen name="MyAccount" component={MyAccountScreen} />
-      <Stack.Screen name="AccountDetail" component={AccountDetailsScreen} /> */}
+      <Stack.Screen
+        name="ReviewFlight"
+        component={ReviewFlightScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
