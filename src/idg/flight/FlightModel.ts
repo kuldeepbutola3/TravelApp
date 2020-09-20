@@ -1,8 +1,3 @@
-export interface FlightModel {
-  origin: string;
-  destination: string;
-}
-
 export interface FlightPlaces {
   airportCode: string;
   cityName: string;
@@ -134,7 +129,7 @@ interface FlightFare {
   sGSTax: number;
   iGSTax: number;
 }
-interface FlightSet {
+export interface FlightSet {
   freeMeal: boolean;
   lcc: boolean;
   resultSessionId: string;
@@ -151,7 +146,7 @@ interface FlightSet {
   fare: FlightFare;
   artFareslist: null;
   fareBreakdown: Array<FlightFareBreakDown>;
-  segments: Array<FlightSegment>;
+  segments: Array<Array<FlightSegment>>;
   lastTicketDate?: string;
   ticketAdvisory?: string;
   fareRules: Array<FlightFareRule>;
@@ -169,8 +164,8 @@ export interface FlightResponse {
   traceId?: any;
   origin: string;
   destination: string;
-  uniqueFlightSet: Array<FlightSet>;
+  uniqueFlightSet: Array<Array<FlightSet>>;
   token?: any;
-  results: Array<FlightSet>;
+  results: Array<Array<FlightSet>>;
   additionalProperties: any;
 }

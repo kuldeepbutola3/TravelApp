@@ -1,5 +1,5 @@
 import { getClient } from '../IDGClient';
-import { FlightModel, FlightPlaces } from './FlightModel';
+import { FlightPlaces, FlightResponse } from './FlightModel';
 
 export const FLIGHT_SEARCH = 'v1/service/search/flights';
 export const FLIGHT_PLACES = 'v1/service/search/get_itemName_list';
@@ -11,7 +11,7 @@ export interface PlacesParam {
   term: string;
 }
 
-export async function getFlight(): Promise<FlightModel> {
+export async function getFlight(): Promise<FlightResponse> {
   const param = {
     origin: '(DEL) New Delhi,India',
     destination: '(BOM) Mumbai,India',
@@ -44,9 +44,25 @@ export async function getFlight(): Promise<FlightModel> {
         ArrivalAirport: null,
         DepDate: null,
         DepTime: null,
-        preferredDepartureTime: '2020-11-21T00:00:00',
+        preferredDepartureTime: '2020-19-19T00:00:00',
         preferredArrivalTime: null,
       },
+      // {
+      //   depTime: null,
+      //   arrivalAirport: null,
+      //   departureAirport: null,
+      //   depDate: null,
+      //   origin: 'BOM',
+      //   IsReturn: null,
+      //   destination: 'DEL',
+      //   flightCabinClass: '1',
+      //   DepartureAirport: null,
+      //   ArrivalAirport: null,
+      //   DepDate: null,
+      //   DepTime: null,
+      //   preferredDepartureTime: '2020-20-19T00:00:00',
+      //   preferredArrivalTime: null,
+      // },
     ],
     sources: ['G8', 'SG', 'AI', '9W', 'UK', '6E', 'I5', 'GDS', 'ANY'],
     onwarddate: '2020-11-21',
@@ -60,7 +76,7 @@ export async function getFlight(): Promise<FlightModel> {
   };
 
   console.log('hit flight data :::', getSessionClient().defaults.headers);
-  const { data } = await getSessionClient().post<FlightModel>(FLIGHT_SEARCH, param);
+  const { data } = await getSessionClient().post<FlightResponse>(FLIGHT_SEARCH, param);
   console.log('flight data :::', data);
   return data;
 }

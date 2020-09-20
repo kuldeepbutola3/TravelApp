@@ -68,4 +68,18 @@ export default {
    * toast
    */
   undo: 'undo',
+
+  /**
+   * Search Fligth
+   */
+  filter: 'Filter',
+  nonStop: 'Non-Stop',
+  stopVia: 'stop via',
+  time: 'Time',
+  airline: 'Airline',
+  price: 'Price',
+
+  seatLeft: 'Seat(s) Left',
+
+  reviewTitle: 'Review your flight',
 };
