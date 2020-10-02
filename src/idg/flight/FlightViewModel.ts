@@ -8,7 +8,8 @@ export interface FlightViewModel extends FlightCardProps {
 }
 export function makeFlightViewModel(
   flight: FlightSet,
-  t: AuraTFunction
+  t: AuraTFunction,
+  onPress: (flightSet: FlightSet) => void
 ): FlightViewModel | undefined {
   //   console.log('aaa  ', JSON.stringify(flight));
 
@@ -48,6 +49,7 @@ export function makeFlightViewModel(
       fare,
       seatLeft,
       stop,
+      onPress: () => onPress(flight),
     };
     return item;
   }

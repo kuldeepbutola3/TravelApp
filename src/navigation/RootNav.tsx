@@ -5,12 +5,26 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 import { MainNav } from './MainNav';
 import { navigationRef } from './NavigationService';
 import { FlightListScreen } from 'src/idg/flight/screens/FlightListScreen';
-import { ReviewFlightScreen } from 'src/idg/flight/screens/ReviewFlightScreen';
+import {
+  ReviewFlightScreen,
+  ReviewFlightScreenProps,
+} from 'src/idg/flight/screens/ReviewFlightScreen';
+import { LoginScreen, LoginScreenProps } from 'src/idg/login/screens/LoginScreen';
+import {
+  TravellerDetail,
+  TravellerDetailProps,
+} from 'src/idg/traveller/screens/TravellerDetailScreen';
+import { SSNScreen, SSNScreenProps } from 'src/idg/SSN/screen/SSNScreen';
+import { AddTraveller, AddTravellerProps } from 'src/idg/traveller/screens/AddTraveller';
 
-type AppRoutes = {
+export type AppRoutes = {
   Main: undefined;
   FlightSearch: undefined;
-  ReviewFlight: undefined;
+  ReviewFlight: ReviewFlightScreenProps;
+  Login: LoginScreenProps;
+  TravelerDetail: TravellerDetailProps;
+  AddTraveller: AddTravellerProps;
+  SSN: SSNScreenProps;
 };
 
 export type ApptNavigationProp = NavigationProp<AppRoutes>;
@@ -34,6 +48,14 @@ const AppNav = () => {
         component={ReviewFlightScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="TravelerDetail"
+        component={TravellerDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="AddTraveller" component={AddTraveller} options={{ headerShown: false }} />
+      <Stack.Screen name="SSN" component={SSNScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
