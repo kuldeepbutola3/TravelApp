@@ -39,6 +39,12 @@ export default {
   goodAfternoon: 'Good Afternoon',
   goodEvening: 'Good Evening',
 
+  /**
+   * Login Screen
+   */
+  login: 'Login',
+  continueAsGuest: 'Continue As Guest',
+
   /**   * Drawer Items
    */
   settings: 'Settings',
@@ -74,6 +80,8 @@ export default {
    */
   filter: 'Filter',
   nonStop: 'Non-Stop',
+  stop: 'Stop',
+  stops: 'Stops',
   stopVia: 'stop via',
   time: 'Time',
   airline: 'Airline',
@@ -82,4 +90,28 @@ export default {
   seatLeft: 'Seat(s) Left',
 
   reviewTitle: 'Review your flight',
+
+  /**
+   * search filters
+   */
+  apply: 'APPLY',
+  clear: 'clear',
+
+  /**
+   * SSR
+   */
+  ssrAdon: 'SSR Adon',
+  /**
+   * review
+   */
+  continue: 'Continue',
+
+  /**
+   * Traveller
+   */
+  travellerDetails: 'Traveller Details',
+  addTravellers: 'Add Travellers',
+  adult: 'Adult',
+  selected: 'Selected',
+  childHeader: 'Child 2-12 years',
 };

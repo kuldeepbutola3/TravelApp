@@ -13,11 +13,9 @@
     "sourceMap": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
-    "plugins": [
-      {
-        "name": "typescript-styled-plugin"
-      }
-    ],
+    "plugins": [{
+      "name": "typescript-styled-plugin"
+    }],
     "baseUrl": ".",
     "paths": {
       "src": ["src"]
@@ -25,9 +23,9 @@
   },
   "exclude": [
     "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
+    // "babel.config.js",
+    // "metro.config.js",
+    // "jest.config.js"
   ],
   "include": ["src", "test"]
 }
