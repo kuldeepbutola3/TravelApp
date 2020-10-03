@@ -39,11 +39,19 @@ export const useHomeScreenOptions = () => {
   return (title?: TranslationKeys) => {
     const options: StackNavigationOptions = {
       ...(title && titleOption(title)),
-      headerLeft: () => <></>,
+      headerLeft: () => (
+        <Icon
+          name="menu"
+          type="MaterialIcons"
+          size={30}
+          iconStyle={StyleSheet.flatten([styles.iconStyle])}
+          onPress={navigation.openDrawer}
+        />
+      ),
       headerRight: () => (
         <Icon
-          name="gear"
-          type="font-awesome"
+          name="notifications-none"
+          type="MaterialIcons"
           size={30}
           iconStyle={StyleSheet.flatten([styles.iconStyle])}
           onPress={navigation.openDrawer}
@@ -58,6 +66,7 @@ export const useHomeScreenOptions = () => {
 const styles = StyleSheet.create({
   iconStyle: {
     padding: 8,
+    color: 'white',
   },
   closeButton: {
     marginRight: 20,
