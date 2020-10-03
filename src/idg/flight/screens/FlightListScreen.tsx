@@ -24,6 +24,7 @@ import { FlightList } from '../component/FlightList';
 import { FlightHeader } from '../component/FlightHeader';
 import { TabButtonProps, TabButtons } from '../component/FlightTabButton';
 import { appColors } from 'src/styles/appColors';
+import { FlightDepartureFilter, TimeSplit } from '../component/FlightDepartureFilter';
 
 export const FlightListScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
@@ -127,7 +128,12 @@ export const FlightListScreen: AuraStackScreen = () => {
             onPress={tooltipRefAirline.current?.toggleTooltip}
           />
         </View>
-        <FlatList style={{}} data={flightFilterList} renderItem={renderItem} />
+        <FlatList
+          style={{}}
+          data={flightFilterList}
+          renderItem={renderItem}
+          keyExtractor={(_, index) => `${index}`}
+        />
       </View>
     );
   };
@@ -213,6 +219,28 @@ export const FlightListScreen: AuraStackScreen = () => {
     );
   };
 
+  const TimeList: FC<ViewProps> = ({ style }) => {
+    const [timeSelected, setTimeSelected] = useState(undefined as TimeSplit | undefined);
+    return (
+      <View style={style}>
+        <FlightDepartureFilter
+          type={timeSelected}
+          // viewStyle={[styles.timeListInner]}
+          city={'delhi'}
+          close={tooltipRefTime.current?.toggleTooltip}
+          timeSelected={setTimeSelected}
+        />
+        <FlightDepartureFilter
+          type={timeSelected}
+          // viewStyle={styles.timeListInner}
+          city={'mumbai'}
+          // close={tooltipRefTime.current?.toggleTooltip}
+          timeSelected={setTimeSelected}
+        />
+      </View>
+    );
+  };
+
   const popOverView = (key: number): TooltipProps => {
     if (key === 1) {
       return {
@@ -221,8 +249,8 @@ export const FlightListScreen: AuraStackScreen = () => {
       };
     } else if (key === 2) {
       return {
-        // ...styles.nonStopStyle,
-        // popover: <NonStopView style={styles.nonStopStyle} />,
+        ...styles.timeList,
+        popover: <TimeList style={styles.timeList} />,
       };
     }
     return {
@@ -299,6 +327,16 @@ const styles = StyleSheet.create({
   flightList: {
     width: Dimensions.get('window').width - 20,
     height: Dimensions.get('window').height / 2,
+    backgroundColor: 'white',
+  },
+  // timeListInner: {
+  //   width: Dimensions.get('window').width - 20,
+  //   // height: (Dimensions.get('window').height * 3) / 16,
+  //   backgroundColor: 'white',
+  // },
+  timeList: {
+    width: Dimensions.get('window').width - 20,
+    height: Dimensions.get('window').height / 4 + 60,
     backgroundColor: 'white',
   },
   // filters

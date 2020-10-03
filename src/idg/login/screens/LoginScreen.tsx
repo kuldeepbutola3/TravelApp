@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';

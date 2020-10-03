@@ -48,7 +48,7 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
       {listItem}
       <Button
         type="clear"
-        titleStyle={{ fontSize: 20, color: appColors.pink }}
+        titleStyle={styles.button}
         icon={{ name: 'add', color: appColors.pink }}
         title={t('addTravellers')}
         onPress={addTraveller}
@@ -74,4 +74,5 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 15,
   },
+  button: { fontSize: 20, color: appColors.pink },
 });

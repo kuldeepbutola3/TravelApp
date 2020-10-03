@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
-import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +11,7 @@ import { Header } from 'src/components/Header';
 import { FlightSet } from '../FlightModel';
 import { appColors } from 'src/styles/appColors';
 import { Button } from 'react-native-elements';
+import { ReviewList } from '../component/ReviewList';
 
 export interface ReviewFlightScreenProps {
   param: FlightSet;
@@ -19,12 +19,9 @@ export interface ReviewFlightScreenProps {
 
 export const ReviewFlightScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
-  const dispatch = useThunkDispatch();
   const navigation = useNavigation<ApptNavigationProp>();
   const { param } = useParams<AppRoutes, 'ReviewFlight'>();
-  const { flightFare } = useSliceSelector('flight');
 
-  console.log('flightFare.......', JSON.stringify(flightFare?.results.isLCC));
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
   ]);
@@ -32,19 +29,13 @@ export const ReviewFlightScreen: AuraStackScreen = () => {
     navigation,
     param,
   ]);
-  useEffect(() => {
-    // if (param.resultSessionId) {
-    //   console.log('api.......');
-    //   dispatch(fetchFlightFare({ resultSessionId: [param.resultSessionId] }));
-    // }
-  }, [dispatch, param]);
 
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <Header onPressBack={onPressBack} title={t('reviewTitle')} />
         <View style={styles.bodyContainer}>
-          <Text>{flightFare?.results.resultSessionId}</Text>
+          <ReviewList items={param} />
         </View>
         <View style={styles.bottonContainer}>
           <Button title={t('continue')} onPress={onPressContinue} />
