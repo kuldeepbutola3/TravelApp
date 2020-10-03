@@ -5,7 +5,6 @@ import { Text } from 'src/components/Text';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { HeaderTabs } from 'src/constants/enums';
 
-
 export const Header: FC<any> = (props) => {
   return (
     <View style={styles.container}>

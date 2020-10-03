@@ -4,7 +4,7 @@ import { AuraStackScreen } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
 // import {useSliceSelector} from 'src/redux/hooks';
 import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useStackOptions } from 'src/navigation/stackOptions';
 import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
 import { fetchFlightPlaces } from 'src/idg/flight/flightSlice';
@@ -22,6 +22,7 @@ import InputBox from './components/InputBox';
 import PlaceSearchField from './components/PlaceSearchField';
 import FlightClassDropdown from './components/FlightClassDropdown';
 import { debounce } from '../../../../utils/debounce';
+import { ApptNavigationProp } from 'src/navigation/RootNav';
 // import {configureClient} from 'src/idg/IDGClient';
 
 const CLASS = [
@@ -36,7 +37,8 @@ const CLASS = [
   },
 ];
 
-const HomeScreen: AuraStackScreen = ({ navigation }) => {
+const HomeScreen: AuraStackScreen = () => {
+  const navigation = useNavigation<ApptNavigationProp>();
   navigation.setOptions({
     headerTitle: () => (
       <Header
@@ -70,7 +72,6 @@ const HomeScreen: AuraStackScreen = ({ navigation }) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [toDatePickerVisible, setToDatePickerVisible] = useState(false);
 
-
   const handleSourceSearchChange = debounce((term: string) => {
     dispatch(fetchFlightPlaces({ term }));
   }, 500);
@@ -80,22 +81,23 @@ const HomeScreen: AuraStackScreen = ({ navigation }) => {
   const handleFlightsTabPress = () => setSelectedTab(HeaderTabs.Flights);
   const handleHotelsTabPress = () => setSelectedTab(HeaderTabs.Hotels);
   const handleClassChange = (value: string) => setFlightClass(value);
-  const handleTravellerCountChange = (count) => setTravellersCount(count);
-  const handleDateChange = (_, date) => setDepartureDate(date);
-  const handleReturnDateChange = (_, date) => setReturnDate(date);
+  const handleTravellerCountChange = (count: any) => setTravellersCount(count);
+  const handleDateChange = (_: any, date: any) => setDepartureDate(date);
+  const handleReturnDateChange = (_: any, date: any) => setReturnDate(date);
   const hideDatePicker = () => setDatePickerVisible(false);
   const hideReturnDatePicker = () => setToDatePickerVisible(false);
   const showDatePicker = () => setDatePickerVisible(true);
   const showReturnDatePicker = () => setToDatePickerVisible(true);
   const clearFlightPlaces = () => dispatch(fetchFlightPlaces({ term: '' }));
-  const handleSourcePlaceSelect = (place) => {
+  const handleSourcePlaceSelect = (place: any) => {
     setSelectedSource(place);
     clearFlightPlaces();
   };
-  const handleDestinationPlaceSelect = (place) => {
+  const handleDestinationPlaceSelect = (place: any) => {
     setSelectedDestination(place);
     clearFlightPlaces();
   };
+
   const searchButtonTapped = useCallback(() => navigation.navigate('FlightSearch'), [navigation]);
 
   console.log(

@@ -15,7 +15,7 @@ const TripTypeButton = ({ title, selected, onPress }: ITripTypeButton) => {
       onPress={onPress}
       style={[styles.container, { backgroundColor: selected ? 'white' : 'transparent' }]}
     >
-      <Text style={[styles.title, {color: selected ? '#4c669f' : 'white',}]}>{title}</Text>
+      <Text style={[styles.title, { color: selected ? '#4c669f' : 'white' }]}>{title}</Text>
     </Touchable>
   );
 };
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 12,
-    fontWeight:'400'
+    fontWeight: '400',
   },
 });
 

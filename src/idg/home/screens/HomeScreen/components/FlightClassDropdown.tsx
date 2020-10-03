@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown'; // 'react-native-material-dropdown';
 
-const FlightClassDropdown = ({ data, value, onChangeText, containerStyle, label }) => {
+const FlightClassDropdown: FC<any> = ({ data, value, onChangeText, containerStyle, label }) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={styles.label}>{label}</Text>
