@@ -3,21 +3,20 @@ import React, { useCallback, useEffect } from 'react';
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
 import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
 import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
 import { Header } from 'src/components/Header';
-import { FlightSet } from '../FlightModel';
-import { appColors } from 'src/styles/appColors';
-import { Button } from 'react-native-elements';
+import { FlightSet } from 'src/idg/flight/FlightModel';
+import { fetchFlightFare } from 'src/idg/flight/flightSlice';
 
-export interface ReviewFlightScreenProps {
+export interface SSNScreenProps {
   param: FlightSet;
 }
 
-export const ReviewFlightScreen: AuraStackScreen = () => {
+export const SSNScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
   const dispatch = useThunkDispatch();
   const navigation = useNavigation<ApptNavigationProp>();
@@ -28,27 +27,19 @@ export const ReviewFlightScreen: AuraStackScreen = () => {
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
   ]);
-  const onPressContinue = useCallback(() => navigation.navigate('Login', { param }), [
-    navigation,
-    param,
-  ]);
+
   useEffect(() => {
-    // if (param.resultSessionId) {
-    //   console.log('api.......');
-    //   dispatch(fetchFlightFare({ resultSessionId: [param.resultSessionId] }));
-    // }
+    if (param.resultSessionId) {
+      console.log('api.......');
+      dispatch(fetchFlightFare({ resultSessionId: [param.resultSessionId] }));
+    }
   }, [dispatch, param]);
 
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
-        <Header onPressBack={onPressBack} title={t('reviewTitle')} />
-        <View style={styles.bodyContainer}>
-          <Text>{flightFare?.results.resultSessionId}</Text>
-        </View>
-        <View style={styles.bottonContainer}>
-          <Button title={t('continue')} onPress={onPressContinue} />
-        </View>
+        <Header onPressBack={onPressBack} title={t('ssrAdon')} />
+        <Text>{flightFare?.results.resultSessionId}</Text>
       </SafeAreaView>
     </Screen>
   );
@@ -57,12 +48,5 @@ export const ReviewFlightScreen: AuraStackScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-  },
-  bodyContainer: {
-    flex: 1,
-  } as ViewStyle,
-  bottonContainer: {
-    padding: 30,
-    backgroundColor: appColors.black,
   },
 });

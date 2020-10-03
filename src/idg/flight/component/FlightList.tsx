@@ -19,12 +19,14 @@ export const FlightList: FC<FlightListProps> = ({ items }) => {
 
   const navigation = useNavigation<ApptNavigationProp>();
 
-  const cellTapped = useCallback(() => navigation.navigate('ReviewFlight'), [navigation]);
-
+  const cellTapped = useCallback(
+    (flightSet: FlightSet) => navigation.navigate('ReviewFlight', { param: flightSet }),
+    [navigation]
+  );
   const renderItem = useCallback<ListRenderItem<Item>>(({ item }) => <CardItem {...item} />, []);
 
   const CardItem: React.FC<Item> = React.memo(
-    ({ viewModel }) => <FlightCard {...viewModel} onPress={cellTapped} />,
+    ({ viewModel }) => <FlightCard {...viewModel} />,
     (prevProp, nextProp) => prevProp.viewModel.item === nextProp.viewModel.item
   );
 
@@ -35,7 +37,7 @@ export const FlightList: FC<FlightListProps> = ({ items }) => {
   // rowData contains an array of Item objects.
   const rowData: Array<Item> = [];
   items.map((i, index) => {
-    const obj = makeFlightViewModel(i, t);
+    const obj = makeFlightViewModel(i, t, cellTapped);
     obj && rowData.push({ id: `${index}`, viewModel: obj });
   });
 

@@ -1,6 +1,7 @@
 import React, { ReactNode, FC } from 'react';
 import { View, ViewStyle, StyleSheet, ViewProps } from 'react-native';
 import { Button } from 'react-native-elements';
+import { appColors } from 'src/styles/appColors';
 import { Text } from '../Text';
 
 export interface HeaderProps extends ViewProps {
@@ -36,7 +37,7 @@ export const Header: FC<HeaderProps> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgb(88,51,143)',
+    backgroundColor: appColors.pink,
     paddingVertical: 10,
   } as ViewStyle,
   innerContainer: { flexDirection: 'row' } as ViewStyle,

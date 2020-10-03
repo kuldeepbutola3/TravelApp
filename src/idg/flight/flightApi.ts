@@ -1,14 +1,19 @@
 import { getClient } from '../IDGClient';
-import { FlightPlaces, FlightResponse } from './FlightModel';
+import { FlightFareResponse, FlightPlaces, FlightResponse } from './FlightModel';
 
-export const FLIGHT_SEARCH = 'v1/service/search/flights';
-export const FLIGHT_PLACES = 'v1/service/search/get_itemName_list';
+const FLIGHT_SEARCH = 'v1/service/search/flights';
+const FLIGHT_PLACES = 'v1/service/search/get_itemName_list';
+const FLIGHT_FARE = 'v1/service/search/fareQuote';
 
 export type FlightEndpoint = typeof FLIGHT_SEARCH | typeof FLIGHT_PLACES;
 export const getSessionClient = () => getClient<FlightEndpoint>();
 
 export interface PlacesParam {
   term: string;
+}
+
+export interface FlightFareParam {
+  resultSessionId: Array<string>;
 }
 
 export async function getFlight(): Promise<FlightResponse> {
@@ -44,7 +49,7 @@ export async function getFlight(): Promise<FlightResponse> {
         ArrivalAirport: null,
         DepDate: null,
         DepTime: null,
-        preferredDepartureTime: '2020-19-19T00:00:00',
+        preferredDepartureTime: '2020-11-11T00:00:00',
         preferredArrivalTime: null,
       },
       // {
@@ -86,5 +91,12 @@ export async function searchPlaces(param: PlacesParam): Promise<Array<FlightPlac
   const { data } = await getClient().get<Array<FlightPlaces>>(
     `${FLIGHT_PLACES}?term=${param.term}`
   );
+  return data;
+}
+
+export async function getFlightFare(param: FlightFareParam): Promise<FlightFareResponse> {
+  console.log('hit getFareID:::', getSessionClient().defaults.headers);
+
+  const { data } = await getClient().post<FlightFareResponse>(FLIGHT_FARE, param);
   return data;
 }
