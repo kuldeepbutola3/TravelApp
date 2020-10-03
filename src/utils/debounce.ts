@@ -1,7 +1,7 @@
-export function debounce(fn, time) {
-  let timeoutId;
+export function debounce(fn: any, time: any) {
+  let timeoutId: any | undefined;
   return wrapper;
-  function wrapper(...args) {
+  function wrapper(...args: any) {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }

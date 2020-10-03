@@ -4,6 +4,7 @@ import { Divider, Text } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface FlightCardProps {
+  isMultiple?: boolean;
   flightName: string;
   flightCode: string;
   startTime: string;

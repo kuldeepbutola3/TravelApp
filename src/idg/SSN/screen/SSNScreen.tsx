@@ -23,7 +23,7 @@ export const SSNScreen: AuraStackScreen = () => {
   const { param } = useParams<AppRoutes, 'ReviewFlight'>();
   const { flightFare } = useSliceSelector('flight');
 
-  console.log('flightFare.......', JSON.stringify(flightFare?.results.isLCC));
+  console.log('flightFare.......ss', JSON.stringify(flightFare));
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
   ]);
@@ -39,7 +39,7 @@ export const SSNScreen: AuraStackScreen = () => {
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <Header onPressBack={onPressBack} title={t('ssrAdon')} />
-        <Text>{flightFare?.results.resultSessionId}</Text>
+        <Text>{flightFare?.results?.resultSessionId}</Text>
       </SafeAreaView>
     </Screen>
   );

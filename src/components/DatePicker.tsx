@@ -1,18 +1,11 @@
-import React, {useState, useCallback} from 'react';
-import {
-  View,
-  ViewStyle,
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-  StyleProp,
-} from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, ViewStyle, StyleSheet, Platform, TouchableOpacity, StyleProp } from 'react-native';
 import DateTimePicker, {
   IOSNativeProps,
   AndroidNativeProps,
-  Event
+  Event,
 } from '@react-native-community/datetimepicker';
-import {IOSPicker} from 'src/components/IOSPicker';
+import { IOSPicker } from 'src/components/IOSPicker';
 
 export type DatePickerProps = (IOSNativeProps | AndroidNativeProps) & {
   containerStyle?: StyleProp<ViewStyle>;
@@ -20,7 +13,7 @@ export type DatePickerProps = (IOSNativeProps | AndroidNativeProps) & {
   // Closing itself is default (return void). Return `true if you want it to stay open.
   // iOS only, Android closes all the time automatically
   onValueChange: (event: Event, value: Date) => void | true;
-  onRequestClose: () => void
+  onRequestClose: () => void;
   showPicker: boolean;
 };
 
@@ -43,11 +36,11 @@ const AndroidDatePicker: React.FC<DatePickerProps> = ({
   const onPress = useCallback(() => setShowPicker(true), []);
 
   const _onChange = useCallback(
-    (_: Event, value?: Date) => {
+    (event: Event, value: Date | undefined) => {
       setShowPicker(false);
-      value && onChange && onChange(value);
+      value && onChange && onChange(event, value);
     },
-    [onChange],
+    [onChange]
   );
 
   return (
@@ -55,9 +48,8 @@ const AndroidDatePicker: React.FC<DatePickerProps> = ({
       <TouchableOpacity onPress={onPress} style={styles.touchableContent}>
         {children}
       </TouchableOpacity>
-      {showPicker && (
-        <DateTimePicker {...datePickerProps} onChange={_onChange} />
-      )}
+      {/* @ts-ignore */}
+      {showPicker && <DateTimePicker {...datePickerProps} onChange={_onChange} />}
     </View>
   );
 };
@@ -70,24 +62,27 @@ const IOSDatePicker: React.FC<DatePickerProps> = ({
   onRequestClose,
   ...datePickerProps
 }) => {
-//   const onPress = useCallback(() => setShowPicker(true), []);
-//   const onRequestClose = useCallback(() => setShowPicker(false), []);
+  //   const onPress = useCallback(() => setShowPicker(true), []);
+  //   const onRequestClose = useCallback(() => setShowPicker(false), []);
 
-//   const _onChange = useCallback(
-//     (_: Event, value?: Date) => {
-//       const keepOpen = value && onChange && onChange(value);
-//       setShowPicker(!!keepOpen);
-//     },
-//     [onChange],
-//   );
+  //   const _onChange = useCallback(
+  //     (_: Event, value?: Date) => {
+  //       const keepOpen = value && onChange && onChange(value);
+  //       setShowPicker(!!keepOpen);
+  //     },
+  //     [onChange],
+  //   );
 
   return (
+    /* @ts-ignore */
     <IOSPicker
       touchableContent={children}
       style={containerStyle}
       showPicker={showPicker}
-    //   onPress={onPress}
-      onRequestClose={onRequestClose}>
+      //   onPress={onPress}
+      onRequestClose={onRequestClose}
+    >
+      {/* @ts-ignore */}
       <DateTimePicker {...datePickerProps} onChange={onValueChange} />
     </IOSPicker>
   );

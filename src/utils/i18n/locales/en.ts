@@ -96,6 +96,17 @@ export default {
    */
   apply: 'APPLY',
   clear: 'clear',
+  departureFrom: 'Departure From',
+
+  earlyMorning: 'Early Morning',
+  morning: 'Morning',
+  afternoon: 'Afternoon',
+  night: 'Night',
+
+  '12-6am': '12am-6am',
+  '6-12am': '6am-12am',
+  '12-6pm': '12am-6pm',
+  '6-12pm': '6pm-12pm',
 
   /**
    * SSR
@@ -105,6 +116,10 @@ export default {
    * review
    */
   continue: 'Continue',
+  depart: 'Depart',
+  treminal: 'Treminal',
+  cabinBag: 'Cabin Bag',
+  checkInBag: 'Check In Bag',
 
   /**
    * Traveller

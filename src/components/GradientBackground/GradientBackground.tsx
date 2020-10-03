@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import LinearGradient, { LinearGradientProps } from 'react-native-linear-gradient';
 
 interface IGradienBackground extends LinearGradientProps {
-  children?: ReactNode
+  children?: ReactNode;
 }
 
 const GradientBackground = (props: IGradienBackground) => {

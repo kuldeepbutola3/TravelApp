@@ -26,7 +26,7 @@ export const AddTraveller: AuraStackScreen = () => {
   const navigation = useNavigation<ApptNavigationProp>();
   const { isChild } = useParams<AppRoutes, 'AddTraveller'>();
 
-  const [gender, setGender] = useState('male' as Gender);
+  const [gender] = useState('male' as Gender);
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
   const [dob, setDob] = useState('');
@@ -38,6 +38,7 @@ export const AddTraveller: AuraStackScreen = () => {
     navigation,
   ]);
   const onPressContinue = useCallback(() => {
+    console.log('hhhhhhh');
     addTravelerInfo({
       isChild,
       fName,

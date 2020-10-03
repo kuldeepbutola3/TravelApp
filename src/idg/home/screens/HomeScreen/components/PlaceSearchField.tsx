@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native';
 import { Text } from 'react-native-elements';
 
-const PlaceSearchField = ({
+const PlaceSearchField: FC<any> = ({
   type,
   onChangeText,
   places,
@@ -12,8 +12,8 @@ const PlaceSearchField = ({
   placeholder,
   suggestionContainerStyle,
 }) => {
-  const inputRef = useRef(null);
-  const captureRef = (ref) => (inputRef.current = ref);
+  const inputRef = useRef<TextInput>(null);
+  // const captureRef = (ref: TextInput) => (inputRef.current = ref);
   const [showInput, setShowInput] = useState(selectedPlace ? false : true);
   useEffect(() => {
     setShowInput(selectedPlace ? false : true);
@@ -26,7 +26,7 @@ const PlaceSearchField = ({
         <Text style={styles.type}>{type}</Text>
         {showInput ? (
           <TextInput
-            ref={captureRef}
+            ref={inputRef}
             placeholderTextColor="white"
             style={{ color: 'white' }}
             onChangeText={onChangeText}

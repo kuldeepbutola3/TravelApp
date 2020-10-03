@@ -5,8 +5,8 @@ import { Input } from 'react-native-elements';
 interface IInputBox {
   label: string;
   value: string;
-  onChangeText(value: number): void;
-  containerStyle: ViewStyle
+  onChangeText(value: string): void;
+  containerStyle: ViewStyle;
 }
 
 const InputBox = ({ label, value, onChangeText, containerStyle }: IInputBox) => {
@@ -17,7 +17,7 @@ const InputBox = ({ label, value, onChangeText, containerStyle }: IInputBox) => 
         value={value}
         onChangeText={onChangeText}
         inputContainerStyle={{ borderBottomWidth: 0 }}
-        style={{ color: 'white', fontSize: 18, width:'100%', marginTop:20 }}
+        style={{ color: 'white', fontSize: 18, width: '100%', marginTop: 20 }}
       />
     </View>
   );

@@ -24,12 +24,13 @@ const DateSelector = ({
     <Touchable
       activeOpacity={0.9}
       disabled={disabled}
-      style={[styles.container, containerStyles, { borderWidth: disabled ? 0 : 1 , zIndex:0}]}
+      style={[styles.container, containerStyles, { borderWidth: disabled ? 0 : 1, zIndex: 0 }]}
       onPress={disabled ? undefined : onPress}
     >
       <Text style={styles.label}>{label}</Text>
       <View style={{ flexDirection: 'row' }}>
-        <Icon name="calendar" type="SimpleLineIcons" size={30} color="white" style={styles.icon} />
+        {/* <Icon name="calendar" type="SimpleLineIcons" size={30} color="white" style={styles.icon} /> */}
+        <Icon name="calendar" size={30} color="white" style={styles.icon} />
         {disabled ? (
           <Text style={styles.placeholder}>Book Round Trips for{'\n'}Extra Savings!</Text>
         ) : (
@@ -45,7 +46,7 @@ const DateSelector = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     height: 90,
     borderRadius: 10,
     borderColor: 'white',
