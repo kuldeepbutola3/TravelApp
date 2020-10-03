@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "validate": "tsc && yarn lint"
+    "validate": "tsc && yarn lint",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.0",
@@ -58,6 +59,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.4.2",
     "metro-react-native-babel-preset": "^0.63.0",
+    "patch-package": "^6.2.2",
     "prettier": "^2.1.1",
     "react-test-renderer": "16.13.1",
     "typescript": "^4.0.2"
