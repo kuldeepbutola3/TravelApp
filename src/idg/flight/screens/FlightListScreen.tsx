@@ -24,8 +24,9 @@ import { FlightList } from '../component/FlightList';
 import { FlightHeader } from '../component/FlightHeader';
 import { TabButtonProps, TabButtons } from '../component/FlightTabButton';
 import { appColors } from 'src/styles/appColors';
-import { FlightDepartureFilter, TimeSplit } from '../component/FlightDepartureFilter';
+import { FlightDepartureFilter } from '../component/FlightDepartureFilter';
 import { GetFlightParam } from '../flightApi';
+import { FilterModel, TimeSplit } from '../filterModel';
 
 export interface FlightListScreenProps {
   param: GetFlightParam;
@@ -52,19 +53,20 @@ export const FlightListScreen: AuraStackScreen = () => {
   const uniqueFlightSetList = Array.isArray(uniqueFlightSet) ? uniqueFlightSet : [];
   const flightFilterList: Array<string> = [];
   uniqueFlightSetList?.map((i) =>
-    i.segments.map((j) => j.map((k) => flightFilterList.push(k.airline.airlineName)))
+    i.segments.map((j) =>
+      j.map((k) => {
+        const ind = flightFilterList.indexOf(k.airline.airlineName);
+        if (ind < 0) {
+          flightFilterList.push(k.airline.airlineName);
+        }
+      })
+    )
   );
 
-  // useOnMount(()=> {
-  //   dispatch(doFetchRefreshToken()).then((_) => {
-  //     dispatch(fetchFlight(param));
-  //   });
-  // })
   useEffect(() => {
     dispatch(doFetchRefreshToken()).then((_) => {
       dispatch(fetchFlight(param));
     });
-    // navigation.navigate('ReviewFlight', { param: null });
   }, [dispatch, param]);
 
   const buttonArray: Array<TabButtonProps> = [
@@ -82,9 +84,19 @@ export const FlightListScreen: AuraStackScreen = () => {
       title: t('price'),
     },
   ];
+
+  const filterReturnParams = useCallback((param: FilterModel) => {}, []);
+
+  const navigateToFilter = useCallback(() => {
+    const param: FilterModel = {};
+    navigation.navigate('FlightFilter', { param, onPress: filterReturnParams });
+  }, [navigation, filterReturnParams]);
+
   const tabButtonTapped = useCallback(
     (key: number) => {
-      if (key === 1) {
+      if (key === 0) {
+        navigateToFilter();
+      } else if (key === 1) {
         tooltipRefNonStop.current?.toggleTooltip();
       } else if (key === 2) {
         tooltipRefTime.current?.toggleTooltip();
@@ -94,7 +106,14 @@ export const FlightListScreen: AuraStackScreen = () => {
         setPriceFilte(!priceFilte);
       }
     },
-    [tooltipRefNonStop, tooltipRefTime, tooltipRefAirline, setPriceFilte, priceFilte]
+    [
+      tooltipRefNonStop,
+      tooltipRefTime,
+      tooltipRefAirline,
+      setPriceFilte,
+      priceFilte,
+      navigateToFilter,
+    ]
   );
 
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [

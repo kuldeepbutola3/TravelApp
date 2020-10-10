@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { appColors } from 'src/styles/appColors';
 import { useAuraTranslation } from 'src/utils/i18n';
+import { TimeSplit } from '../filterModel';
 
-export type TimeSplit = '12-6am' | '6-12am' | '12-6pm' | '6-12pm';
 interface FlightDepartureFilterProp {
   city: string;
   close?: () => void;

@@ -95,6 +95,7 @@ export default {
   /**
    * search filters
    */
+  clearAll: 'Clear All',
   apply: 'APPLY',
   clear: 'clear',
   departureFrom: 'Departure From',

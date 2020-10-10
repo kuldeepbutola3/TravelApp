@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     width: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
   },
   dividedView: {
     flex: 1,
