@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
-import { AuraStackScreen } from 'src/types/navigationTypes';
+import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
 import { Text } from 'src/components/Text';
 import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
@@ -19,20 +19,24 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Divider, ListItem, Tooltip, TooltipProps } from 'react-native-elements';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
-import { ApptNavigationProp } from 'src/navigation/RootNav';
+import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
 import { FlightList } from '../component/FlightList';
 import { FlightHeader } from '../component/FlightHeader';
 import { TabButtonProps, TabButtons } from '../component/FlightTabButton';
 import { appColors } from 'src/styles/appColors';
 import { FlightDepartureFilter, TimeSplit } from '../component/FlightDepartureFilter';
+import { GetFlightParam } from '../flightApi';
 
+export interface FlightListScreenProps {
+  param: GetFlightParam;
+}
 export const FlightListScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
   const dispatch = useThunkDispatch();
   const navigation = useNavigation<ApptNavigationProp>();
   const { flightDetail } = useSliceSelector('flight');
-
-  console.log('flightDetail--------1', JSON.stringify(flightDetail?.results?.length));
+  const { param } = useParams<AppRoutes, 'FlightSearch'>();
+  console.log('flightDetail--------1', JSON.stringify(flightDetail?.results));
 
   const tooltipRefNonStop = useRef<Tooltip>(null);
   const tooltipRefTime = useRef<Tooltip>(null);
@@ -51,13 +55,17 @@ export const FlightListScreen: AuraStackScreen = () => {
     i.segments.map((j) => j.map((k) => flightFilterList.push(k.airline.airlineName)))
   );
 
+  // useOnMount(()=> {
+  //   dispatch(doFetchRefreshToken()).then((_) => {
+  //     dispatch(fetchFlight(param));
+  //   });
+  // })
   useEffect(() => {
     dispatch(doFetchRefreshToken()).then((_) => {
-      dispatch(fetchFlight());
+      dispatch(fetchFlight(param));
     });
-
     // navigation.navigate('ReviewFlight', { param: null });
-  }, [dispatch]);
+  }, [dispatch, param]);
 
   const buttonArray: Array<TabButtonProps> = [
     { id: 0, iconName: 'filter', title: t('filter') },
@@ -259,19 +267,34 @@ export const FlightListScreen: AuraStackScreen = () => {
     };
   };
 
-  const data = flightDetail?.results[0];
+  const length = flightDetail?.results ? flightDetail?.results?.length : 0;
 
-  let filteredData = stops === -1 ? data : data?.filter((i) => i.segments[0].length === stops + 1);
-  if (priceFilte && filteredData) {
-    filteredData = [...filteredData].reverse();
+  const resultsArray = [];
+  if (flightDetail?.results && Array.isArray(flightDetail?.results)) {
+    const filteredData =
+      stops === -1
+        ? [...flightDetail?.results]
+        : flightDetail?.results.map((data) =>
+            data.filter((i) => i.segments[0].length === stops + 1)
+          );
+    if (priceFilte && filteredData) {
+      // filteredData = [...filteredData].reverse();
+      filteredData.map((d) => {
+        resultsArray.push([...d].reverse());
+      });
+    } else {
+      resultsArray.push(...filteredData);
+    }
   }
 
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
-        <FlightHeader onPressBack={onPressBack} response={flightDetail} />
+        <FlightHeader onPressBack={onPressBack} response={param} />
         <View style={styles.container}>
-          {Array.isArray(filteredData) && <FlightList items={filteredData} />}
+          {resultsArray.map((i) => (
+            <FlightList items={i} isMultiple={length > 0} />
+          ))}
         </View>
         <View style={styles.tabContainer}>
           {buttonArray.map((item) => (
@@ -307,6 +330,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    flexDirection: 'row',
   } as ViewStyle,
 
   tabContainer: {

@@ -1,6 +1,6 @@
 import { formatDate } from 'src/utils/date-formatter';
 import { AuraTFunction } from 'src/utils/i18n';
-import { FlightCardProps } from './component/FlightCard';
+import { FlightCardProps } from './component/FlightCardList';
 import { FlightSet } from './FlightModel';
 
 export interface FlightViewModel extends FlightCardProps {
@@ -11,11 +11,8 @@ export function makeFlightViewModel(
   t: AuraTFunction,
   onPress: (flightSet: FlightSet) => void
 ): Array<FlightViewModel> | undefined {
-  //   console.log('aaa  ', JSON.stringify(flight));
+  // console.log('aaa  ', JSON.stringify(flight.segments.length));
 
-  // const length = flight.segments[0].length;
-  // const firstSegment = flight.segments[0][0];
-  console.log('lengthsss', flight?.segments?.length);
   if (flight?.segments?.length > 0) {
     return flight?.segments?.map((item) => {
       return getSegment(flight, item, onPress, t);

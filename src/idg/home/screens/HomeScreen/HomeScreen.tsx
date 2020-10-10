@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 
 import { AuraStackScreen } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
-// import {useSliceSelector} from 'src/redux/hooks';
 import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useStackOptions } from 'src/navigation/stackOptions';
@@ -12,20 +11,23 @@ import { Header } from 'src/navigation/homeScreenHeader';
 import { GradientBackground } from 'src/components/GradientBackground';
 import { View } from 'react-native';
 import DateSelector from './components/DateSelector';
-import { TripType, HeaderTabs } from 'src/constants/enums';
+import { TripType, HeaderTabs, ClassType } from 'src/constants/enums';
 import { formatDate } from 'src/utils/date-formatter';
 import { DatePicker } from 'src/components/DatePicker';
 import TripTypeButton from './components/TripTypeButton';
 import styles from './styles';
-import SearchButton from './components/SearchButton';
 import InputBox from './components/InputBox';
 import PlaceSearchField from './components/PlaceSearchField';
 import FlightClassDropdown from './components/FlightClassDropdown';
 import { debounce } from '../../../../utils/debounce';
 import { ApptNavigationProp } from 'src/navigation/RootNav';
-// import {configureClient} from 'src/idg/IDGClient';
+import { GetFlightParam } from 'src/idg/flight/flightApi';
+import { FlightPlaces } from 'src/idg/flight/FlightModel';
+import { Button } from 'src/components/Button';
+import { useAuraTranslation } from 'src/utils/i18n';
+import { appColors } from 'src/styles/appColors';
 
-const CLASS = [
+const CLASS: Array<{ value: ClassType }> = [
   {
     value: 'Economy',
   },
@@ -38,6 +40,7 @@ const CLASS = [
 ];
 
 const HomeScreen: AuraStackScreen = () => {
+  const { t } = useAuraTranslation();
   const navigation = useNavigation<ApptNavigationProp>();
   navigation.setOptions({
     headerTitle: () => (
@@ -57,8 +60,10 @@ const HomeScreen: AuraStackScreen = () => {
   const dispatch = useThunkDispatch();
   const { places } = useSliceSelector('flight');
 
-  const [selectedSource, setSelectedSource] = useState(undefined);
-  const [selectedDestination, setSelectedDestination] = useState(undefined);
+  const [selectedSource, setSelectedSource] = useState(undefined as FlightPlaces | undefined);
+  const [selectedDestination, setSelectedDestination] = useState(
+    undefined as FlightPlaces | undefined
+  );
 
   const [departureDate, setDepartureDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(new Date());
@@ -80,10 +85,10 @@ const HomeScreen: AuraStackScreen = () => {
   }, 500);
   const handleFlightsTabPress = () => setSelectedTab(HeaderTabs.Flights);
   const handleHotelsTabPress = () => setSelectedTab(HeaderTabs.Hotels);
-  const handleClassChange = (value: string) => setFlightClass(value);
+  const handleClassChange = (value: ClassType) => setFlightClass(value);
   const handleTravellerCountChange = (count: any) => setTravellersCount(count);
-  const handleDateChange = (_: any, date: any) => setDepartureDate(date);
-  const handleReturnDateChange = (_: any, date: any) => setReturnDate(date);
+  const handleDateChange = (_: any, date: Date) => setDepartureDate(date);
+  const handleReturnDateChange = (_: any, date: Date) => setReturnDate(date);
   const hideDatePicker = () => setDatePickerVisible(false);
   const hideReturnDatePicker = () => setToDatePickerVisible(false);
   const showDatePicker = () => setDatePickerVisible(true);
@@ -98,7 +103,36 @@ const HomeScreen: AuraStackScreen = () => {
     clearFlightPlaces();
   };
 
-  const searchButtonTapped = useCallback(() => navigation.navigate('FlightSearch'), [navigation]);
+  const searchButtonTapped = useCallback(() => {
+    /**To do */
+    console.log('data', selectedSource);
+    // const journeyPayLoad: GetFlightParam ;
+    if (selectedSource && selectedDestination && travellersCount) {
+      const journeyPayLoad: GetFlightParam = {
+        class: flightClass,
+        originName: selectedSource.airportName,
+        destinationName: selectedDestination.airportName,
+        originCode: selectedSource.airportCode,
+        destinationCode: selectedDestination.airportCode,
+        journeyType: selectedTripType,
+        adultCount: travellersCount,
+        childCount: 0,
+        infantCount: 0,
+        journeyDate1: departureDate,
+        journeyDate2: returnDate,
+      };
+      navigation.navigate('FlightSearch', { param: journeyPayLoad });
+    }
+  }, [
+    navigation,
+    selectedSource,
+    selectedDestination,
+    flightClass,
+    travellersCount,
+    selectedTripType,
+    departureDate,
+    returnDate,
+  ]);
 
   console.log(
     { selectedSource },
@@ -109,6 +143,7 @@ const HomeScreen: AuraStackScreen = () => {
     { flightClass },
     { selectedTripType }
   );
+  const searchDisable = !selectedSource && !selectedDestination;
 
   return (
     <View style={styles.container}>
@@ -128,11 +163,11 @@ const HomeScreen: AuraStackScreen = () => {
               selected={selectedTripType === TripType.RoundTrip}
               onPress={() => setSelectedTripType(TripType.RoundTrip)}
             />
-            <TripTypeButton
+            {/* <TripTypeButton
               title={TripType.MultiCity}
               selected={selectedTripType === TripType.MultiCity}
               onPress={() => setSelectedTripType(TripType.MultiCity)}
-            />
+            /> */}
           </View>
 
           <View>
@@ -193,16 +228,25 @@ const HomeScreen: AuraStackScreen = () => {
               />
             </View>
 
-            <SearchButton
+            {/* <SearchButton
               onPress={searchButtonTapped}
               title="Search Flight"
               containerStyle={{ marginVertical: 20 }}
+            /> */}
+            <Button
+              bgColor={appColors.white}
+              title={t('searchFlight')}
+              onPress={searchButtonTapped}
+              titleStyle={{ color: appColors.black }}
+              containerStyle={{ marginVertical: 20 }}
+              disabled={searchDisable}
             />
             <DatePicker
               showPicker={datePickerVisible}
               value={departureDate}
               onValueChange={handleDateChange}
               onRequestClose={hideDatePicker}
+              minimumDate={new Date()}
             />
 
             <DatePicker
@@ -210,6 +254,7 @@ const HomeScreen: AuraStackScreen = () => {
               value={returnDate}
               onValueChange={handleReturnDateChange}
               onRequestClose={hideReturnDatePicker}
+              minimumDate={new Date()}
             />
           </View>
         </Screen>

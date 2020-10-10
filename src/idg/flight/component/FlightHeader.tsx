@@ -4,19 +4,21 @@ import { Icon } from 'react-native-elements';
 
 import { Header, HeaderProps } from 'src/components/Header';
 import { Text } from 'src/components/Text';
-import { FlightResponse } from '../FlightModel';
+import { GetFlightParam } from '../flightApi';
 interface FlightHeaderProps {
   onPressBack: HeaderProps['onPressBack'];
-  response?: FlightResponse;
+  response: GetFlightParam;
 }
 export const FlightHeader: FC<FlightHeaderProps> = ({ onPressBack, response }) => {
   return (
     <Header onPressBack={onPressBack}>
       {response && (
         <View style={styles.headerContainer}>
-          <Text style={styles.text}>{response.origin}</Text>
-          <Icon name="arrow-forward" color="white" size={16} />
-          <Text style={styles.text}>{response.destination}</Text>
+          <Text style={styles.text}>
+            {response.originName}
+            <Icon name="arrow-forward" color="white" size={16} />
+            {response.destinationName}
+          </Text>
         </View>
       )}
     </Header>

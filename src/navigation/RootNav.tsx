@@ -4,7 +4,7 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 
 import { MainNav } from './MainNav';
 import { navigationRef } from './NavigationService';
-import { FlightListScreen } from 'src/idg/flight/screens/FlightListScreen';
+import { FlightListScreen, FlightListScreenProps } from 'src/idg/flight/screens/FlightListScreen';
 import {
   ReviewFlightScreen,
   ReviewFlightScreenProps,
@@ -19,7 +19,7 @@ import { AddTraveller, AddTravellerProps } from 'src/idg/traveller/screens/AddTr
 
 export type AppRoutes = {
   Main: undefined;
-  FlightSearch: undefined;
+  FlightSearch: FlightListScreenProps;
   ReviewFlight: ReviewFlightScreenProps;
   Login: LoginScreenProps;
   TravelerDetail: TravellerDetailProps;

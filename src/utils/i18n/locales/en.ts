@@ -78,6 +78,7 @@ export default {
   /**
    * Search Fligth
    */
+  searchFlight: 'Search Flight',
   filter: 'Filter',
   nonStop: 'Non-Stop',
   stop: 'Stop',
