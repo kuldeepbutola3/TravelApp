@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   filterContainer: {
     // flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: 'transparent',
   },
   filterBar: {
     marginTop: 5,
@@ -124,12 +125,12 @@ const styles = StyleSheet.create({
 
   filterSegment: {
     flexDirection: 'row',
-    // marginTop: 12,
+    marginTop: 10,
     // justifyContent: '',
   },
   filterSegmentInnerView: {
     flex: 1,
-    marginHorizontal: 10,
+    marginHorizontal: 6,
     padding: 5,
     backgroundColor: 'red',
     alignItems: 'center',

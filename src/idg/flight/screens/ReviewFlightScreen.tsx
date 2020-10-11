@@ -46,7 +46,7 @@ export const ReviewFlightScreen: AuraStackScreen = () => {
             bgColor={appColors.pink}
             title={t('continue')}
             onPress={onPressContinue}
-            buttonStyle={{ paddingHorizontal: 20 }}
+            buttonStyle={styles.continue}
           />
         </View>
       </SafeAreaView>
@@ -73,4 +73,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
   },
+  continue: { paddingHorizontal: 20 },
 });

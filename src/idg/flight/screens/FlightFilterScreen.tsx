@@ -12,10 +12,8 @@ import { Button, ListItem } from 'react-native-elements';
 import { Button as _Button } from 'src/components/Button';
 import { FilterModel, TimeSplit } from '../filterModel';
 import { appColors } from 'src/styles/appColors';
-import { FilterSlider } from './FilterSlider';
 import { FlightDepartureFilter } from '../component/FlightDepartureFilter';
 import { useSliceSelector } from 'src/redux/hooks';
-import { max } from 'moment';
 
 export interface FlightFilterScreenProps {
   param: FilterModel;
@@ -65,8 +63,12 @@ export const FlightFilterScreen: AuraStackScreen = () => {
     setStops(-1);
     setTimeSelected1(undefined);
     setTimeSelected2(undefined);
+
     setFlightArray([]);
-  }, [onPress, onPressBack, setStops]);
+
+    setMaxRange(0);
+    setMinRange(0);
+  }, [onPress]);
 
   /** getting filter arrray for response  */
   const uniqueFlightSet = flightDetail?.uniqueFlightSet;
@@ -97,7 +99,8 @@ export const FlightFilterScreen: AuraStackScreen = () => {
       flightArray,
     };
     onPress(dict);
-  }, [onPress, timeSelected1, timeSelected2, flightArray, stops, maxRang, minRange]);
+    onPressBack();
+  }, [onPress, timeSelected1, timeSelected2, flightArray, stops, maxRang, minRange, onPressBack]);
 
   const _onPressListItem = (item: string) => {
     return useCallback(() => {
@@ -109,7 +112,7 @@ export const FlightFilterScreen: AuraStackScreen = () => {
       } else {
         setFlightArray([...flightArray, item]);
       }
-    }, [item, flightArray, setFlightArray]);
+    }, [item]);
   };
   return (
     <Screen>
@@ -134,7 +137,7 @@ export const FlightFilterScreen: AuraStackScreen = () => {
             <View style={styles.filterSegmentInnerView}>
               <Button
                 type="clear"
-                buttonStyle={stops === 0 && styles.selected}
+                buttonStyle={stops === 0 ? styles.selected : {}}
                 titleStyle={stops === 0 ? styles.titleSelected : styles.titleUnSelected}
                 title={`0 ${t('nonStop')}`}
                 onPress={_onPressStops(0)}
@@ -142,7 +145,7 @@ export const FlightFilterScreen: AuraStackScreen = () => {
             </View>
             <View style={styles.filterSegmentInnerView}>
               <Button
-                buttonStyle={stops === 1 && styles.selected}
+                buttonStyle={stops === 1 ? styles.selected : {}}
                 titleStyle={stops === 1 ? styles.titleSelected : styles.titleUnSelected}
                 type="clear"
                 title={`1 ${t('stop')}`}
@@ -151,7 +154,7 @@ export const FlightFilterScreen: AuraStackScreen = () => {
             </View>
             <View style={styles.filterSegmentInnerView}>
               <Button
-                buttonStyle={stops === 2 && styles.selected}
+                buttonStyle={stops === 2 ? styles.selected : {}}
                 titleStyle={stops === 2 ? styles.titleSelected : styles.titleUnSelected}
                 type="clear"
                 title={`2 ${t('stop')}`}
@@ -215,7 +218,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    // paddingHorizontal: 20,
   },
   headerView: {
     flexDirection: 'row',

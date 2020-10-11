@@ -27,7 +27,9 @@ import { appColors } from 'src/styles/appColors';
 import { FlightDepartureFilter } from '../component/FlightDepartureFilter';
 import { GetFlightParam } from '../flightApi';
 import { FilterModel, TimeSplit } from '../filterModel';
-
+import { FlightSet } from '../FlightModel';
+import { formatDate } from 'src/utils/date-formatter';
+import { Button as _Button } from 'src/components/Button';
 export interface FlightListScreenProps {
   param: GetFlightParam;
 }
@@ -37,16 +39,45 @@ export const FlightListScreen: AuraStackScreen = () => {
   const navigation = useNavigation<ApptNavigationProp>();
   const { flightDetail } = useSliceSelector('flight');
   const { param } = useParams<AppRoutes, 'FlightSearch'>();
-  console.log('flightDetail--------1', JSON.stringify(flightDetail?.results));
+  console.log('flightDetail--------1', JSON.stringify(flightDetail?.results?.length));
 
   const tooltipRefNonStop = useRef<Tooltip>(null);
   const tooltipRefTime = useRef<Tooltip>(null);
   const tooltipRefAirline = useRef<Tooltip>(null);
 
+  /**max min range */
+  const [maxRange, setMaxRange] = useState(0);
+  const [minRange, setMinRange] = useState(0);
+
+  const maxPrice = flightDetail?.results
+    ? flightDetail?.results?.length > 1
+      ? Math.max(
+          flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0,
+          flightDetail?.results[1][flightDetail?.results[1].length - 1].fare.publishedFare ?? 0
+        )
+      : flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare
+    : 0;
+
+  const minPrice = flightDetail?.results
+    ? flightDetail?.results?.length > 1
+      ? Math.min(
+          flightDetail?.results[0][0].fare.publishedFare ?? 0,
+          flightDetail?.results[1][0].fare.publishedFare ?? 0
+        )
+      : flightDetail?.results[0][0].fare.publishedFare
+    : 0;
+
+  useEffect(() => {
+    setMaxRange(maxPrice);
+    setMinRange(minPrice);
+  }, [maxPrice, minPrice]);
+
   /**  filter states */
   const [priceFilte, setPriceFilte] = useState(false);
   const [stops, setStops] = useState(-1);
   const [flightArray, setFlightArray] = useState([] as Array<string>);
+  const [timeSelected1, setTimeSelected1] = useState(undefined as TimeSplit | undefined);
+  const [timeSelected2, setTimeSelected2] = useState(undefined as TimeSplit | undefined);
 
   /** getting filter arrray for response  */
   const uniqueFlightSet = flightDetail?.uniqueFlightSet;
@@ -85,12 +116,40 @@ export const FlightListScreen: AuraStackScreen = () => {
     },
   ];
 
-  const filterReturnParams = useCallback((param: FilterModel) => {}, []);
+  const filterReturnParams = useCallback(
+    (params: FilterModel) => {
+      setMaxRange(params?.priceRange?.higher ?? 0);
+      setMinRange(params?.priceRange?.lower ?? 0);
+      setTimeSelected1(params.timeSplit1);
+      setTimeSelected2(params.timeSplit2);
+      setStops(params?.stops ?? -1);
+      setFlightArray(params?.flightArray ?? []);
+    },
+    [setMaxRange, setMinRange, setTimeSelected1, setTimeSelected2, setStops, setFlightArray]
+  );
 
   const navigateToFilter = useCallback(() => {
-    const param: FilterModel = {};
-    navigation.navigate('FlightFilter', { param, onPress: filterReturnParams });
-  }, [navigation, filterReturnParams]);
+    const params: FilterModel = {
+      priceRange: {
+        lower: minRange,
+        higher: maxRange,
+      },
+      stops,
+      timeSplit2: timeSelected2,
+      timeSplit1: timeSelected1,
+      flightArray,
+    };
+    navigation.navigate('FlightFilter', { param: params, onPress: filterReturnParams });
+  }, [
+    navigation,
+    filterReturnParams,
+    minRange,
+    maxRange,
+    stops,
+    timeSelected1,
+    timeSelected2,
+    flightArray,
+  ]);
 
   const tabButtonTapped = useCallback(
     (key: number) => {
@@ -121,27 +180,39 @@ export const FlightListScreen: AuraStackScreen = () => {
   ]);
 
   const FlightListView: FC<ViewProps> = ({ style }) => {
+    const [flightA, setFlightA] = useState(flightArray);
+
+    const applyTapped = useCallback(() => {
+      setFlightArray(flightA);
+      tooltipRefAirline.current?.toggleTooltip();
+    }, [flightA]);
+
     const renderItem = useCallback<ListRenderItem<string>>(
-      ({ item }) => (
-        <ListItem
-          title={item}
-          rightIcon={{
-            name: flightArray.indexOf(item) >= 0 ? 'check-box' : 'check-box-outline-blank',
-            color: appColors.pink,
-          }}
-          onPress={() => {
-            const ar = [...flightArray];
-            const indx = ar.indexOf(item);
+      ({ item }) => {
+        const listTapped = (items: string) => {
+          return () => {
+            const ar = [...flightA];
+            const indx = ar.indexOf(items);
             if (indx >= 0) {
-              ar.splice(indx);
-              setFlightArray(ar);
+              ar.splice(indx, 1);
+              setFlightA(ar);
             } else {
-              setFlightArray([...flightArray, item]);
+              setFlightA([...flightA, items]);
             }
-          }}
-        />
-      ),
-      []
+          };
+        };
+        return (
+          <ListItem
+            title={item}
+            rightIcon={{
+              name: flightA.indexOf(item) >= 0 ? 'check-box' : 'check-box-outline-blank',
+              color: appColors.pink,
+            }}
+            onPress={listTapped(item)}
+          />
+        );
+      },
+      [flightA]
     );
 
     return (
@@ -160,6 +231,12 @@ export const FlightListScreen: AuraStackScreen = () => {
           data={flightFilterList}
           renderItem={renderItem}
           keyExtractor={(_, index) => `${index}`}
+        />
+        <_Button
+          containerStyle={styles.apply}
+          title={t('apply')}
+          bgColor={appColors.pink}
+          onPress={applyTapped}
         />
       </View>
     );
@@ -247,22 +324,40 @@ export const FlightListScreen: AuraStackScreen = () => {
   };
 
   const TimeList: FC<ViewProps> = ({ style }) => {
-    const [timeSelected, setTimeSelected] = useState(undefined as TimeSplit | undefined);
+    const [t1, setT1] = useState(timeSelected1 as TimeSplit | undefined);
+    const [t2, seT2] = useState(timeSelected2 as TimeSplit | undefined);
+
+    const applyTapped = useCallback(() => {
+      setTimeSelected2(t2);
+      setTimeSelected1(t1);
+      tooltipRefTime.current?.toggleTooltip();
+    }, [t2, t1]);
+    if (!flightDetail?.results) {
+      return null;
+    }
     return (
       <View style={style}>
         <FlightDepartureFilter
-          type={timeSelected}
+          type={t1}
           // viewStyle={[styles.timeListInner]}
-          city={'delhi'}
+          city={flightDetail?.results[0][0].segments[0][0].origin?.airport?.cityName ?? ''}
           close={tooltipRefTime.current?.toggleTooltip}
-          timeSelected={setTimeSelected}
+          timeSelected={setT1}
         />
-        <FlightDepartureFilter
-          type={timeSelected}
-          // viewStyle={styles.timeListInner}
-          city={'mumbai'}
-          // close={tooltipRefTime.current?.toggleTooltip}
-          timeSelected={setTimeSelected}
+        {flightDetail?.results.length > 1 && (
+          <FlightDepartureFilter
+            type={t2}
+            // viewStyle={styles.timeListInner}
+            city={flightDetail?.results[1][0].segments[0][0].origin?.airport?.cityName ?? ''}
+            // close={tooltipRefTime.current?.toggleTooltip}
+            timeSelected={seT2}
+          />
+        )}
+        <_Button
+          containerStyle={styles.apply}
+          title={t('apply')}
+          bgColor={appColors.pink}
+          onPress={applyTapped}
         />
       </View>
     );
@@ -275,10 +370,17 @@ export const FlightListScreen: AuraStackScreen = () => {
         popover: <NonStopView style={styles.nonStopStyle} />,
       };
     } else if (key === 2) {
-      return {
-        ...styles.timeList,
-        popover: <TimeList style={styles.timeList} />,
-      };
+      if ((flightDetail?.results.length ?? 0) > 1) {
+        return {
+          ...styles.timeList2,
+          popover: <TimeList style={styles.timeList2} />,
+        };
+      } else {
+        return {
+          ...styles.timeList,
+          popover: <TimeList style={styles.timeList} />,
+        };
+      }
     }
     return {
       ...styles.flightList,
@@ -286,18 +388,99 @@ export const FlightListScreen: AuraStackScreen = () => {
     };
   };
 
+  /** applying filtes */
   const length = flightDetail?.results ? flightDetail?.results?.length : 0;
 
   const resultsArray = [];
+
+  /** get stops filter */
+  const getFilterData = () => {
+    const arrayStops: Array<Array<FlightSet>> = [];
+    flightDetail?.results.map((data) =>
+      arrayStops.push(data.filter((i) => i.segments[0].length === stops + 1))
+    );
+    return arrayStops;
+  };
+
+  /** time filter */
+  const getTimeFilterData = (itm: Array<Array<FlightSet>>) => {
+    // const startTime = formatDate(firstSegment.origin.depTime, 'HH:mm');
+    const array: Array<Array<FlightSet>> = [];
+    if (timeSelected1 && itm.length) {
+      const array1 = itm[0];
+      array.push(
+        array1.filter((i) => {
+          const time = Number(formatDate(i.segments[0][0].origin.depTime, 'HH'));
+          console.log('timeeeee', time);
+          if (timeSelected1 === '12-6am') {
+            return time > 0 && time < 5;
+          } else if (timeSelected1 === '6-12am') {
+            return time > 6 && time < 11;
+          } else if (timeSelected1 === '12-6pm') {
+            return time > 11 && time < 17;
+          } else if (timeSelected1 === '6-12pm') {
+            return time > 18 && time < 24;
+          }
+          return true;
+        })
+      );
+    } else {
+      if (itm.length) {
+        array.push(itm[0]);
+      }
+    }
+
+    if (timeSelected2 && itm.length > 1) {
+      const array1 = itm[1];
+      array.push(
+        array1.filter((i) => {
+          const time = Number(formatDate(i.segments[0][0].origin.depTime, 'HH'));
+          if (timeSelected2 === '12-6am') {
+            return time > 0 && time < 5;
+          } else if (timeSelected1 === '6-12am') {
+            return time > 6 && time < 11;
+          } else if (timeSelected1 === '12-6pm') {
+            return time > 11 && time < 17;
+          } else if (timeSelected1 === '6-12pm') {
+            return time > 18 && time < 24;
+          }
+          return true;
+        })
+      );
+    } else {
+      if (itm.length > 1) {
+        array.push(itm[1]);
+      }
+    }
+
+    return array;
+  };
+
+  /** flight search filter */
+  const filterWithFlightName = (itm: Array<Array<FlightSet>>) => {
+    if (flightArray.length > 0) {
+      const flghtSearch: Array<Array<FlightSet>> = [];
+      itm.map((data) => {
+        flghtSearch.push(
+          data.filter((i) => flightArray.indexOf(i.segments[0][0].airline?.airlineName ?? '') >= 0)
+        );
+      });
+      return flghtSearch;
+    }
+    return itm;
+  };
+
   if (flightDetail?.results && Array.isArray(flightDetail?.results)) {
-    const filteredData =
-      stops === -1
-        ? [...flightDetail?.results]
-        : flightDetail?.results.map((data) =>
-            data.filter((i) => i.segments[0].length === stops + 1)
-          );
+    /** applying stops filter */
+    const stopFilter = stops === -1 ? [...flightDetail?.results] : getFilterData();
+
+    /** applying flight search */
+    const stopData = filterWithFlightName(stopFilter);
+
+    /** applying time filter */
+    const filteredData = getTimeFilterData(stopData);
+    /** applying price filter */
     if (priceFilte && filteredData) {
-      // filteredData = [...filteredData].reverse();
       filteredData.map((d) => {
         resultsArray.push([...d].reverse());
       });
@@ -305,7 +488,6 @@ export const FlightListScreen: AuraStackScreen = () => {
       resultsArray.push(...filteredData);
     }
   }
-
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
@@ -379,7 +561,12 @@ const styles = StyleSheet.create({
   // },
   timeList: {
     width: Dimensions.get('window').width - 20,
-    height: Dimensions.get('window').height / 4 + 60,
+    height: Dimensions.get('window').height / 4,
+    backgroundColor: 'white',
+  },
+  timeList2: {
+    width: Dimensions.get('window').width - 20,
+    height: Dimensions.get('window').height / 3 + 60,
     backgroundColor: 'white',
   },
   // filters
@@ -403,4 +590,7 @@ const styles = StyleSheet.create({
   selected: { backgroundColor: appColors.pink },
   titleSelected: { color: 'white' },
   titleUnSelected: { color: 'black' },
+
+  //button apply
+  apply: { padding: 20 },
 });

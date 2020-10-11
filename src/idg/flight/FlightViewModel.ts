@@ -31,13 +31,12 @@ function getSegment(
   const length = segments.length;
   const firstSegment = segments[0];
   const lastSegment = segments[length - 1];
-  // if (firstSegment && lastSegment) {
   const flightName = firstSegment?.airline?.airlineName;
   const flightCode = `${firstSegment.airline.airlineCode} ${firstSegment.airline.flightNumber} ${firstSegment.airline.fareClass}`;
 
-  const startTime = formatDate(firstSegment.origin.depTime, 'hh:mm');
+  const startTime = formatDate(firstSegment.origin.depTime, 'HH:mm');
   const startCity = firstSegment.origin.airport.cityName;
-  const endTime = formatDate(lastSegment.destination.arrTime, 'hh:mm');
+  const endTime = formatDate(lastSegment.destination.arrTime, 'HH:mm');
   const endCity = lastSegment.destination.airport.cityName;
 
   const fare = `${flight.fare.currency === 'INR' ? '₹ ' : ''}${flight.fare.publishedFare}`;

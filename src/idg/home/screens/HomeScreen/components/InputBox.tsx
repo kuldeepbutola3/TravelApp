@@ -16,8 +16,8 @@ const InputBox = ({ label, value, onChangeText, containerStyle }: IInputBox) => 
       <Input
         value={value}
         onChangeText={onChangeText}
-        inputContainerStyle={{ borderBottomWidth: 0 }}
-        style={{ color: 'white', fontSize: 18, width: '100%', marginTop: 20 }}
+        inputContainerStyle={styles.inputContainer}
+        style={styles.input}
       />
     </View>
   );
@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
+  input: { color: 'white', fontSize: 18, width: '100%', marginTop: 20 },
+  inputContainer: { borderBottomWidth: 0 },
 });
 
 export default InputBox;

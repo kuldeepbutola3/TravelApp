@@ -145,6 +145,8 @@ const HomeScreen: AuraStackScreen = () => {
   );
   const searchDisable = !selectedSource && !selectedDestination;
 
+  const plaxesearch1 = { bottom: -(80 - 10) };
+  const placesearch2 = { bottom: -(80 + 80 + 8 - 10) };
   return (
     <View style={styles.container}>
       <GradientBackground
@@ -171,15 +173,15 @@ const HomeScreen: AuraStackScreen = () => {
           </View>
 
           <View>
-            <View style={{ zIndex: 1 }}>
+            <View style={styles.containerInner}>
               <PlaceSearchField
                 type="From"
                 onChangeText={handleSourceSearchChange}
                 places={places}
                 onSelectPlace={handleSourcePlaceSelect}
                 selectedPlace={selectedSource}
-                containerStyle={{ marginBottom: 8 }}
-                suggestionContainerStyle={{ bottom: -(80 - 10) }}
+                containerStyle={styles.placeSearchContainer}
+                suggestionContainerStyle={plaxesearch1}
                 placeholder="Search Source"
               />
               <PlaceSearchField
@@ -188,8 +190,8 @@ const HomeScreen: AuraStackScreen = () => {
                 places={places}
                 onSelectPlace={handleDestinationPlaceSelect}
                 selectedPlace={selectedDestination}
-                containerStyle={{ marginBottom: 8 }}
-                suggestionContainerStyle={{ bottom: -(80 + 80 + 8 - 10) }}
+                containerStyle={styles.placeSearchContainer}
+                suggestionContainerStyle={placesearch2}
                 placeholder="Search Destination"
               />
             </View>
@@ -237,8 +239,8 @@ const HomeScreen: AuraStackScreen = () => {
               bgColor={appColors.white}
               title={t('searchFlight')}
               onPress={searchButtonTapped}
-              titleStyle={{ color: appColors.black }}
-              containerStyle={{ marginVertical: 20 }}
+              titleStyle={styles.buttonColor}
+              containerStyle={styles.buttonContainer}
               disabled={searchDisable}
             />
             <DatePicker
