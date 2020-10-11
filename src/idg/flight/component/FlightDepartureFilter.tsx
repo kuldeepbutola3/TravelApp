@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { appColors } from 'src/styles/appColors';
 import { useAuraTranslation } from 'src/utils/i18n';
+import { TimeSplit } from '../filterModel';
 
-export type TimeSplit = '12-6am' | '6-12am' | '12-6pm' | '6-12pm';
 interface FlightDepartureFilterProp {
   city: string;
   close?: () => void;
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   filterContainer: {
     // flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: 'transparent',
   },
   filterBar: {
     marginTop: 5,
@@ -124,12 +125,12 @@ const styles = StyleSheet.create({
 
   filterSegment: {
     flexDirection: 'row',
-    // marginTop: 12,
+    marginTop: 10,
     // justifyContent: '',
   },
   filterSegmentInnerView: {
     flex: 1,
-    marginHorizontal: 10,
+    marginHorizontal: 6,
     padding: 5,
     backgroundColor: 'red',
     alignItems: 'center',

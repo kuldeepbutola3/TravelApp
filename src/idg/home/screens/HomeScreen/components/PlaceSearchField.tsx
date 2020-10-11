@@ -28,12 +28,12 @@ const PlaceSearchField: FC<any> = ({
           <TextInput
             ref={inputRef}
             placeholderTextColor="white"
-            style={{ color: 'white' }}
+            style={styles.input}
             onChangeText={onChangeText}
             placeholder={placeholder}
           />
         ) : (
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.containerInner}>
             <Text style={styles.cityNameLabel} onPress={() => setShowInput(true)}>
               {selectedPlace.cityName}
             </Text>
@@ -42,7 +42,7 @@ const PlaceSearchField: FC<any> = ({
             </Text>
           </View>
         )}
-        {!showInput && <Text style={{ color: 'white' }}>{selectedPlace?.airportName}</Text>}
+        {!showInput && <Text style={styles.input}>{selectedPlace?.airportName}</Text>}
       </View>
 
       {placesAvailable && (
@@ -61,7 +61,7 @@ const PlaceSearchField: FC<any> = ({
                 </TouchableOpacity>
               );
             }}
-            style={{ flex: 1, height: '100%', width: '100%' }}
+            style={styles.placeAvailable}
           />
         </View>
       )}
@@ -124,5 +124,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
   },
+
+  placeAvailable: { flex: 1, height: '100%', width: '100%' },
+  input: { color: 'white' },
+  containerInner: { flexDirection: 'row' },
 });
 export default PlaceSearchField;

@@ -4,7 +4,7 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 
 import { MainNav } from './MainNav';
 import { navigationRef } from './NavigationService';
-import { FlightListScreen } from 'src/idg/flight/screens/FlightListScreen';
+import { FlightListScreen, FlightListScreenProps } from 'src/idg/flight/screens/FlightListScreen';
 import {
   ReviewFlightScreen,
   ReviewFlightScreenProps,
@@ -16,10 +16,15 @@ import {
 } from 'src/idg/traveller/screens/TravellerDetailScreen';
 import { SSNScreen, SSNScreenProps } from 'src/idg/SSN/screen/SSNScreen';
 import { AddTraveller, AddTravellerProps } from 'src/idg/traveller/screens/AddTraveller';
+import {
+  FlightFilterScreen,
+  FlightFilterScreenProps,
+} from 'src/idg/flight/screens/FlightFilterScreen';
 
 export type AppRoutes = {
   Main: undefined;
-  FlightSearch: undefined;
+  FlightSearch: FlightListScreenProps;
+  FlightFilter: FlightFilterScreenProps;
   ReviewFlight: ReviewFlightScreenProps;
   Login: LoginScreenProps;
   TravelerDetail: TravellerDetailProps;
@@ -41,6 +46,11 @@ const AppNav = () => {
       <Stack.Screen
         name="FlightSearch"
         component={FlightListScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="FlightFilter"
+        component={FlightFilterScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

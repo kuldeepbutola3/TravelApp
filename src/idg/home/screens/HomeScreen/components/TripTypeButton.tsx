@@ -10,12 +10,11 @@ interface ITripTypeButton {
 }
 
 const TripTypeButton = ({ title, selected, onPress }: ITripTypeButton) => {
+  const touch = { backgroundColor: selected ? 'white' : 'transparent' };
+  const txt = { color: selected ? '#4c669f' : 'white' };
   return (
-    <Touchable
-      onPress={onPress}
-      style={[styles.container, { backgroundColor: selected ? 'white' : 'transparent' }]}
-    >
-      <Text style={[styles.title, { color: selected ? '#4c669f' : 'white' }]}>{title}</Text>
+    <Touchable onPress={onPress} style={[styles.container, touch]}>
+      <Text style={[styles.title, txt]}>{title}</Text>
     </Touchable>
   );
 };
