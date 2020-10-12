@@ -8,14 +8,14 @@ import { FlightViewModel, makeFlightViewModel } from '../FlightViewModel';
 import { FlightCardList } from './FlightCardList';
 
 interface FlightListProps {
-  isMultiple: boolean;
+  show: boolean;
   items: Array<FlightSet>;
 }
 interface Item {
   id: string;
   viewModel: Array<FlightViewModel>;
 }
-export const FlightList: FC<FlightListProps> = ({ items, isMultiple }) => {
+export const FlightList: FC<FlightListProps> = ({ items, show }) => {
   const { t } = useAuraTranslation();
 
   const navigation = useNavigation<ApptNavigationProp>();
@@ -27,7 +27,7 @@ export const FlightList: FC<FlightListProps> = ({ items, isMultiple }) => {
   const renderItem = useCallback<ListRenderItem<Item>>(({ item }) => <CardItem {...item} />, []);
 
   const CardItem: React.FC<Item> = ({ viewModel }) => (
-    <FlightCardList data={viewModel} isMultiple={isMultiple} />
+    <FlightCardList data={viewModel} show={show} />
   );
 
   if (!items.length) {

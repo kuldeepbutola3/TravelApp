@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, TextInput } from 'react-native';
 import { Text } from 'react-native-elements';
-
+import { ScrollView } from 'react-native-gesture-handler';
+import { FlightPlaces } from 'src/idg/flight/FlightModel';
 const PlaceSearchField: FC<any> = ({
   type,
   onChangeText,
@@ -10,44 +11,68 @@ const PlaceSearchField: FC<any> = ({
   selectedPlace,
   containerStyle,
   placeholder,
-  suggestionContainerStyle,
 }) => {
   const inputRef = useRef<TextInput>(null);
+
   // const captureRef = (ref: TextInput) => (inputRef.current = ref);
   const [showInput, setShowInput] = useState(selectedPlace ? false : true);
   useEffect(() => {
     setShowInput(selectedPlace ? false : true);
+
+    // inputRefMod.current.show();
+    // console.log('inputRefMod.current', inputRefMod.current);
   }, [selectedPlace]);
   const placesAvailable =
-    showInput && inputRef.current?.isFocused() && places instanceof Array && places.length;
+    showInput && inputRef.current?.isFocused() && places instanceof Array && places.length > 0;
+
+  console.log('placesAvailable.......', placesAvailable, places);
+
   return (
-    <>
+    <View>
       <View style={[styles.container, containerStyle]}>
         <Text style={styles.type}>{type}</Text>
-        {showInput ? (
-          <TextInput
-            ref={inputRef}
-            placeholderTextColor="white"
-            style={styles.input}
-            onChangeText={onChangeText}
-            placeholder={placeholder}
-          />
-        ) : (
-          <View style={styles.containerInner}>
-            <Text style={styles.cityNameLabel} onPress={() => setShowInput(true)}>
-              {selectedPlace.cityName}
-            </Text>
-            <Text style={styles.cityCodeLabel} onPress={() => setShowInput(true)}>
-              {selectedPlace.cityCode}
-            </Text>
-          </View>
-        )}
-        {!showInput && <Text style={styles.input}>{selectedPlace?.airportName}</Text>}
-      </View>
 
+        {showInput ? (
+          <>
+            <TextInput
+              ref={inputRef}
+              placeholderTextColor="white"
+              style={styles.input}
+              onChangeText={onChangeText}
+              placeholder={placeholder}
+            />
+            {!showInput && <Text style={styles.input}>{selectedPlace?.airportName}</Text>}
+          </>
+        ) : (
+          <TouchableOpacity onPress={() => setShowInput(true)}>
+            <View style={styles.containerInner}>
+              <Text style={styles.cityNameLabel}>{selectedPlace.cityName}</Text>
+              <Text style={styles.cityCodeLabel}>{selectedPlace.cityCode}</Text>
+            </View>
+            {!showInput && <Text style={styles.input}>{selectedPlace?.airportName}</Text>}
+          </TouchableOpacity>
+        )}
+        {/* <ModalDropdown ref={inputRefMod} options={['option 1', 'option 2']}>
+        </ModalDropdown> */}
+      </View>
       {placesAvailable && (
-        <View style={[styles.suggestionContainer, suggestionContainerStyle]}>
-          <FlatList
+        <View style={[styles.suggestionContainer]}>
+          <ScrollView>
+            {places.map((item: FlightPlaces) => {
+              const handlePlaceSelect = () => onSelectPlace(item);
+              return (
+                <TouchableOpacity
+                  onPress={handlePlaceSelect}
+                  style={styles.suggestionItemContainer}
+                >
+                  <Text style={styles.cityLabel}>{item.cityName}</Text>
+                  <Text style={styles.airportLabel}>{item.airportName}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+          {/* <FlatList
+            contentContainerStyle={{ flexGrow: 1 }}
             data={places}
             renderItem={({ item }) => {
               const handlePlaceSelect = () => onSelectPlace(item);
@@ -61,11 +86,11 @@ const PlaceSearchField: FC<any> = ({
                 </TouchableOpacity>
               );
             }}
-            style={styles.placeAvailable}
-          />
+            // style={styles.placeAvailable}
+          /> */}
         </View>
       )}
-    </>
+    </View>
   );
 };
 const styles = StyleSheet.create({
@@ -84,15 +109,19 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   suggestionContainer: {
-    position: 'absolute',
-    left: 0,
+    // position: 'absolute',
     width: '100%',
-    height: '100%',
+    // height: '100%',
+    height: 200,
     backgroundColor: 'white',
-    zIndex: 2,
+    // zIndex: 200,
+    // elevation: 4,
+    marginTop: -9,
+    marginBottom: 5,
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
     overflow: 'hidden',
+    // flexWrap: 'nowrap',
   },
   suggestionItemContainer: {
     backgroundColor: 'white',
@@ -125,7 +154,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  placeAvailable: { flex: 1, height: '100%', width: '100%' },
+  placeAvailable: { flex: 1, flexGrow: 1 },
   input: { color: 'white' },
   containerInner: { flexDirection: 'row' },
 });

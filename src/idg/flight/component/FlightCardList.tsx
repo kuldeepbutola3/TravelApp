@@ -19,6 +19,7 @@ export interface FlightCardProps {
 interface FlightCardInnerProps extends FlightCardProps {
   isMultiple: boolean;
   isLast: boolean;
+  show: boolean;
 }
 
 const FlightCard: FC<FlightCardInnerProps> = ({
@@ -33,7 +34,9 @@ const FlightCard: FC<FlightCardInnerProps> = ({
   fare,
   seatLeft,
   stop,
+  show,
 }) => {
+  console.log('showMultiple', show, isMultiple);
   return (
     <View>
       <View style={styles.container}>
@@ -55,27 +58,43 @@ const FlightCard: FC<FlightCardInnerProps> = ({
             <Text style={styles.time}>{endTime}</Text>
             <Text style={styles.gryText}>{endCity}</Text>
           </View>
-          {!isMultiple && (
+          {/* {showMultiple === true ? (
+            <View style={styles.dividedView}>
+              <Text style={styles.fare}>{fare}</Text>
+              <Text style={styles.seat}>{seatLeft}</Text>
+            </View>
+          ) : ( */}
+          {show === false && !isMultiple && (
             <View style={styles.dividedView}>
               <Text style={styles.fare}>{fare}</Text>
               <Text style={styles.seat}>{seatLeft}</Text>
             </View>
           )}
+          {/* !isMultiple &&  */}
         </View>
         {/* <Divider /> */}
-        {isMultiple && isLast && (
+
+        {show === true ? (
           <View style={styles.lastView}>
             <Text style={styles.fare}>{fare}</Text>
             <Text style={styles.seat}>{seatLeft}</Text>
           </View>
+        ) : (
+          isMultiple &&
+          isLast && (
+            <View style={styles.lastView}>
+              <Text style={styles.fare}>{fare}</Text>
+              <Text style={styles.seat}>{seatLeft}</Text>
+            </View>
+          )
         )}
       </View>
     </View>
   );
 };
-export const FlightCardList: FC<{ data: Array<FlightCardProps>; isMultiple: boolean }> = ({
+export const FlightCardList: FC<{ data: Array<FlightCardProps>; show: boolean }> = ({
   data,
-  isMultiple,
+  show,
 }) => {
   return (
     <TouchableOpacity style={card.container} onPress={data[0].onPress}>
@@ -83,8 +102,9 @@ export const FlightCardList: FC<{ data: Array<FlightCardProps>; isMultiple: bool
         <View style={card.innnerContainer}>
           <FlightCard
             {...item}
-            isMultiple={isMultiple ? isMultiple : data.length > 0}
-            isLast={isMultiple ? isMultiple : index === data.length - 1}
+            isMultiple={data.length > 1}
+            isLast={index === data.length - 1}
+            show={show}
           />
         </View>
       ))}

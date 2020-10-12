@@ -3,10 +3,12 @@ import React, { FC, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, ListItem, Text } from 'react-native-elements';
 import { Button } from 'src/components/Button';
+import { flightSlice } from 'src/idg/flight/flightSlice';
 import { ApptNavigationProp } from 'src/navigation/RootNav';
-import { useSliceSelector } from 'src/redux/hooks';
+import { useBindAction, useSliceSelector } from 'src/redux/hooks';
 import { appColors } from 'src/styles/appColors';
 import { useAuraTranslation } from 'src/utils/i18n';
+import { Traveller } from '../TravelerModel';
 
 export interface TravellerViewProps {
   isChild: boolean;
@@ -14,6 +16,7 @@ export interface TravellerViewProps {
 export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
   const { t } = useAuraTranslation();
   const { travellerChild, travellerAdult } = useSliceSelector('flight');
+  const deleteTraveller = useBindAction(flightSlice.actions.deleteTraveller);
   //   const totalCount = isChild ? 1 : 3;
   //   const selectedCount = isChild ? travellerChild.length : travellerAdult.length;
   const navigation = useNavigation<ApptNavigationProp>();
@@ -22,18 +25,33 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
     isChild,
   ]);
 
+  const onPressDelete = (item: Traveller) => {
+    return () => {
+      console.log('ittm', item);
+      deleteTraveller(item);
+    };
+  };
+
   const listItem = isChild
     ? travellerChild.map((item, index) => {
         return (
-          <ListItem key={`child-${index}`} title={item.fName + ' ' + item.lName}>
-            <Text>{item.gender}</Text>
+          <ListItem
+            key={`child-${index}`}
+            title={item.fName + ' ' + item.lName + '\n' + item.gender}
+            rightElement={<Icon name="delete" onPress={onPressDelete(item)} />}
+          >
+            {/* <Text>{item.gender}</Text> */}
           </ListItem>
         );
       })
     : travellerAdult.map((item, index) => {
         return (
-          <ListItem key={`adult-${index}`} title={item.fName + ' ' + item.lName}>
-            <Text>{item.gender}</Text>
+          <ListItem
+            key={`adult-${index}`}
+            title={item.fName + ' ' + item.lName + '\n' + item.gender}
+            rightElement={<Icon name="delete" onPress={onPressDelete(item)} />}
+          >
+            {/* <Text>{item.gender}</Text> */}
           </ListItem>
         );
       });

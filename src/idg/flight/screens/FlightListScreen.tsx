@@ -49,28 +49,28 @@ export const FlightListScreen: AuraStackScreen = () => {
   const [maxRange, setMaxRange] = useState(0);
   const [minRange, setMinRange] = useState(0);
 
-  const maxPrice = flightDetail?.results
-    ? flightDetail?.results?.length > 1
-      ? Math.max(
-          flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0,
-          flightDetail?.results[1][flightDetail?.results[1].length - 1].fare.publishedFare ?? 0
-        )
-      : flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare
-    : 0;
+  // const maxPrice = flightDetail?.results
+  //   ? flightDetail?.results?.length > 1
+  //     ? Math.max(
+  //         flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0,
+  //         flightDetail?.results[1][flightDetail?.results[1].length - 1].fare.publishedFare ?? 0
+  //       )
+  //     : flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare
+  //   : 0;
 
-  const minPrice = flightDetail?.results
-    ? flightDetail?.results?.length > 1
-      ? Math.min(
-          flightDetail?.results[0][0].fare.publishedFare ?? 0,
-          flightDetail?.results[1][0].fare.publishedFare ?? 0
-        )
-      : flightDetail?.results[0][0].fare.publishedFare
-    : 0;
+  // const minPrice = flightDetail?.results
+  //   ? flightDetail?.results?.length > 1
+  //     ? Math.min(
+  //         flightDetail?.results[0][0].fare.publishedFare ?? 0,
+  //         flightDetail?.results[1][0].fare.publishedFare ?? 0
+  //       )
+  //     : flightDetail?.results[0][0].fare.publishedFare
+  //   : 0;
 
-  useEffect(() => {
-    setMaxRange(maxPrice);
-    setMinRange(minPrice);
-  }, [maxPrice, minPrice]);
+  // useEffect(() => {
+  //   setMaxRange(maxPrice);
+  //   setMinRange(minPrice);
+  // }, [maxPrice, minPrice]);
 
   /**  filter states */
   const [priceFilte, setPriceFilte] = useState(false);
@@ -390,6 +390,8 @@ export const FlightListScreen: AuraStackScreen = () => {
 
   /** applying filtes */
   const length = flightDetail?.results ? flightDetail?.results?.length : 0;
+  const boolValue = length > 1;
+  console.log('lengthlengthlengthlengthlengthlength', length, boolValue);
 
   const resultsArray = [];
 
@@ -488,38 +490,41 @@ export const FlightListScreen: AuraStackScreen = () => {
       resultsArray.push(...filteredData);
     }
   }
+  var RandomNumber = Math.floor(Math.random() * 100) + 1;
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <FlightHeader onPressBack={onPressBack} response={param} />
         <View style={styles.container}>
           {resultsArray.map((i) => (
-            <FlightList items={i} isMultiple={length > 0} />
+            <FlightList key={`FlightKey${RandomNumber}`} items={i} show={boolValue} />
           ))}
         </View>
-        <View style={styles.tabContainer}>
-          {buttonArray.map((item) => (
-            <View style={styles.tabInnerContainer} key={`TabBarButton${item.id}`}>
-              <Divider />
-              {item.id !== 0 && item.id !== 4 && (
-                <Tooltip
-                  ref={
-                    item.id === 1
-                      ? tooltipRefNonStop
-                      : item.id === 2
-                      ? tooltipRefTime
-                      : tooltipRefAirline
-                  }
-                  {...popOverView(item.id)}
-                  closeOnlyOnBackdropPress
-                  overlayColor="rgba(0,0,0,0.5)"
-                />
-              )}
-              <TabButtons {...item} onPress={tabButtonTapped} />
-              <Divider />
-            </View>
-          ))}
-        </View>
+        {flightDetail?.results && (
+          <View style={styles.tabContainer}>
+            {buttonArray.map((item) => (
+              <View style={styles.tabInnerContainer} key={`TabBarButton${item.id}`}>
+                <Divider />
+                {item.id !== 0 && item.id !== 4 && (
+                  <Tooltip
+                    ref={
+                      item.id === 1
+                        ? tooltipRefNonStop
+                        : item.id === 2
+                        ? tooltipRefTime
+                        : tooltipRefAirline
+                    }
+                    {...popOverView(item.id)}
+                    closeOnlyOnBackdropPress
+                    overlayColor="rgba(0,0,0,0.5)"
+                  />
+                )}
+                <TabButtons {...item} onPress={tabButtonTapped} />
+                <Divider />
+              </View>
+            ))}
+          </View>
+        )}
       </SafeAreaView>
     </Screen>
   );
@@ -546,7 +551,7 @@ const styles = StyleSheet.create({
   },
   nonStopStyle: {
     width: Dimensions.get('window').width - 20,
-    height: Dimensions.get('window').height / 4 + 20,
+    height: Dimensions.get('window').height / 4 + 20 + 50,
     backgroundColor: 'white',
   },
   flightList: {
@@ -561,12 +566,12 @@ const styles = StyleSheet.create({
   // },
   timeList: {
     width: Dimensions.get('window').width - 20,
-    height: Dimensions.get('window').height / 4,
+    height: Dimensions.get('window').height / 4 + 80,
     backgroundColor: 'white',
   },
   timeList2: {
     width: Dimensions.get('window').width - 20,
-    height: Dimensions.get('window').height / 3 + 60,
+    height: Dimensions.get('window').height / 3 + 60 + 80,
     backgroundColor: 'white',
   },
   // filters
