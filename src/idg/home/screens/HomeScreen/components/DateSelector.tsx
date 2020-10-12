@@ -7,7 +7,7 @@ interface IDateDateSelector {
   label: string;
   date: string;
   day: string;
-  onPress(): void;
+  onPress?: () => void;
   disabled?: boolean;
   containerStyles: ViewStyle;
 }
@@ -20,15 +20,16 @@ const DateSelector = ({
   disabled,
   containerStyles,
 }: IDateDateSelector) => {
+  const style = { borderWidth: disabled ? 0 : 1, zIndex: 0 };
   return (
     <Touchable
       activeOpacity={0.9}
-      disabled={disabled}
-      style={[styles.container, containerStyles, { borderWidth: disabled ? 0 : 1, zIndex: 0 }]}
+      disabled={disabled === false || !onPress}
+      style={[styles.container, containerStyles, style]}
       onPress={disabled ? undefined : onPress}
     >
       <Text style={styles.label}>{label}</Text>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.containerInner}>
         {/* <Icon name="calendar" type="SimpleLineIcons" size={30} color="white" style={styles.icon} /> */}
         <Icon name="calendar" size={30} color="white" style={styles.icon} />
         {disabled ? (
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
   },
+  containerInner: { flexDirection: 'row' },
   label: {
     color: '#b2bec3',
     opacity: 0.9,

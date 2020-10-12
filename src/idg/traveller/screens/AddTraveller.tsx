@@ -10,10 +10,11 @@ import { useNavigation } from '@react-navigation/native';
 import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
 import { Header } from 'src/components/Header';
 import { flightSlice } from 'src/idg/flight/flightSlice';
-import { Input } from 'react-native-elements';
+import { ButtonGroup, Input } from 'react-native-elements';
 import { appColors } from 'src/styles/appColors';
 import { Gender } from '../TravelerModel';
 import { Button } from 'src/components/Button';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export interface AddTravellerProps {
   isChild: boolean;
@@ -26,7 +27,7 @@ export const AddTraveller: AuraStackScreen = () => {
   const navigation = useNavigation<ApptNavigationProp>();
   const { isChild } = useParams<AppRoutes, 'AddTraveller'>();
 
-  const [gender] = useState('male' as Gender);
+  const [gender, setGender] = useState('male' as Gender);
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
   const [dob, setDob] = useState('');
@@ -38,7 +39,6 @@ export const AddTraveller: AuraStackScreen = () => {
     navigation,
   ]);
   const onPressContinue = useCallback(() => {
-    console.log('hhhhhhh');
     addTravelerInfo({
       isChild,
       fName,
@@ -63,30 +63,44 @@ export const AddTraveller: AuraStackScreen = () => {
     onPressBack,
   ]);
 
+  const buttons = ['Male', 'Female'];
+
+  const buttonGroupTapped = useCallback((index: number) => {
+    setGender(index === 0 ? 'male' : 'female');
+  }, []);
+
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <Header onPressBack={onPressBack} title={t('travellerDetails')} />
         <View style={styles.bodyContainer}>
           <KeyboardAvoidingView style={styles.keyBoardView}>
-            <Input
-              placeholder="First Name & Middle Name"
-              defaultValue={fName}
-              onChangeText={setFName}
-            />
-            <Input placeholder="Last Name" defaultValue={lName} onChangeText={setLName} />
-            <Input placeholder="Date of birth" defaultValue={dob} onChangeText={setDob} />
-            <Input
-              placeholder="Nationality"
-              defaultValue={nationality}
-              onChangeText={setNationality}
-            />
-            <Input
-              placeholder="Passport number"
-              defaultValue={passportNo}
-              onChangeText={setPassportNo}
-            />
-            <Input placeholder="Exp. Date" defaultValue={expDate} onChangeText={setExpDate} />
+            <ScrollView>
+              <ButtonGroup
+                onPress={buttonGroupTapped}
+                selectedIndex={gender === 'male' ? 0 : 1}
+                buttons={buttons}
+                selectedButtonStyle={{ backgroundColor: appColors.pink }}
+              />
+              <Input
+                placeholder="First Name & Middle Name"
+                defaultValue={fName}
+                onChangeText={setFName}
+              />
+              <Input placeholder="Last Name" defaultValue={lName} onChangeText={setLName} />
+              <Input placeholder="Date of birth" defaultValue={dob} onChangeText={setDob} />
+              <Input
+                placeholder="Nationality"
+                defaultValue={nationality}
+                onChangeText={setNationality}
+              />
+              <Input
+                placeholder="Passport number"
+                defaultValue={passportNo}
+                onChangeText={setPassportNo}
+              />
+              <Input placeholder="Exp. Date" defaultValue={expDate} onChangeText={setExpDate} />
+            </ScrollView>
           </KeyboardAvoidingView>
         </View>
         <View style={styles.bottonContainer}>
@@ -105,7 +119,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottonContainer: {
-    padding: 24,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
     backgroundColor: appColors.black,
   },
   keyBoardView: {

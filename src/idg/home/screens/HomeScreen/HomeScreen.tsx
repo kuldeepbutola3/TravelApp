@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 
 import { AuraStackScreen } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
-// import {useSliceSelector} from 'src/redux/hooks';
 import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useStackOptions } from 'src/navigation/stackOptions';
@@ -12,20 +11,24 @@ import { Header } from 'src/navigation/homeScreenHeader';
 import { GradientBackground } from 'src/components/GradientBackground';
 import { View } from 'react-native';
 import DateSelector from './components/DateSelector';
-import { TripType, HeaderTabs } from 'src/constants/enums';
+import { TripType, HeaderTabs, ClassType } from 'src/constants/enums';
 import { formatDate } from 'src/utils/date-formatter';
-import { DatePicker } from 'src/components/DatePicker';
+import { DatePicker, DatePickerProps } from 'src/components/DatePicker';
 import TripTypeButton from './components/TripTypeButton';
 import styles from './styles';
-import SearchButton from './components/SearchButton';
 import InputBox from './components/InputBox';
 import PlaceSearchField from './components/PlaceSearchField';
 import FlightClassDropdown from './components/FlightClassDropdown';
 import { debounce } from '../../../../utils/debounce';
 import { ApptNavigationProp } from 'src/navigation/RootNav';
-// import {configureClient} from 'src/idg/IDGClient';
+import { GetFlightParam } from 'src/idg/flight/flightApi';
+import { FlightPlaces } from 'src/idg/flight/FlightModel';
+import { Button } from 'src/components/Button';
+import { useAuraTranslation } from 'src/utils/i18n';
+import { appColors } from 'src/styles/appColors';
+import { ScrollView } from 'react-native-gesture-handler';
 
-const CLASS = [
+const CLASS: Array<{ value: ClassType }> = [
   {
     value: 'Economy',
   },
@@ -38,6 +41,7 @@ const CLASS = [
 ];
 
 const HomeScreen: AuraStackScreen = () => {
+  const { t } = useAuraTranslation();
   const navigation = useNavigation<ApptNavigationProp>();
   navigation.setOptions({
     headerTitle: () => (
@@ -57,8 +61,10 @@ const HomeScreen: AuraStackScreen = () => {
   const dispatch = useThunkDispatch();
   const { places } = useSliceSelector('flight');
 
-  const [selectedSource, setSelectedSource] = useState(undefined);
-  const [selectedDestination, setSelectedDestination] = useState(undefined);
+  const [selectedSource, setSelectedSource] = useState(undefined as FlightPlaces | undefined);
+  const [selectedDestination, setSelectedDestination] = useState(
+    undefined as FlightPlaces | undefined
+  );
 
   const [departureDate, setDepartureDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(new Date());
@@ -69,9 +75,6 @@ const HomeScreen: AuraStackScreen = () => {
   const [selectedTab, setSelectedTab] = useState(HeaderTabs.Flights);
   const [selectedTripType, setSelectedTripType] = useState(TripType.OneWay);
 
-  const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [toDatePickerVisible, setToDatePickerVisible] = useState(false);
-
   const handleSourceSearchChange = debounce((term: string) => {
     dispatch(fetchFlightPlaces({ term }));
   }, 500);
@@ -80,14 +83,8 @@ const HomeScreen: AuraStackScreen = () => {
   }, 500);
   const handleFlightsTabPress = () => setSelectedTab(HeaderTabs.Flights);
   const handleHotelsTabPress = () => setSelectedTab(HeaderTabs.Hotels);
-  const handleClassChange = (value: string) => setFlightClass(value);
+  const handleClassChange = (value: ClassType) => setFlightClass(value);
   const handleTravellerCountChange = (count: any) => setTravellersCount(count);
-  const handleDateChange = (_: any, date: any) => setDepartureDate(date);
-  const handleReturnDateChange = (_: any, date: any) => setReturnDate(date);
-  const hideDatePicker = () => setDatePickerVisible(false);
-  const hideReturnDatePicker = () => setToDatePickerVisible(false);
-  const showDatePicker = () => setDatePickerVisible(true);
-  const showReturnDatePicker = () => setToDatePickerVisible(true);
   const clearFlightPlaces = () => dispatch(fetchFlightPlaces({ term: '' }));
   const handleSourcePlaceSelect = (place: any) => {
     setSelectedSource(place);
@@ -98,18 +95,65 @@ const HomeScreen: AuraStackScreen = () => {
     clearFlightPlaces();
   };
 
-  const searchButtonTapped = useCallback(() => navigation.navigate('FlightSearch'), [navigation]);
-
-  console.log(
-    { selectedSource },
-    { selectedDestination },
-    { departureDate },
-    { returnDate },
-    { travellersCount },
-    { flightClass },
-    { selectedTripType }
+  const toDateChange = useCallback<DatePickerProps['onValueChange']>(
+    (sender) => {
+      setDepartureDate(sender);
+      return true;
+    },
+    [setDepartureDate]
+  );
+  const returnDateChange = useCallback<DatePickerProps['onValueChange']>(
+    (sender) => {
+      setReturnDate(sender);
+      return true;
+    },
+    [setReturnDate]
   );
 
+  const searchButtonTapped = useCallback(() => {
+    /**To do */
+    console.log('data', selectedSource);
+    // const journeyPayLoad: GetFlightParam ;
+    if (selectedSource && selectedDestination && travellersCount) {
+      const journeyPayLoad: GetFlightParam = {
+        class: flightClass,
+        originName: selectedSource.airportName,
+        destinationName: selectedDestination.airportName,
+        originCode: selectedSource.airportCode,
+        destinationCode: selectedDestination.airportCode,
+        journeyType: selectedTripType,
+        adultCount: travellersCount,
+        childCount: 0,
+        infantCount: 0,
+        journeyDate1: departureDate,
+        journeyDate2: returnDate,
+      };
+      navigation.navigate('FlightSearch', { param: journeyPayLoad });
+    }
+  }, [
+    navigation,
+    selectedSource,
+    selectedDestination,
+    flightClass,
+    travellersCount,
+    selectedTripType,
+    departureDate,
+    returnDate,
+  ]);
+
+  // console.log(
+  //   { selectedSource },
+  //   { selectedDestination },
+  //   { departureDate },
+  //   { returnDate },
+  //   { travellersCount },
+  //   { flightClass },
+  //   { selectedTripType }
+  // );
+  const searchDisable = !selectedSource && !selectedDestination;
+
+  const plaxesearch1 = { bottom: -(80 - 10) };
+  const placesearch2 = { bottom: -(80 + 80 + 8 - 10) };
   return (
     <View style={styles.container}>
       <GradientBackground
@@ -117,101 +161,141 @@ const HomeScreen: AuraStackScreen = () => {
         colors={['#4c669f', '#3b5998', '#192f6a']}
       >
         <Screen style={[styles.searchConatiner, { paddingTop: headerHeight }]}>
-          <View style={styles.tripButtonsContainer}>
-            <TripTypeButton
-              title={TripType.OneWay}
-              selected={selectedTripType === TripType.OneWay}
-              onPress={() => setSelectedTripType(TripType.OneWay)}
-            />
-            <TripTypeButton
-              title={TripType.RoundTrip}
-              selected={selectedTripType === TripType.RoundTrip}
-              onPress={() => setSelectedTripType(TripType.RoundTrip)}
-            />
-            <TripTypeButton
+          <ScrollView>
+            <View style={styles.tripButtonsContainer}>
+              <TripTypeButton
+                title={TripType.OneWay}
+                selected={selectedTripType === TripType.OneWay}
+                onPress={() => setSelectedTripType(TripType.OneWay)}
+              />
+              <TripTypeButton
+                title={TripType.RoundTrip}
+                selected={selectedTripType === TripType.RoundTrip}
+                onPress={() => setSelectedTripType(TripType.RoundTrip)}
+              />
+              {/* <TripTypeButton
               title={TripType.MultiCity}
               selected={selectedTripType === TripType.MultiCity}
               onPress={() => setSelectedTripType(TripType.MultiCity)}
-            />
-          </View>
-
-          <View>
-            <View style={{ zIndex: 1 }}>
-              <PlaceSearchField
-                type="From"
-                onChangeText={handleSourceSearchChange}
-                places={places}
-                onSelectPlace={handleSourcePlaceSelect}
-                selectedPlace={selectedSource}
-                containerStyle={{ marginBottom: 8 }}
-                suggestionContainerStyle={{ bottom: -(80 - 10) }}
-                placeholder="Search Source"
-              />
-              <PlaceSearchField
-                type="To"
-                onChangeText={handleDestinationSearchChange}
-                places={places}
-                onSelectPlace={handleDestinationPlaceSelect}
-                selectedPlace={selectedDestination}
-                containerStyle={{ marginBottom: 8 }}
-                suggestionContainerStyle={{ bottom: -(80 + 80 + 8 - 10) }}
-                placeholder="Search Destination"
-              />
+            /> */}
             </View>
 
-            <View style={styles.datesContainer}>
-              <DateSelector
-                disabled={false}
-                label="DEPARTURE"
-                date={formatDate(departureDate, 'DD MMM YYYY')}
-                day={formatDate(departureDate, 'dddd')}
-                onPress={showDatePicker}
-                containerStyles={styles.dateSelector}
-              />
-              <DateSelector
-                label="RETURN"
-                disabled={selectedTripType === TripType.OneWay}
-                date={formatDate(returnDate, 'DD MMM YYYY')}
-                day={formatDate(returnDate, 'dddd')}
-                onPress={showReturnDatePicker}
-                containerStyles={styles.dateSelector}
-              />
-            </View>
-            <View style={styles.datesContainer}>
-              <InputBox
-                label="TRAVELLERS"
-                value={travellersCount.toString()}
-                onChangeText={handleTravellerCountChange}
-                containerStyle={styles.inputBox}
-              />
-              <FlightClassDropdown
-                data={CLASS}
-                value={flightClass}
-                onChangeText={handleClassChange}
-                containerStyle={styles.inputBox}
-                label="CLASS"
-              />
-            </View>
+            <View>
+              <View style={styles.containerInner}>
+                <PlaceSearchField
+                  type="From"
+                  onChangeText={handleSourceSearchChange}
+                  places={places}
+                  onSelectPlace={handleSourcePlaceSelect}
+                  selectedPlace={selectedSource}
+                  containerStyle={styles.placeSearchContainer}
+                  suggestionContainerStyle={plaxesearch1}
+                  placeholder="Search Source"
+                />
+                <PlaceSearchField
+                  type="To"
+                  onChangeText={handleDestinationSearchChange}
+                  places={places}
+                  onSelectPlace={handleDestinationPlaceSelect}
+                  selectedPlace={selectedDestination}
+                  containerStyle={styles.placeSearchContainer}
+                  suggestionContainerStyle={placesearch2}
+                  placeholder="Search Destination"
+                />
+              </View>
 
-            <SearchButton
+              <View style={styles.datesContainer}>
+                <DatePicker
+                  containerStyle={{ flex: 1 }}
+                  onValueChange={toDateChange}
+                  value={departureDate}
+                  mode="date"
+                >
+                  <DateSelector
+                    disabled={false}
+                    label="DEPARTURE"
+                    date={formatDate(departureDate, 'DD MMM YYYY')}
+                    day={formatDate(departureDate, 'dddd')}
+                    // onPress={showDatePicker}
+                    containerStyles={styles.dateSelector}
+                  />
+                </DatePicker>
+
+                {selectedTripType === TripType.RoundTrip ? (
+                  <DatePicker
+                    containerStyle={{ flex: 1 }}
+                    onValueChange={returnDateChange}
+                    value={returnDate || new Date()}
+                    mode="date"
+                  >
+                    <DateSelector
+                      label="RETURN"
+                      date={formatDate(returnDate, 'DD MMM YYYY')}
+                      day={formatDate(returnDate, 'dddd')}
+                      // onPress={showReturnDatePicker}
+                      containerStyles={styles.dateSelector}
+                    />
+                  </DatePicker>
+                ) : (
+                  <View style={{ flex: 1 }}>
+                    <DateSelector
+                      label="RETURN"
+                      disabled={true}
+                      date={formatDate(returnDate, 'DD MMM YYYY')}
+                      day={formatDate(returnDate, 'dddd')}
+                      // onPress={showReturnDatePicker}
+                      containerStyles={styles.dateSelector}
+                    />
+                  </View>
+                )}
+              </View>
+              <View style={styles.datesContainer}>
+                <InputBox
+                  label="TRAVELLERS"
+                  value={travellersCount.toString()}
+                  onChangeText={handleTravellerCountChange}
+                  containerStyle={styles.inputBox}
+                />
+                <FlightClassDropdown
+                  data={CLASS}
+                  value={flightClass}
+                  onChangeText={handleClassChange}
+                  containerStyle={styles.inputBox}
+                  label="CLASS"
+                />
+              </View>
+
+              {/* <SearchButton
               onPress={searchButtonTapped}
               title="Search Flight"
               containerStyle={{ marginVertical: 20 }}
-            />
-            <DatePicker
-              showPicker={datePickerVisible}
-              value={departureDate}
-              onValueChange={handleDateChange}
-              onRequestClose={hideDatePicker}
-            />
+            /> */}
+              <Button
+                bgColor={appColors.white}
+                title={t('searchFlight')}
+                onPress={searchButtonTapped}
+                titleStyle={styles.buttonColor}
+                containerStyle={styles.buttonContainer}
+                disabled={searchDisable}
+              />
 
-            <DatePicker
-              showPicker={toDatePickerVisible}
-              value={returnDate}
-              onValueChange={handleReturnDateChange}
-              onRequestClose={hideReturnDatePicker}
-            />
-          </View>
+              {/* <DatePicker
+                showPicker={datePickerVisible}
+                value={departureDate}
+                onValueChange={handleDateChange}
+                // onRequestClose={hideDatePicker}
+                minimumDate={new Date()}
+              /> */}
+
+              {/* <DatePicker
+                showPicker={toDatePickerVisible}
+                value={returnDate}
+                onValueChange={handleReturnDateChange}
+                onRequestClose={hideReturnDatePicker}
+                minimumDate={new Date()}
+              /> */}
+            </View>
+          </ScrollView>
         </Screen>
       </GradientBackground>
     </View>

@@ -10,8 +10,9 @@ import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
 import { Header } from 'src/components/Header';
 import { FlightSet } from '../FlightModel';
 import { appColors } from 'src/styles/appColors';
-import { Button } from 'react-native-elements';
 import { ReviewList } from '../component/ReviewList';
+import { Text } from 'src/components/Text';
+import { Button } from 'src/components/Button';
 
 export interface ReviewFlightScreenProps {
   param: FlightSet;
@@ -30,6 +31,8 @@ export const ReviewFlightScreen: AuraStackScreen = () => {
     param,
   ]);
 
+  const fare = `${param.fare.currency === 'INR' ? '₹ ' : ''}${param.fare.publishedFare}`;
+
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
@@ -38,7 +41,13 @@ export const ReviewFlightScreen: AuraStackScreen = () => {
           <ReviewList items={param} />
         </View>
         <View style={styles.bottonContainer}>
-          <Button title={t('continue')} onPress={onPressContinue} />
+          <Text style={styles.textFare}>{fare}</Text>
+          <Button
+            bgColor={appColors.pink}
+            title={t('continue')}
+            onPress={onPressContinue}
+            buttonStyle={styles.continue}
+          />
         </View>
       </SafeAreaView>
     </Screen>
@@ -53,7 +62,16 @@ const styles = StyleSheet.create({
     flex: 1,
   } as ViewStyle,
   bottonContainer: {
-    padding: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 30,
+    paddingVertical: 10,
     backgroundColor: appColors.black,
   },
+  textFare: {
+    color: 'white',
+    fontSize: 20,
+  },
+  continue: { paddingHorizontal: 20 },
 });

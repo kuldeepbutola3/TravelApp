@@ -1,9 +1,5 @@
 import React, { useCallback } from 'react';
 
-// Components
-// import {useAuraTranslation} from 'src/utils/i18n';
-// import {AlertStack, AlertsRoutes} from 'src/idg/home/screens/HomeScreen';
-// import {DrawerNavItem} from 'src/idg/DrawerNavItem/DrawerNavItem';
 import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -21,6 +17,7 @@ import { ApptNavigationProp } from './RootNav';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeStack } from 'src/idg/home/screens/HomeScreen';
 import { BookingStack } from 'src/idg/booking/screens/BookingScreen';
+import { appColors } from 'src/styles/appColors';
 
 /*
  * Drawer stuff
@@ -29,31 +26,12 @@ import { BookingStack } from 'src/idg/booking/screens/BookingScreen';
 type CustomDrawerProp = CompositeNavigationProp<DrawerNavigationProp<{}>, ApptNavigationProp>;
 
 const DrawerMenu = () => {
-  // const navigation = useNavigation<CustomDrawerProp>();
-  // const {t} = useAuraTranslation();
-
-  // const logoutClick = (): void => {};
-
-  // const settingsClicked = (): void => {
-  //   navigation.dispatch(DrawerActions.closeDrawer());
-  //   // TODO: deal with this timeout hack
-  //   setTimeout(function () {}, 100);
-  // };
-  // const supportClicked = (): void => {
-  //   Alert.alert('Yet to be implemented');
-  // };
-  // const myAccountClicked = (): void => {
-  //   navigation.dispatch(DrawerActions.closeDrawer());
-  //   setTimeout(function () {}, 100);
-  // };
-
   return (
     <SafeAreaView>
       <ScrollView />
     </SafeAreaView>
   );
 };
-// const j;
 
 const DrawerToggleButton = () => {
   const navigation = useNavigation<DrawerNavigationProp<{}>>();
@@ -92,11 +70,6 @@ type SubNavigator<T extends ParamListBase> = {
 
 export type MainRoutes = {
   Tab: undefined;
-  // Alerts: SubNavigator<AlertsRoutes> | undefined;
-  // Watchlist: SubNavigator<WatchlistRoutes> | undefined;
-  // Credit: SubNavigator<CreditRoutes>;
-  // Transactions: undefined;
-  // Family: undefined;
 };
 
 export type MainNavigationProp = NavigationProp<MainRoutes>;
@@ -112,38 +85,37 @@ export const homeHeaderOptionsWithDrawer = {
   headerRight: () => <DrawerToggleButton />,
 };
 export const MainNav = () => {
-  // const insets = useSafeArea();
-
-  // const featureStackOptions: StackNavigationOptions = {
-  //   // headerShown: false,
-  //   // cardOverlayEnabled: true,
-  //   // cardStyle: {
-  //   //   marginTop: insets.top + 10,
-  //   //   flex: 1,
-  //   //   borderTopLeftRadius: 20,
-  //   //   borderTopRightRadius: 20,
-  //   // },
-  //   cardOverlay: () => <View style={styles.overlay} />,
-  // };
-
   const drawerContent = useCallback(() => <DrawerMenu />, []);
 
   return (
     <Drawer.Navigator drawerContent={drawerContent} drawerPosition="right">
       <Drawer.Screen name="Drawer">
         {() => (
-          // <Stack.Navigator mode="modal" initialRouteName="Home">
-          // <Stack.Screen
-          //   name="Tab"
-          //   component={tabBar}
-          // {tabBar}
-          <Tab.Navigator>
+          <Tab.Navigator
+            tabBarOptions={{
+              activeTintColor: appColors.pink,
+              inactiveTintColor: 'gray',
+            }}
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ color, size }) => {
+                let iconName = '';
+                if (route.name === 'HomeScreen') {
+                  iconName = 'home'; //: 'ios-information-circle-outline';
+                } else if (route.name === 'BookingScreen') {
+                  iconName = 'briefcase';
+                }
+                return <Icon name={iconName} type="simple-line-icon" size={size} color={color} />;
+              },
+            })}
+          >
             <Tab.Screen
+              options={{ title: 'Home' }}
               name="HomeScreen"
               component={HomeStack}
               // options={homeHeaderOptions}
             />
             <Tab.Screen
+              options={{ title: 'My Bookings' }}
               name="BookingScreen"
               component={BookingStack}
               // options={homeHeaderOptions}

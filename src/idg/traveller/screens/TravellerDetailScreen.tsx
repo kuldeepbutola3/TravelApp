@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   bottonContainer: {
-    padding: 24,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
     backgroundColor: appColors.black,
   },
 

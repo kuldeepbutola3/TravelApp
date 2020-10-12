@@ -1,21 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { FC, useCallback } from 'react';
-import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { ApptNavigationProp } from 'src/navigation/RootNav';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { FlightSet } from '../FlightModel';
 import { FlightViewModel, makeFlightViewModel } from '../FlightViewModel';
-import { FlightCard } from './FlightCard';
+import { FlightCardList } from './FlightCardList';
 
 interface FlightListProps {
+  show: boolean;
   items: Array<FlightSet>;
 }
 interface Item {
   id: string;
-  multiple: boolean;
   viewModel: Array<FlightViewModel>;
 }
-export const FlightList: FC<FlightListProps> = ({ items }) => {
+export const FlightList: FC<FlightListProps> = ({ items, show }) => {
   const { t } = useAuraTranslation();
 
   const navigation = useNavigation<ApptNavigationProp>();
@@ -26,17 +26,8 @@ export const FlightList: FC<FlightListProps> = ({ items }) => {
   );
   const renderItem = useCallback<ListRenderItem<Item>>(({ item }) => <CardItem {...item} />, []);
 
-  const CardItem: React.FC<Item> = React.memo(
-    ({ viewModel, multiple }) => (
-      <View style={style.container}>
-        {viewModel.map((vM) => (
-          <View style={style.subContainer}>
-            <FlightCard {...vM} isMultiple={multiple} />
-          </View>
-        ))}
-      </View>
-    ),
-    (prevProp, nextProp) => prevProp.viewModel === nextProp.viewModel
+  const CardItem: React.FC<Item> = ({ viewModel }) => (
+    <FlightCardList data={viewModel} show={show} />
   );
 
   if (!items.length) {
@@ -47,15 +38,8 @@ export const FlightList: FC<FlightListProps> = ({ items }) => {
   const rowData: Array<Item> = [];
   items.map((i, index) => {
     const obj = makeFlightViewModel(i, t, cellTapped);
-    const isMultiple = (obj?.length ?? 0) > 1;
-
-    obj && rowData.push({ id: `${index}`, viewModel: obj, multiple: isMultiple });
+    obj && rowData.push({ id: `${index}`, viewModel: obj });
   });
 
   return <FlatList data={rowData} renderItem={renderItem} />;
 };
-
-const style = StyleSheet.create({
-  container: { flex: 1, flexDirection: 'row' },
-  subContainer: { flex: 1 },
-});

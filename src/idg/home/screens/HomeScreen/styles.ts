@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { appColors } from 'src/styles/appColors';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,6 +42,17 @@ const styles = StyleSheet.create({
     marginRight: 4,
     marginBottom: 8,
   },
+  dateSelectorText: {
+    // marginRight: 4,
+    // marginBottom: 8,
+    flex: 1,
+  },
+
+  ///extra
+  containerInner: { zIndex: 1 },
+  placeSearchContainer: { marginBottom: 8 },
+  buttonColor: { color: appColors.black },
+  buttonContainer: { marginVertical: 20 },
 });
 
 export default styles;
