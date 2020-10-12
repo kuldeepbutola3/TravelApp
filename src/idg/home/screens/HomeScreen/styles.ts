@@ -42,6 +42,11 @@ const styles = StyleSheet.create({
     marginRight: 4,
     marginBottom: 8,
   },
+  dateSelectorText: {
+    // marginRight: 4,
+    // marginBottom: 8,
+    flex: 1,
+  },
 
   ///extra
   containerInner: { zIndex: 1 },

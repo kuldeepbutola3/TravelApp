@@ -173,6 +173,7 @@ export async function searchPlaces(param: PlacesParam): Promise<Array<FlightPlac
   const { data } = await getClient().get<Array<FlightPlaces>>(
     `${FLIGHT_PLACES}?term=${param.term}`
   );
+  console.log('result ::', data);
   return data;
 }
 

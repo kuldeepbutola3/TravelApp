@@ -3,18 +3,14 @@ import { View, ViewStyle, StyleSheet, Platform, TouchableOpacity, StyleProp } fr
 import DateTimePicker, {
   IOSNativeProps,
   AndroidNativeProps,
-  Event,
 } from '@react-native-community/datetimepicker';
 import { IOSPicker } from 'src/components/IOSPicker';
+// import { TextInput, TextInputProps } from './TextInput';
+import { Button } from './Button';
 
 export type DatePickerProps = (IOSNativeProps | AndroidNativeProps) & {
   containerStyle?: StyleProp<ViewStyle>;
-  // Whether you want the picker to close itself after making a selection.
-  // Closing itself is default (return void). Return `true if you want it to stay open.
-  // iOS only, Android closes all the time automatically
-  onValueChange: (event: Event, value: Date) => void | true;
-  onRequestClose: () => void;
-  showPicker: boolean;
+  onValueChange: (value: Date) => void;
 };
 
 export const DatePicker: React.FC<DatePickerProps> = (props) => {
@@ -26,6 +22,10 @@ export const DatePicker: React.FC<DatePickerProps> = (props) => {
   );
 };
 
+// export const TextInputNoTouch: React.FC<TextInputProps> = (props) => {
+//   return <TextInput pointerEvents="none" editable={false} {...props} />;
+// };
+
 const AndroidDatePicker: React.FC<DatePickerProps> = ({
   containerStyle,
   onValueChange: onChange,
@@ -36,9 +36,9 @@ const AndroidDatePicker: React.FC<DatePickerProps> = ({
   const onPress = useCallback(() => setShowPicker(true), []);
 
   const _onChange = useCallback(
-    (event: Event, value: Date | undefined) => {
+    (_: Event, value?: Date) => {
       setShowPicker(false);
-      value && onChange && onChange(event, value);
+      value && onChange && onChange(value);
     },
     [onChange]
   );
@@ -48,7 +48,6 @@ const AndroidDatePicker: React.FC<DatePickerProps> = ({
       <TouchableOpacity onPress={onPress} style={styles.touchableContent}>
         {children}
       </TouchableOpacity>
-      {/* @ts-ignore */}
       {showPicker && <DateTimePicker {...datePickerProps} onChange={_onChange} />}
     </View>
   );
@@ -58,32 +57,42 @@ const IOSDatePicker: React.FC<DatePickerProps> = ({
   children,
   containerStyle,
   onValueChange,
-  showPicker,
-  onRequestClose,
+  value,
   ...datePickerProps
 }) => {
-  //   const onPress = useCallback(() => setShowPicker(true), []);
-  //   const onRequestClose = useCallback(() => setShowPicker(false), []);
+  const [showPicker, setShowPicker] = useState(false);
+  const [localDate, setLocalDate] = useState(value);
+  const onPress = useCallback(() => setShowPicker(true), []);
+  const onRequestClose = useCallback(() => setShowPicker(false), []);
 
-  //   const _onChange = useCallback(
-  //     (_: Event, value?: Date) => {
-  //       const keepOpen = value && onChange && onChange(value);
-  //       setShowPicker(!!keepOpen);
-  //     },
-  //     [onChange],
-  //   );
+  const _onChange = useCallback((_: Event, _value?: Date) => {
+    _value && setLocalDate(_value);
+  }, []);
+
+  const onDonePress = useCallback(() => {
+    onValueChange && onValueChange(localDate);
+    setShowPicker(false);
+  }, [localDate, onValueChange]);
 
   return (
-    /* @ts-ignore */
     <IOSPicker
       touchableContent={children}
       style={containerStyle}
       showPicker={showPicker}
-      //   onPress={onPress}
+      onPress={onPress}
       onRequestClose={onRequestClose}
     >
-      {/* @ts-ignore */}
-      <DateTimePicker {...datePickerProps} onChange={onValueChange} />
+      <View>
+        <View style={styles.iosPickerHeader}>
+          <Button
+            style={styles.iosPickerHeaderButton}
+            // themeType="secondary"
+            title="done"
+            onPress={onDonePress}
+          />
+        </View>
+        <DateTimePicker onChange={_onChange} {...datePickerProps} value={localDate} />
+      </View>
     </IOSPicker>
   );
 };
@@ -98,8 +107,18 @@ type IOSPickerProps = {
 
 const styles = StyleSheet.create({
   container: {} as ViewStyle,
+  iosPickerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  } as ViewStyle,
+  iosPickerHeaderButton: {
+    // alignSelf: 'flex-end',
+  } as ViewStyle,
   touchableContent: {
-    alignItems: 'center',
+    // flex: 1,
+    // alignItems: 'center',
   } as ViewStyle,
   androidPicker: {
     position: 'absolute',
@@ -109,4 +128,3 @@ const styles = StyleSheet.create({
     opacity: 0,
   } as ViewStyle,
 });
-export function a() {}

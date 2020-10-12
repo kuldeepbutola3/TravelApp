@@ -103,7 +103,7 @@ export const FlightFilterScreen: AuraStackScreen = () => {
   }, [onPress, timeSelected1, timeSelected2, flightArray, stops, maxRang, minRange, onPressBack]);
 
   const _onPressListItem = (item: string) => {
-    return useCallback(() => {
+    return () => {
       const ar = [...flightArray];
       const indx = ar.indexOf(item);
       if (indx >= 0) {
@@ -112,7 +112,7 @@ export const FlightFilterScreen: AuraStackScreen = () => {
       } else {
         setFlightArray([...flightArray, item]);
       }
-    }, [item]);
+    };
   };
   return (
     <Screen>

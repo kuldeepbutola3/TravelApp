@@ -14,6 +14,7 @@ import { ButtonGroup, Input } from 'react-native-elements';
 import { appColors } from 'src/styles/appColors';
 import { Gender } from '../TravelerModel';
 import { Button } from 'src/components/Button';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export interface AddTravellerProps {
   isChild: boolean;
@@ -74,30 +75,32 @@ export const AddTraveller: AuraStackScreen = () => {
         <Header onPressBack={onPressBack} title={t('travellerDetails')} />
         <View style={styles.bodyContainer}>
           <KeyboardAvoidingView style={styles.keyBoardView}>
-            <ButtonGroup
-              onPress={buttonGroupTapped}
-              selectedIndex={gender === 'male' ? 0 : 1}
-              buttons={buttons}
-              selectedButtonStyle={{ backgroundColor: appColors.pink }}
-            />
-            <Input
-              placeholder="First Name & Middle Name"
-              defaultValue={fName}
-              onChangeText={setFName}
-            />
-            <Input placeholder="Last Name" defaultValue={lName} onChangeText={setLName} />
-            <Input placeholder="Date of birth" defaultValue={dob} onChangeText={setDob} />
-            <Input
-              placeholder="Nationality"
-              defaultValue={nationality}
-              onChangeText={setNationality}
-            />
-            <Input
-              placeholder="Passport number"
-              defaultValue={passportNo}
-              onChangeText={setPassportNo}
-            />
-            <Input placeholder="Exp. Date" defaultValue={expDate} onChangeText={setExpDate} />
+            <ScrollView>
+              <ButtonGroup
+                onPress={buttonGroupTapped}
+                selectedIndex={gender === 'male' ? 0 : 1}
+                buttons={buttons}
+                selectedButtonStyle={{ backgroundColor: appColors.pink }}
+              />
+              <Input
+                placeholder="First Name & Middle Name"
+                defaultValue={fName}
+                onChangeText={setFName}
+              />
+              <Input placeholder="Last Name" defaultValue={lName} onChangeText={setLName} />
+              <Input placeholder="Date of birth" defaultValue={dob} onChangeText={setDob} />
+              <Input
+                placeholder="Nationality"
+                defaultValue={nationality}
+                onChangeText={setNationality}
+              />
+              <Input
+                placeholder="Passport number"
+                defaultValue={passportNo}
+                onChangeText={setPassportNo}
+              />
+              <Input placeholder="Exp. Date" defaultValue={expDate} onChangeText={setExpDate} />
+            </ScrollView>
           </KeyboardAvoidingView>
         </View>
         <View style={styles.bottonContainer}>

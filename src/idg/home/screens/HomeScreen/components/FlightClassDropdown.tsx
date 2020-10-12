@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     paddingBottom: 20,
-    textAlign: 'center',
+    // textAlign: 'center',
   },
   label: {
     color: '#b2bec3',

@@ -76,6 +76,37 @@ export const flightSlice = createSlice({
         state.travellerAdult = [...state.travellerAdult, action.payload];
       }
     },
+    deleteTraveller: (state, action: PayloadAction<Traveller>) => {
+      if (action.payload.isChild) {
+        const array = [...state.travellerChild];
+        const index = array.findIndex(
+          (i) =>
+            action.payload.dob === i.dob &&
+            action.payload.expDate === i.expDate &&
+            action.payload.fName === i.fName &&
+            action.payload.lName === i.lName &&
+            action.payload.nationality === i.nationality &&
+            action.payload.passportNo === i.passportNo &&
+            action.payload.gender === i.gender
+        );
+        array.splice(index, 1);
+        state.travellerChild = [...array];
+      } else {
+        const array = [...state.travellerAdult];
+        const index = array.findIndex(
+          (i) =>
+            action.payload.dob === i.dob &&
+            action.payload.expDate === i.expDate &&
+            action.payload.fName === i.fName &&
+            action.payload.lName === i.lName &&
+            action.payload.nationality === i.nationality &&
+            action.payload.passportNo === i.passportNo &&
+            action.payload.gender === i.gender
+        );
+        array.splice(index, 1);
+        state.travellerAdult = [...array];
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -83,7 +114,7 @@ export const flightSlice = createSlice({
         if (state.loading === 'idle') {
           state.loading = 'pending';
         }
-        // state.flightDetail = undefined;
+        state.flightDetail = undefined;
       })
       .addCase(fetchFlight.fulfilled, (state, action) => {
         if (state.loading === 'pending') {

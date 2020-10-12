@@ -7,7 +7,7 @@ interface IDateDateSelector {
   label: string;
   date: string;
   day: string;
-  onPress(): void;
+  onPress?: () => void;
   disabled?: boolean;
   containerStyles: ViewStyle;
 }
@@ -24,7 +24,7 @@ const DateSelector = ({
   return (
     <Touchable
       activeOpacity={0.9}
-      disabled={disabled}
+      disabled={disabled === false || !onPress}
       style={[styles.container, containerStyles, style]}
       onPress={disabled ? undefined : onPress}
     >
