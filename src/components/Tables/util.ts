@@ -1,4 +1,4 @@
-import { ViewStyle, StyleProp, StyleSheet, TextStyle } from 'react-native';
+import { ViewStyle, StyleProp, StyleSheet, TextStyle, Dimensions } from 'react-native';
 import { BaseTableCellProps, BorderStyle, BorderSetting, Border } from './types';
 
 export const horizontalAlignmentStyle = (
@@ -50,3 +50,5 @@ export const borderStyle = (borderProp?: BorderSetting, width = 0.5): ViewStyle 
 
 export const flatten = <T extends ViewStyle | TextStyle>(...styles: StyleProp<T>[]) =>
   StyleSheet.flatten(styles);
+
+export const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('screen')
