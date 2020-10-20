@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     marginBottom: 8,
-    marginRight: 4,
+    // marginRight: 4,
   },
   dateSelector: {
-    marginRight: 4,
+    // marginRight: 4,
+    // marginLeft: 4,
     marginBottom: 8,
   },
   dateSelectorText: {

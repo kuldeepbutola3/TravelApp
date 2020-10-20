@@ -20,9 +20,12 @@ import {
   FlightFilterScreen,
   FlightFilterScreenProps,
 } from 'src/idg/flight/screens/FlightFilterScreen';
+import { TeavellerScreen } from 'src/idg/home/screens/TeavellerScreen';
 
 export type AppRoutes = {
   Main: undefined;
+  Traveller: undefined;
+  //other screen
   FlightSearch: FlightListScreenProps;
   FlightFilter: FlightFilterScreenProps;
   ReviewFlight: ReviewFlightScreenProps;
@@ -43,6 +46,8 @@ const AppNav = () => {
   return (
     <Stack.Navigator initialRouteName="Main" screenOptions={childScreenOptions}>
       <Stack.Screen name="Main" component={MainNav} options={{ headerShown: false }} />
+      <Stack.Screen name="Traveller" component={TeavellerScreen} options={{ headerShown: false }} />
+
       <Stack.Screen
         name="FlightSearch"
         component={FlightListScreen}

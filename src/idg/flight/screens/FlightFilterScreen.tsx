@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
-import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, View, StyleSheet, Dimensions } from 'react-native';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
 import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
@@ -14,7 +14,7 @@ import { FilterModel, TimeSplit } from '../filterModel';
 import { appColors } from 'src/styles/appColors';
 import { FlightDepartureFilter } from '../component/FlightDepartureFilter';
 import { useSliceSelector } from 'src/redux/hooks';
-
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 export interface FlightFilterScreenProps {
   param: FilterModel;
   onPress: (param: FilterModel) => void;
@@ -28,8 +28,6 @@ export const FlightFilterScreen: AuraStackScreen = () => {
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
   ]);
-
-  //   const _onValueChange = useCallback(() => {}, [onPress, onPressBack]);
 
   const [stops, setStops] = useState(param.stops ?? -1);
   const [timeSelected1, setTimeSelected1] = useState(param.timeSplit1 as TimeSplit | undefined);
@@ -52,6 +50,7 @@ export const FlightFilterScreen: AuraStackScreen = () => {
       : flightDetail?.results[0][0].fare.publishedFare;
 
   console.log('max..min', maxPrice, minPrice);
+  const currency = flightDetail?.results[0][0]?.fare?.currency === 'INR' ? '₹' : '';
 
   const [maxRang, setMaxRange] = useState(param.priceRange?.higher ?? maxPrice ?? 0);
   const [minRange, setMinRange] = useState(param.priceRange?.lower ?? minPrice ?? 0);
@@ -63,12 +62,10 @@ export const FlightFilterScreen: AuraStackScreen = () => {
     setStops(-1);
     setTimeSelected1(undefined);
     setTimeSelected2(undefined);
-
     setFlightArray([]);
-
-    setMaxRange(0);
-    setMinRange(0);
-  }, [onPress]);
+    setMaxRange(maxPrice ?? 0);
+    setMinRange(minPrice ?? 0);
+  }, [onPress, maxPrice, minPrice]);
 
   /** getting filter arrray for response  */
   const uniqueFlightSet = flightDetail?.uniqueFlightSet;
@@ -114,6 +111,10 @@ export const FlightFilterScreen: AuraStackScreen = () => {
       }
     };
   };
+  const multiSliderValuesChange = useCallback((number: Array<number>) => {
+    setMinRange(number[0]);
+    setMaxRange(number[1]);
+  }, []);
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
@@ -128,6 +129,55 @@ export const FlightFilterScreen: AuraStackScreen = () => {
           </View>
         </Header>
         <ScrollView style={styles.scrollView}>
+          <View style={styles.filterBar}>
+            <Text style={styles.filterHeaderTitle}>{t('price')}</Text>
+          </View>
+          {/* <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingHorizontal: 24,
+              marginTop: 10,
+            }}
+          >
+            <Text>
+              {currency}
+              {minRange}
+            </Text>
+            <Text>
+              {currency}
+              {maxRang}
+            </Text>
+          </View> */}
+          <View style={{ alignItems: 'center', marginTop: 50 }}>
+            <MultiSlider
+              values={[minRange ?? 0, maxRang ?? 100]}
+              sliderLength={Dimensions.get('window').width - 24 * 4}
+              onValuesChange={multiSliderValuesChange}
+              min={minPrice}
+              max={maxPrice}
+              step={1}
+              // allowOverlap
+              enableLabel
+              snapped
+              selectedStyle={{
+                backgroundColor: appColors.pink,
+              }}
+              markerStyle={{ backgroundColor: 'gold' }}
+            />
+          </View>
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 24 }}
+          >
+            <Text>
+              {currency}
+              {minPrice}
+            </Text>
+            <Text>
+              {currency}
+              {maxPrice}
+            </Text>
+          </View>
           <View style={styles.filterBar}>
             <Text style={styles.filterHeaderTitle}>{t('stops')}</Text>
           </View>
@@ -178,7 +228,6 @@ export const FlightFilterScreen: AuraStackScreen = () => {
               />
             )}
           </View>
-
           {/* flight list
            */}
           <View style={styles.filterContainer}>
