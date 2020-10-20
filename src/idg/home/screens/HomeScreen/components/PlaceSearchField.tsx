@@ -37,14 +37,14 @@ const PlaceSearchField: FC<any> = ({
             <TextInput
               ref={inputRef}
               placeholderTextColor="white"
-              style={styles.input}
+              style={[styles.input,{flex : 1,width : '100%' }]}
               onChangeText={onChangeText}
               placeholder={placeholder}
             />
             {!showInput && <Text style={styles.input}>{selectedPlace?.airportName}</Text>}
           </>
         ) : (
-          <TouchableOpacity onPress={() => setShowInput(true)}>
+          <TouchableOpacity style={{width : '100%' }} onPress={() => setShowInput(true)}>
             <View style={styles.containerInner}>
               <Text style={styles.cityNameLabel}>{selectedPlace.cityName}</Text>
               <Text style={styles.cityCodeLabel}>{selectedPlace.cityCode}</Text>
