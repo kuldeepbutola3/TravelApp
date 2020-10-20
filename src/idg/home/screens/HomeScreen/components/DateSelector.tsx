@@ -33,7 +33,7 @@ const DateSelector = ({
         {/* <Icon name="calendar" type="SimpleLineIcons" size={30} color="white" style={styles.icon} /> */}
         <Icon name="calendar" size={30} color="white" style={styles.icon} />
         {disabled ? (
-          <Text style={styles.placeholder}>Book Round Trips for{'\n'}Extra Savings!</Text>
+          <Text style={styles.placeholder}>Book Round Trips for Extra Savings!</Text>
         ) : (
           <View>
             <Text style={styles.date}>{date}</Text>
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: '200',
+    flexShrink: 1,
   },
 });
 
