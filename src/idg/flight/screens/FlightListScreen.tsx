@@ -64,6 +64,13 @@ export const FlightListScreen: AuraStackScreen = () => {
   const [maxRange, setMaxRange] = useState(maxPrice);
   const [minRange, setMinRange] = useState(minPrice);
 
+  useEffect(()=>{
+if (minRange === 0 && minRange === 0 && maxPrice !== 0 && minPrice !== 0) {
+setMaxRange(maxPrice);
+setMinRange(minPrice);
+}
+  },[minRange,minRange,maxPrice,minPrice])
+
   /**  filter states */
   const [priceFilte, setPriceFilte] = useState(false);
   const [stops, setStops] = useState(-1);
@@ -499,14 +506,14 @@ export const FlightListScreen: AuraStackScreen = () => {
       resultsArray.push(...filteredData);
     }
   }
-  var RandomNumber = Math.floor(Math.random() * 100) + 1;
+  var RandomNumber = Math.floor(Math.random() * 10000) + 1;
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <FlightHeader onPressBack={onPressBack} response={param} />
         <View style={styles.container}>
-          {resultsArray.map((i) => (
-            <FlightList key={`FlightKey${RandomNumber}`} items={i} show={boolValue} />
+          {resultsArray.map((i,index) => (
+            <FlightList key={`FlightKey${RandomNumber}--${index}`} items={i} show={boolValue} />
           ))}
         </View>
         {flightDetail?.results && (

@@ -113,7 +113,6 @@ const HomeScreen: AuraStackScreen = () => {
 
   const searchButtonTapped = useCallback(() => {
     /**To do */
-    console.log('data', selectedSource);
     // const journeyPayLoad: GetFlightParam ;
     if (selectedSource && selectedDestination && travellersCount) {
       const journeyPayLoad: GetFlightParam = {
