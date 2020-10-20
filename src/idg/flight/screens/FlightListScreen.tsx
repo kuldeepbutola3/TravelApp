@@ -46,31 +46,23 @@ export const FlightListScreen: AuraStackScreen = () => {
   const tooltipRefAirline = useRef<Tooltip>(null);
 
   /**max min range */
-  const [maxRange, setMaxRange] = useState(0);
-  const [minRange, setMinRange] = useState(0);
+  const maxPrice =
+    flightDetail?.results && flightDetail?.results?.length > 1
+      ? Math.max(
+          flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0,
+          flightDetail?.results[1][flightDetail?.results[1].length - 1].fare.publishedFare ?? 0
+        )
+      : flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0;
 
-  // const maxPrice = flightDetail?.results
-  //   ? flightDetail?.results?.length > 1
-  //     ? Math.max(
-  //         flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0,
-  //         flightDetail?.results[1][flightDetail?.results[1].length - 1].fare.publishedFare ?? 0
-  //       )
-  //     : flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare
-  //   : 0;
-
-  // const minPrice = flightDetail?.results
-  //   ? flightDetail?.results?.length > 1
-  //     ? Math.min(
-  //         flightDetail?.results[0][0].fare.publishedFare ?? 0,
-  //         flightDetail?.results[1][0].fare.publishedFare ?? 0
-  //       )
-  //     : flightDetail?.results[0][0].fare.publishedFare
-  //   : 0;
-
-  // useEffect(() => {
-  //   setMaxRange(maxPrice);
-  //   setMinRange(minPrice);
-  // }, [maxPrice, minPrice]);
+  const minPrice =
+    flightDetail?.results && flightDetail?.results?.length > 1
+      ? Math.min(
+          flightDetail?.results[0][0].fare.publishedFare ?? 0,
+          flightDetail?.results[1][0].fare.publishedFare ?? 0
+        )
+      : flightDetail?.results[0][0].fare.publishedFare ?? 0;
+  const [maxRange, setMaxRange] = useState(maxPrice);
+  const [minRange, setMinRange] = useState(minPrice);
 
   /**  filter states */
   const [priceFilte, setPriceFilte] = useState(false);
@@ -391,7 +383,6 @@ export const FlightListScreen: AuraStackScreen = () => {
   /** applying filtes */
   const length = flightDetail?.results ? flightDetail?.results?.length : 0;
   const boolValue = length > 1;
-  console.log('lengthlengthlengthlengthlengthlength', length, boolValue);
 
   const resultsArray = [];
 
@@ -458,6 +449,20 @@ export const FlightListScreen: AuraStackScreen = () => {
     return array;
   };
 
+  /** price range filter */
+  const getPriceRangeData = (itm: Array<Array<FlightSet>>) => {
+    const array: Array<Array<FlightSet>> = [];
+    itm.map((a) => {
+      array.push(
+        a.filter((i) => {
+          const price = i.fare.publishedFare;
+          return minPrice && maxPrice ? price >= minRange && price <= maxRange : true;
+        })
+      );
+    });
+    return array;
+  };
+
   /** flight search filter */
   const filterWithFlightName = (itm: Array<Array<FlightSet>>) => {
     if (flightArray.length > 0) {
@@ -480,8 +485,12 @@ export const FlightListScreen: AuraStackScreen = () => {
     const stopData = filterWithFlightName(stopFilter);
 
     /** applying time filter */
-    const filteredData = getTimeFilterData(stopData);
-    /** applying price filter */
+    const timeData = getTimeFilterData(stopData);
+
+    /** applying price range */
+    const filteredData = getPriceRangeData(timeData);
+
+    /** applying price filter accending decending*/
     if (priceFilte && filteredData) {
       filteredData.map((d) => {
         resultsArray.push([...d].reverse());

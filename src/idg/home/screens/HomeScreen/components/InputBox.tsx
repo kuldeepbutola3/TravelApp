@@ -7,9 +7,10 @@ interface IInputBox {
   value: string;
   onChangeText(value: string): void;
   containerStyle: ViewStyle;
+  disabled: boolean;
 }
 
-const InputBox = ({ label, value, onChangeText, containerStyle }: IInputBox) => {
+const InputBox = ({ label, value, onChangeText, containerStyle, disabled }: IInputBox) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={styles.label}>{label}</Text>
@@ -18,6 +19,7 @@ const InputBox = ({ label, value, onChangeText, containerStyle }: IInputBox) => 
         onChangeText={onChangeText}
         inputContainerStyle={styles.inputContainer}
         style={styles.input}
+        disabled={disabled}
       />
     </View>
   );

@@ -27,6 +27,7 @@ import { Button } from 'src/components/Button';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { appColors } from 'src/styles/appColors';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Touchable } from 'src/components/Touchable';
 
 const CLASS: Array<{ value: ClassType }> = [
   {
@@ -154,6 +155,8 @@ const HomeScreen: AuraStackScreen = () => {
 
   const plaxesearch1 = { bottom: -(80 - 10) };
   const placesearch2 = { bottom: -(80 + 80 + 8 - 10) };
+
+  const _onPressTraveller = useCallback(() => {}, []);
   return (
     <View style={styles.container}>
       <GradientBackground
@@ -206,7 +209,7 @@ const HomeScreen: AuraStackScreen = () => {
 
               <View style={styles.datesContainer}>
                 <DatePicker
-                  containerStyle={{ flex: 1 }}
+                  containerStyle={{ flex: 1, paddingRight: 4 }}
                   onValueChange={toDateChange}
                   value={departureDate}
                   mode="date"
@@ -217,7 +220,7 @@ const HomeScreen: AuraStackScreen = () => {
                     date={formatDate(departureDate, 'DD MMM YYYY')}
                     day={formatDate(departureDate, 'dddd')}
                     // onPress={showDatePicker}
-                    containerStyles={styles.dateSelector}
+                    containerStyles={{ ...styles.dateSelector, ...{ width: '100%' } }}
                   />
                 </DatePicker>
 
@@ -233,7 +236,8 @@ const HomeScreen: AuraStackScreen = () => {
                       date={formatDate(returnDate, 'DD MMM YYYY')}
                       day={formatDate(returnDate, 'dddd')}
                       // onPress={showReturnDatePicker}
-                      containerStyles={styles.dateSelector}
+                      // containerStyles={styles.dateSelector}
+                      containerStyles={{ ...styles.dateSelector, ...{ width: '100%' } }}
                     />
                   </DatePicker>
                 ) : (
@@ -250,12 +254,15 @@ const HomeScreen: AuraStackScreen = () => {
                 )}
               </View>
               <View style={styles.datesContainer}>
+                {/* <Touchable onPress={_onPressTraveller}> */}
                 <InputBox
                   label="TRAVELLERS"
                   value={travellersCount.toString()}
                   onChangeText={handleTravellerCountChange}
-                  containerStyle={styles.inputBox}
+                  containerStyle={{ ...styles.inputBox, ...{ marginRight: 4 } }}
+                  disabled={true}
                 />
+                {/* </Touchable> */}
                 <FlightClassDropdown
                   data={CLASS}
                   value={flightClass}
