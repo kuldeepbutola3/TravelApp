@@ -42,6 +42,7 @@ function getSegment(
   const fare = `${flight.fare.currency === 'INR' ? '₹ ' : ''}${flight.fare.publishedFare}`;
   const seatLeft = `${firstSegment.noOfSeatAvailable} ${t('seatLeft')}`;
 
+  const imagename = firstSegment.airline.airlineCode;
   let stop = t('nonStop');
   if (length > 1) {
     let ar = [...segments];
@@ -62,6 +63,7 @@ function getSegment(
     fare,
     seatLeft,
     stop,
+    imagename,
     onPress: () => onPress(flight),
   };
   return item;

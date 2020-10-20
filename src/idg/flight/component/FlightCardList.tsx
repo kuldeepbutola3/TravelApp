@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { Divider, Text } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { flightImagePath } from '../FlightModel';
 
 export interface FlightCardProps {
   flightName: string;
@@ -13,6 +14,7 @@ export interface FlightCardProps {
   fare: string;
   seatLeft: string;
   stop: string;
+  imagename:string;
   onPress?: () => void;
 }
 
@@ -35,8 +37,8 @@ const FlightCard: FC<FlightCardInnerProps> = ({
   seatLeft,
   stop,
   show,
+  imagename
 }) => {
-  console.log('showMultiple', show, isMultiple);
   return (
     <View>
       <View style={styles.container}>
@@ -44,7 +46,9 @@ const FlightCard: FC<FlightCardInnerProps> = ({
           {flightName} <Text style={styles.headerCont}>|{flightCode}</Text>
         </Text>
         <View style={styles.innnerContainer}>
-          <View style={styles.imageView} />
+          <View style={styles.imageView} >
+            <Image source={flightImagePath(imagename)} style={{width : 25 , height : 25 , marginRight : 10}}/>
+            </View>
           <View style={styles.dividedView}>
             <Text style={styles.time}>{startTime}</Text>
             <Text style={styles.gryText}>{startCity}</Text>
@@ -99,7 +103,7 @@ export const FlightCardList: FC<{ data: Array<FlightCardProps>; show: boolean }>
   return (
     <TouchableOpacity style={card.container} onPress={data[0].onPress}>
       {data.map((item, index) => (
-        <View style={card.innnerContainer}>
+        <View key={`flightList--${index}-${data.length}`} style={card.innnerContainer}>
           <FlightCard
             {...item}
             isMultiple={data.length > 1}

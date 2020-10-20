@@ -1,6 +1,6 @@
 import { formatDate } from 'src/utils/date-formatter';
 import { ReviewCardProps } from './component/ReviewCard';
-import { FlightSet } from './FlightModel';
+import { flightImagePath, FlightSet } from './FlightModel';
 
 export interface ReviewViewModel extends ReviewCardProps {
   item: FlightSet['segments'][number][number];
@@ -35,6 +35,8 @@ export function makeReviewViewModel(
   const cabinBag = flightDetail.cabinBaggage;
   const refundable = flightDetail.refundable;
 
+  const imagename = flightDetail.airline.airlineCode;
+
   const item: ReviewViewModel = {
     item: flightDetail,
     flightName,
@@ -55,6 +57,7 @@ export function makeReviewViewModel(
     checkInBag,
     cabinBag,
     refundable,
+    imagename
   };
 
   return item;

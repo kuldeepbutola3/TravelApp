@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Divider } from 'react-native-elements';
+import { Divider, Image } from 'react-native-elements';
 import { Text } from 'src/components/Text';
 import { appColors } from 'src/styles/appColors';
 import { useAuraTranslation } from 'src/utils/i18n';
+import { flightImagePath } from '../FlightModel';
 
 export interface ReviewCardProps {
   flightName: string;
@@ -26,6 +27,7 @@ export interface ReviewCardProps {
   checkInBag: string;
   cabinBag: string;
   refundable: string;
+  imagename : string;
 }
 export const ReviewCard: FC<ReviewCardProps> = ({
   flightName,
@@ -47,6 +49,7 @@ export const ReviewCard: FC<ReviewCardProps> = ({
   cabinBag,
   checkInBag,
   refundable,
+  imagename
 }) => {
   const { t } = useAuraTranslation();
 
@@ -68,6 +71,9 @@ export const ReviewCard: FC<ReviewCardProps> = ({
     );
   };
 
+  // require(`src/assets/images/${imagename}.png`) ?? 
+const im = require(`src/assets/images/0D.png`);
+
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -81,9 +87,12 @@ export const ReviewCard: FC<ReviewCardProps> = ({
         </View>
       </View>
       <View style={styles.headerView}>
+
+        <Image source={flightImagePath(imagename)} style={{width : 30 , height : 30 , marginRight : 10}}/>
         <Text style={styles.header}>
           {flightName} <Text style={styles.headerCont}>|{flightCode}</Text>
         </Text>
+        
       </View>
       <RowElement
         title={`${startCity} ${startDestination}`}
@@ -144,7 +153,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   headerView: {
+    flexDirection : 'row',
     padding: 20,
+    alignItems : 'center'
   },
   header: {
     fontSize: 14,
