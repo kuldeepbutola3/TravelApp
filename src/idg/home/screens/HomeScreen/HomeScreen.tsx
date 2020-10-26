@@ -5,8 +5,8 @@ import { Screen } from 'src/components/Screen';
 import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useStackOptions } from 'src/navigation/stackOptions';
-import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { fetchFlightPlaces } from 'src/idg/flight/flightSlice';
+import { useBindAction, useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
+import { fetchFlightPlaces, flightSlice } from 'src/idg/flight/flightSlice';
 import { Header } from 'src/navigation/homeScreenHeader';
 import { GradientBackground } from 'src/components/GradientBackground';
 import { View } from 'react-native';
@@ -28,7 +28,7 @@ import { useAuraTranslation } from 'src/utils/i18n';
 import { appColors } from 'src/styles/appColors';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Touchable } from 'src/components/Touchable';
-
+import { TravellerCount } from 'src/idg/traveller/TravelerModel';
 const CLASS: Array<{ value: ClassType }> = [
   {
     value: 'Economy',
@@ -44,6 +44,9 @@ const CLASS: Array<{ value: ClassType }> = [
 const HomeScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
   const navigation = useNavigation<ApptNavigationProp>();
+
+  const addTravellerCount = useBindAction(flightSlice.actions.addTravellerCount);
+
   navigation.setOptions({
     headerTitle: () => (
       <Header
@@ -70,7 +73,11 @@ const HomeScreen: AuraStackScreen = () => {
   const [departureDate, setDepartureDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(new Date());
 
-  const [travellersCount, setTravellersCount] = useState(1);
+  const [travellersCount, setTravellersCount] = useState({
+    adult: 1,
+    children: 0,
+    infant: 0,
+  } as TravellerCount);
   const [flightClass, setFlightClass] = useState(CLASS[0].value);
 
   const [selectedTab, setSelectedTab] = useState(HeaderTabs.Flights);
@@ -85,7 +92,6 @@ const HomeScreen: AuraStackScreen = () => {
   const handleFlightsTabPress = () => setSelectedTab(HeaderTabs.Flights);
   const handleHotelsTabPress = () => setSelectedTab(HeaderTabs.Hotels);
   const handleClassChange = (value: ClassType) => setFlightClass(value);
-  const handleTravellerCountChange = (count: any) => setTravellersCount(count);
   const clearFlightPlaces = () => dispatch(fetchFlightPlaces({ term: '' }));
   const handleSourcePlaceSelect = (place: any) => {
     setSelectedSource(place);
@@ -99,9 +105,14 @@ const HomeScreen: AuraStackScreen = () => {
   const toDateChange = useCallback<DatePickerProps['onValueChange']>(
     (sender) => {
       setDepartureDate(sender);
+
+      console.log('time', returnDate.getTime(), sender.getTime());
+      if (returnDate.getTime() < sender.getTime()) {
+        setReturnDate(sender);
+      }
       return true;
     },
-    [setDepartureDate]
+    [setDepartureDate, setReturnDate, returnDate]
   );
   const returnDateChange = useCallback<DatePickerProps['onValueChange']>(
     (sender) => {
@@ -112,8 +123,6 @@ const HomeScreen: AuraStackScreen = () => {
   );
 
   const searchButtonTapped = useCallback(() => {
-    /**To do */
-    // const journeyPayLoad: GetFlightParam ;
     if (selectedSource && selectedDestination && travellersCount) {
       const journeyPayLoad: GetFlightParam = {
         class: flightClass,
@@ -122,12 +131,13 @@ const HomeScreen: AuraStackScreen = () => {
         originCode: selectedSource.airportCode,
         destinationCode: selectedDestination.airportCode,
         journeyType: selectedTripType,
-        adultCount: travellersCount,
-        childCount: 0,
-        infantCount: 0,
+        adultCount: travellersCount.adult,
+        childCount: travellersCount.children,
+        infantCount: travellersCount.infant,
         journeyDate1: departureDate,
         journeyDate2: returnDate,
       };
+      addTravellerCount(travellersCount);
       navigation.navigate('FlightSearch', { param: journeyPayLoad });
     }
   }, [
@@ -139,6 +149,7 @@ const HomeScreen: AuraStackScreen = () => {
     selectedTripType,
     departureDate,
     returnDate,
+    addTravellerCount,
   ]);
 
   // console.log(
@@ -155,7 +166,12 @@ const HomeScreen: AuraStackScreen = () => {
   const plaxesearch1 = { bottom: -(80 - 10) };
   const placesearch2 = { bottom: -(80 + 80 + 8 - 10) };
 
-  const _onPressTraveller = useCallback(() => {}, []);
+  const _onPressTraveller = useCallback(() => {
+    navigation.navigate('Traveller', {
+      numberOfTraveller: travellersCount,
+      callBack: setTravellersCount,
+    });
+  }, [navigation, travellersCount, setTravellersCount]);
   return (
     <View style={styles.container}>
       <GradientBackground
@@ -212,6 +228,7 @@ const HomeScreen: AuraStackScreen = () => {
                   onValueChange={toDateChange}
                   value={departureDate}
                   mode="date"
+                  minimumDate={new Date()}
                 >
                   <DateSelector
                     disabled={false}
@@ -229,6 +246,7 @@ const HomeScreen: AuraStackScreen = () => {
                     onValueChange={returnDateChange}
                     value={returnDate || new Date()}
                     mode="date"
+                    minimumDate={departureDate}
                   >
                     <DateSelector
                       label="RETURN"
@@ -253,22 +271,29 @@ const HomeScreen: AuraStackScreen = () => {
                 )}
               </View>
               <View style={styles.datesContainer}>
-                {/* <Touchable onPress={_onPressTraveller}> */}
-                <InputBox
-                  label="TRAVELLERS"
-                  value={travellersCount.toString()}
-                  onChangeText={handleTravellerCountChange}
-                  containerStyle={{ ...styles.inputBox, ...{ marginRight: 4 } }}
-                  disabled={true}
-                />
+                <Touchable style={{ flex: 1 }} onPress={_onPressTraveller}>
+                  <InputBox
+                    label="TRAVELLERS"
+                    value={(
+                      travellersCount.adult +
+                      travellersCount.children +
+                      travellersCount.infant
+                    ).toString()}
+                    onChangeText={() => {}}
+                    containerStyle={{ ...styles.inputBox, ...{ marginRight: 4 } }}
+                    disabled={true}
+                  />
+                </Touchable>
                 {/* </Touchable> */}
-                <FlightClassDropdown
-                  data={CLASS}
-                  value={flightClass}
-                  onChangeText={handleClassChange}
-                  containerStyle={styles.inputBox}
-                  label="CLASS"
-                />
+                <View style={{ flex: 1 }}>
+                  <FlightClassDropdown
+                    data={CLASS}
+                    value={flightClass}
+                    onChangeText={handleClassChange}
+                    containerStyle={styles.inputBox}
+                    label="CLASS"
+                  />
+                </View>
               </View>
 
               {/* <SearchButton

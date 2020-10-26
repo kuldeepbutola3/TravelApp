@@ -15,7 +15,7 @@ export interface TravellerViewProps {
 }
 export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
   const { t } = useAuraTranslation();
-  const { travellerChild, travellerAdult } = useSliceSelector('flight');
+  const { travellerChild, travellerAdult, travellerCount } = useSliceSelector('flight');
   const deleteTraveller = useBindAction(flightSlice.actions.deleteTraveller);
   //   const totalCount = isChild ? 1 : 3;
   //   const selectedCount = isChild ? travellerChild.length : travellerAdult.length;
@@ -55,6 +55,12 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
           </ListItem>
         );
       });
+  const isdisable = isChild
+    ? travellerCount.children === travellerChild.length
+    : travellerCount.adult === travellerAdult.length;
+  const count = isChild
+    ? `${travellerChild.length}/${travellerCount.children}`
+    : `${travellerAdult.length}/${travellerCount.adult}`;
   return (
     <View style={styles.container}>
       <View style={styles.innnerContainer}>
@@ -62,6 +68,7 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
         <View style={styles.header}>
           <Text style={styles.headerText}>{isChild ? t('childHeader') : t('adult')}</Text>
         </View>
+        <Text style={{ alignSelf: 'flex-end' }}>{count}</Text>
       </View>
       {listItem}
       <Button
@@ -70,6 +77,7 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
         icon={{ name: 'add', color: appColors.pink }}
         title={t('addTravellers')}
         onPress={addTraveller}
+        disabled={isdisable}
       />
     </View>
   );
@@ -92,5 +100,5 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 15,
   },
-  button: { fontSize: 20, color: appColors.pink },
+  button: { fontSize: 16, color: appColors.pink },
 });
