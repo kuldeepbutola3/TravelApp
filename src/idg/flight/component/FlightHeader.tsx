@@ -4,12 +4,16 @@ import { Icon } from 'react-native-elements';
 
 import { Header, HeaderProps } from 'src/components/Header';
 import { Text } from 'src/components/Text';
+import { useSliceSelector } from 'src/redux/hooks';
+import { formatDate } from 'src/utils/date-formatter';
+import { useAuraTranslation } from 'src/utils/i18n';
 import { GetFlightParam } from '../flightApi';
 interface FlightHeaderProps {
   onPressBack: HeaderProps['onPressBack'];
   response: GetFlightParam;
 }
 export const FlightHeader: FC<FlightHeaderProps> = ({ onPressBack, response }) => {
+  const { t } = useAuraTranslation();
   return (
     <Header onPressBack={onPressBack}>
       {response && (
@@ -21,6 +25,11 @@ export const FlightHeader: FC<FlightHeaderProps> = ({ onPressBack, response }) =
           </Text>
         </View>
       )}
+      <Text style={styles.text}>
+        {`${formatDate(response.journeyDate1, 'DD MMM')} | ${
+          response.adultCount + response.childCount + response.infantCount
+        } ${t('traveller')} | ${response.class}`}
+      </Text>
     </Header>
   );
 };

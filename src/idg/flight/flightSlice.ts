@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootStateObj } from 'src/redux/rootReducer';
-import { Traveller } from '../traveller/TravelerModel';
+import { Traveller, TravellerCount } from '../traveller/TravelerModel';
 import {
   FlightFareParam,
   getFlight,
@@ -21,6 +21,7 @@ interface FlightState {
   error: string | null;
   travellerAdult: Array<Traveller>;
   travellerChild: Array<Traveller>;
+  travellerCount: TravellerCount;
 }
 
 const initialState: FlightState = {
@@ -31,6 +32,7 @@ const initialState: FlightState = {
   error: null,
   travellerAdult: [],
   travellerChild: [],
+  travellerCount: { adult: 1, children: 0, infant: 0 },
 };
 
 export const fetchFlight = createAsyncThunk<
@@ -69,6 +71,10 @@ export const flightSlice = createSlice({
   name: 'flight',
   initialState,
   reducers: {
+    addTravellerCount: (state, action: PayloadAction<TravellerCount>) => {
+      state.travellerCount = action.payload;
+    },
+
     addTravelerInfo: (state, action: PayloadAction<Traveller>) => {
       if (action.payload.isChild) {
         state.travellerChild = [...state.travellerChild, action.payload];

@@ -5,4 +5,5 @@ export const appColors = {
   white: 'white',
   red: 'rgb(236,73,84)',
   transparent: 'transparent',
+  gray: 'gray',
 };

@@ -126,6 +126,17 @@ export default {
   /**
    * Traveller
    */
+  traveller: 'Traveller',
+  selectTraveller: 'Select Travellers',
+  addNumberOfTravellers: 'add number of travellers',
+  adultSubtitle: '12 yrs & Above',
+  childrenSubtitle: '2 - 12 yrs',
+  infantSubtitle: 'Under 2 yrs',
+  onTheDayOfTravel: 'on the day of travel',
+  children: 'Children',
+  infant: 'Infant',
+  done: 'Done',
+
   travellerDetails: 'Traveller Details',
   addTravellers: 'Add Travellers',
   adult: 'Adult',

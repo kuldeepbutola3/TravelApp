@@ -21,6 +21,7 @@ import { TravellerView } from '../components/TravellerView';
 import { appColors } from 'src/styles/appColors';
 import { Button } from 'src/components/Button';
 import { Input } from 'react-native-elements';
+import { useSliceSelector } from 'src/redux/hooks';
 
 export interface TravellerDetailProps {
   param: FlightSet;
@@ -28,9 +29,9 @@ export interface TravellerDetailProps {
 
 export const TravellerDetail: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
-  // const dispatch = useThunkDispatch();
   const navigation = useNavigation<ApptNavigationProp>();
   const { param } = useParams<AppRoutes, 'Login'>();
+  const { travellerChild, travellerAdult, travellerCount } = useSliceSelector('flight');
 
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
@@ -43,6 +44,10 @@ export const TravellerDetail: AuraStackScreen = () => {
     navigation,
     param,
   ]);
+
+  const enableContinue =
+    travellerCount.children === travellerChild.length &&
+    travellerCount.adult === travellerAdult.length;
 
   return (
     <Screen>
@@ -70,7 +75,12 @@ export const TravellerDetail: AuraStackScreen = () => {
             />
           </ScrollView>
           <View style={styles.bottonContainer}>
-            <Button bgColor={appColors.pink} title={t('continue')} onPress={onPressContinue} />
+            <Button
+              disabled={!enableContinue}
+              bgColor={appColors.pink}
+              title={t('continue')}
+              onPress={onPressContinue}
+            />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
