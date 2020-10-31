@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Divider, Text } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { appColors } from 'src/styles/appColors';
 import { flightImagePath } from '../FlightModel';
 
 export interface FlightCardProps {
@@ -15,6 +16,7 @@ export interface FlightCardProps {
   seatLeft: string;
   stop: string;
   imagename:string;
+  duration:string;
   onPress?: () => void;
 }
 
@@ -37,6 +39,7 @@ const FlightCard: FC<FlightCardInnerProps> = ({
   seatLeft,
   stop,
   show,
+  duration,
   imagename
 }) => {
   return (
@@ -54,7 +57,7 @@ const FlightCard: FC<FlightCardInnerProps> = ({
             <Text style={styles.gryText}>{startCity}</Text>
           </View>
           <View style={styles.dividedView}>
-            <Text style={styles.gryText}>duration</Text>
+            <Text style={styles.gryText}>{duration}</Text>
             <Divider style={styles.divider} />
             <Text style={styles.gryText}>{stop}</Text>
           </View>
@@ -93,6 +96,7 @@ const FlightCard: FC<FlightCardInnerProps> = ({
           )
         )}
       </View>
+      <Divider style={{height :5 , backgroundColor : appColors.lightGrey}}/>
     </View>
   );
 };

@@ -23,3 +23,10 @@ export function currentGreetingMessage(t: AuraTFunction): string {
   }
   return '';
 }
+
+export function dateDuration (start : string , end : string) {
+  const  diff = moment(start).unix() - moment(end).unix()
+  const hours = Math.floor(diff/3600);
+  const min = Math.floor(diff/60)%60;
+  return `${hours} hr ${min} min`
+}

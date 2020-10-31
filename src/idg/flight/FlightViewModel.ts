@@ -1,4 +1,4 @@
-import { formatDate } from 'src/utils/date-formatter';
+import { dateDuration, formatDate } from 'src/utils/date-formatter';
 import { AuraTFunction } from 'src/utils/i18n';
 import { FlightCardProps } from './component/FlightCardList';
 import { FlightSet } from './FlightModel';
@@ -39,6 +39,8 @@ function getSegment(
   const endTime = formatDate(lastSegment.destination.arrTime, 'HH:mm');
   const endCity = lastSegment.destination.airport.cityName;
 
+  const duration = dateDuration(lastSegment.destination.arrTime , firstSegment.origin.depTime);
+
   const fare = `${flight.fare.currency === 'INR' ? '₹ ' : ''}${flight.fare.publishedFare}`;
   const seatLeft = `${firstSegment.noOfSeatAvailable} ${t('seatLeft')}`;
 
@@ -64,6 +66,7 @@ function getSegment(
     seatLeft,
     stop,
     imagename,
+    duration,
     onPress: () => onPress(flight),
   };
   return item;
