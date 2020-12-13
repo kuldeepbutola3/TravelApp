@@ -6,7 +6,7 @@ import { Touchable } from 'src/components/Touchable';
 
 const Seperator = () => <View style={styles.seperator} />;
 
-const ReviewBooking = ({ onClose, selectedSeats, seatCount, onPress }) => {
+const ReviewBooking = ({ onClose, selectedSeats, selectedMeals, mealCount, selectedBaggages, baggageCount, seatCount, onPress }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -24,16 +24,16 @@ const ReviewBooking = ({ onClose, selectedSeats, seatCount, onPress }) => {
 
       <View style={styles.rowContainer}>
         <Icon name="food" size={40} color={appColors.pink} />
-        <Text style={{ fontSize: 22 }}>{selectedSeats}</Text>
-        <Text style={{ fontSize: 22 }}>{seatCount}</Text>
+        <Text style={{ fontSize: 22 }}>{selectedMeals}</Text>
+        <Text style={{ fontSize: 22 }}>{mealCount}</Text>
       </View>
 
       <Seperator />
 
       <View style={styles.rowContainer}>
         <Icon name="bag-carry-on" size={40} color={appColors.pink} />
-        <Text style={{ fontSize: 22 }}>{selectedSeats}</Text>
-        <Text style={{ fontSize: 22 }}>{seatCount}</Text>
+        <Text style={{ fontSize: 22 }}>{selectedBaggages}</Text>
+        <Text style={{ fontSize: 22 }}>{baggageCount}</Text>
       </View>
 
       <Seperator />

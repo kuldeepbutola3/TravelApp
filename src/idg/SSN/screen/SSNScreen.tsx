@@ -221,6 +221,10 @@ export const SSNScreen: AuraStackScreen = () => {
             onClose={() => refRBSheet.current?.close()}
             selectedSeats={`${selectedSeats.map((seat) => seat.code).join(', ')}`}
             seatCount={`${selectedSeats?.length}/${allTravellers?.length * getRoutes()?.length || 0}`}
+            selectedBaggages={''}
+            baggageCount={''}
+            selectedMeals={''}
+            mealCount={''}
             onPress={() => {}}
           />
         </BottomSheet>

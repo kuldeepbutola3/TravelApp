@@ -115,7 +115,7 @@ const SeatsTab = ({
     <View style={{ flex: 1 }}>
       <View style={styles.infoContainer}>
         <InfoLabel color={appColors.white} label="Free" />
-        <InfoLabel color={appColors.gray} label="Occupied" />
+        <InfoLabel color={'#EAEAEA'} label="Occupied" />
         <InfoLabel color={appColors.blue} label="Assigned" />
       </View>
 

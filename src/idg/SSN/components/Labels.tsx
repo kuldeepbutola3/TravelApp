@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,
+    marginTop: 10
   },
   indicatorBox: {
     height: 15,
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 5,
+    marginTop: 5,
+    marginBottom: 10
   },
 });
