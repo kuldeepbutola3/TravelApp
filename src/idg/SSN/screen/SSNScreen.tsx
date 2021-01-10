@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import React, { useCallback, useEffect, useMemo, useReducer, useState, useRef } from 'react';
+import { TabView, TabBar } from 'react-native-tab-view';
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
 import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
@@ -15,62 +15,21 @@ import SeatsTab from './SeatsTab';
 import MealsTab from './MealsTab';
 import BaggageTab from './BaggageTab';
 import { flightReducer } from '../flightReducer';
-import { Touchable } from 'src/components/Touchable';
+import { appColors } from 'src/styles/appColors';
+import RectButton from '../components/Buttons';
+import {
+  getCurrency,
+  useBaggagePrice,
+  useMealsPrice,
+  useSeatsPrice,
+  useSelectedSeatCodes,
+} from '../utilityHooks';
+import BottomSheet from 'src/components/BottomSheet/BottomSheet';
+import ReviewBooking from '../components/ReviewBooking';
+import TotalPriceFooter from '../components/TotalPriceFooter';
 
 export interface SSNScreenProps {
   param: FlightSet;
-}
-
-function useSeatsPrice(travellers, store) {
-  const [state, setState] = useState({ seats: 0, price: 0 });
-
-  useEffect(() => {
-    let seats = 0;
-    let price = 0;
-    for (const traveller of travellers) {
-      if (store[traveller?.fName]?.code) {
-        seats += 1;
-        price += store[traveller.fName].price;
-      }
-    }
-    setState({ seats, price });
-  }, [store]);
-
-  return state;
-}
-
-function useBaggagePrice(travellers, store) {
-  const [state, setState] = useState({ baggages: 0, price: 0 });
-  useEffect(() => {
-    let baggages = 0;
-    let price = 0;
-    for (const traveller of travellers) {
-      if (store[traveller?.fName]) {
-        baggages = store[traveller.fName].length;
-        price = store[traveller.fName].reduce((acc, item) => acc + item.price, 0);
-      }
-    }
-    setState({ baggages, price });
-  }, [store]);
-
-  return state;
-}
-
-function useMealsPrice(travellers, store) {
-  const [state, setState] = useState({ meals: 0, price: 0 });
-  useEffect(() => {
-    let meals = 0;
-    let price = 0;
-    for (const traveller of travellers) {
-      if (store[traveller?.fName]) {
-        meals = store[traveller.fName].length;
-        price = store[traveller.fName].reduce((acc, item) => acc + item.price, 0);
-      }
-    }
-    setState({ meals, price });
-  }, [store]);
-
-  return state;
 }
 
 export const SSNScreen: AuraStackScreen = () => {
@@ -79,7 +38,7 @@ export const SSNScreen: AuraStackScreen = () => {
   const navigation = useNavigation<ApptNavigationProp>();
   const { param } = useParams<AppRoutes, 'ReviewFlight'>();
   const { flightFare, travellerAdult, travellerChild } = useSliceSelector('flight');
-
+  const refRBSheet = useRef();
   // console.log('flightFare.......ss', JSON.stringify(flightFare?.artSSRResponse?.ssrInnerResponse?.seatDynamic?.[0]?.segmentSeat?.[0]?.rowSeats));
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
@@ -93,24 +52,35 @@ export const SSNScreen: AuraStackScreen = () => {
     source: 'DEL',
   };
   const [flightState, dispatchToFlightReducer] = useReducer(flightReducer, initialFlightState);
-  const seatsData = useMemo(() => flightState?.seats?.[flightState?.source] || {}, [flightState]);
-  const mealsData = useMemo(() => flightState?.meals?.[flightState?.source] || {}, [flightState]);
-  const baggageData = useMemo(() => flightState?.baggage?.[flightState?.source] || {}, [
-    flightState,
-  ]);
+  const seatsData = useMemo(() => flightState?.seats || {}, [flightState]);
+  const mealsData = useMemo(() => flightState?.meals || {}, [flightState]);
+  const baggageData = useMemo(() => flightState?.baggage || {}, [flightState]);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'seats', title: 'Seats' },
     { key: 'meals', title: 'Meals' },
     { key: 'baggage', title: 'Baggage' },
   ]);
+
+  const currency = getCurrency(
+    flightFare?.artSSRResponse?.ssrInnerResponse?.seatDynamic[0]?.segmentSeat[0].rowSeats[0]
+      .seats[0]
+  );
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const totalSeatsPrice = useSeatsPrice(allTravellers, seatsData);
+  const selectedSeats = useSelectedSeatCodes(allTravellers, flightState?.seats);
   const totalMealsPrice = useMealsPrice(allTravellers, mealsData);
   const totalBaggagesPrice = useBaggagePrice(allTravellers, baggageData);
   const totalPrice = useMemo(
     () => totalSeatsPrice.price + totalBaggagesPrice.price + totalMealsPrice.price,
-    [totalMealsPrice, totalSeatsPrice, totalBaggagesPrice]
+    [totalBaggagesPrice, totalMealsPrice, totalSeatsPrice]
   );
+  const getRoutes = () => {
+    const routes = flightFare?.artSSRResponse?.ssrInnerResponse?.seatDynamic.map(
+      (dynamic) => dynamic.segmentSeat[0].rowSeats[0].seats[0]
+    );
+    return routes;
+  };
 
   const renderScene = ({ route }) => {
     switch (route.key) {
@@ -125,8 +95,9 @@ export const SSNScreen: AuraStackScreen = () => {
             selectedSeat={flightState?.seats?.[flightState?.source]?.[flightState?.traveller] || {}}
             totalTravellers={allTravellers}
             totalSeatsPrice={totalSeatsPrice}
-            renderRoutes={renderRoutes}
-            renderTravellers={renderTravellers}
+            allRoutes={getRoutes()}
+            selectedSeats={selectedSeats}
+            currency={currency}
           />
         );
       case 'meals':
@@ -138,8 +109,7 @@ export const SSNScreen: AuraStackScreen = () => {
               flightState?.meals?.[flightState?.source]?.[flightState?.traveller] || []
             }
             totalMealsPrice={totalMealsPrice}
-            renderRoutes={renderRoutes}
-            renderTravellers={renderTravellers}
+            currency={currency}
           />
         );
       case 'baggage':
@@ -151,8 +121,7 @@ export const SSNScreen: AuraStackScreen = () => {
               flightState?.baggage?.[flightState?.source]?.[flightState?.traveller] || []
             }
             totalBaggagesPrice={totalBaggagesPrice}
-            renderRoutes={renderRoutes}
-            renderTravellers={renderTravellers}
+            currency={currency}
           />
         );
       default:
@@ -163,52 +132,22 @@ export const SSNScreen: AuraStackScreen = () => {
   const renderTravellers = ({ item }) => {
     const isSelected = flightState.traveller === item.fName;
     return (
-      <Touchable
+      <RectButton
+        isSelected={isSelected}
+        label={`${item.fName}`}
         onPress={() => dispatchToFlightReducer({ type: 'UPDATE_TRAVELLER', payload: item.fName })}
-        style={{
-          backgroundColor: isSelected ? 'blue' : '#EAEAEA',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 110,
-          height: 30,
-          borderRadius: 30,
-          borderColor: 'white',
-          borderWidth: 1,
-          marginRight: 8,
-          margin: 10,
-          alignSelf: 'center',
-        }}
-      >
-        <Text style={{ color: isSelected ? 'white' : 'black', fontWeight: '700' }}>
-          {item.fName}
-        </Text>
-      </Touchable>
+      />
     );
   };
 
   const renderRoutes = ({ item }) => {
     const isSelected = flightState.source === item.origin;
     return (
-      <Touchable
+      <RectButton
+        isSelected={isSelected}
+        label={`${item.origin}-${item.destination}`}
         onPress={() => dispatchToFlightReducer({ type: 'UPDATE_SOURCE', payload: item.origin })}
-        style={{
-          backgroundColor: isSelected ? 'blue' : '#EAEAEA',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 110,
-          height: 30,
-          borderRadius: 30,
-          borderColor: 'white',
-          borderWidth: 1,
-          marginRight: 8,
-          margin: 10,
-          alignSelf: 'center',
-        }}
-      >
-        <Text style={{ color: isSelected ? 'white' : 'black', fontWeight: '700' }}>
-          {item.origin}-{item.destination}
-        </Text>
-      </Touchable>
+      />
     );
   };
 
@@ -223,6 +162,35 @@ export const SSNScreen: AuraStackScreen = () => {
     console.log({ flightState });
   }, [flightState]);
 
+  const renderTabBar = (props) => {
+    return (
+      <View>
+        <TabBar
+          {...props}
+          indicatorStyle={{ backgroundColor: appColors.pink, height: 4 }}
+          style={{ backgroundColor: 'transparent' }}
+          renderLabel={({ route }) => (
+            <Text style={{ color: appColors.black, margin: 8, fontSize: 18 }}>{route.title}</Text>
+          )}
+        />
+        <FlatList
+          data={allTravellers}
+          renderItem={renderTravellers}
+          horizontal
+          style={{ height: 45 }}
+        />
+        <FlatList data={getRoutes()} renderItem={renderRoutes} horizontal style={{ height: 45 }} />
+      </View>
+    );
+  };
+
+  const handleBottomSheetOpen = () => {
+    setIsBottomSheetOpen(true);
+  };
+  const handleBottomSheetClose = () => {
+    setIsBottomSheetOpen(false);
+  };
+  
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
@@ -232,40 +200,34 @@ export const SSNScreen: AuraStackScreen = () => {
           navigationState={{ index, routes }}
           renderScene={renderScene}
           onIndexChange={setIndex}
-          style={{ backgroundColor: 'white' }}
-          // renderTabBar={renderTabBar}
-          // initialLayout={initialLayout}
+          style={{ backgroundColor: appColors.white }}
+          renderTabBar={renderTabBar}
         />
 
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            backgroundColor: 'black',
-            padding: 10,
-            height: 80,
-          }}
+        <TotalPriceFooter
+          currency={currency}
+          price={totalPrice}
+          onPress={() => refRBSheet?.current?.open()}
+        />
+
+        {isBottomSheetOpen && <View style={styles.transparentCover} />}
+
+        <BottomSheet
+          refRBSheet={refRBSheet}
+          onOpen={handleBottomSheetOpen}
+          onClose={handleBottomSheetClose}
         >
-          <View>
-            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>
-              INR {totalPrice}
-            </Text>
-          </View>
-          <Touchable
-            style={{
-              width: 120,
-              backgroundColor: 'purple',
-              height: 40,
-              borderRadius: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={{ color: 'white', fontWeight: '600' }}>Next</Text>
-          </Touchable>
-        </View>
+          <ReviewBooking
+            onClose={() => refRBSheet.current?.close()}
+            selectedSeats={`${selectedSeats.map((seat) => seat.code).join(', ')}`}
+            seatCount={`${selectedSeats?.length}/${allTravellers?.length * getRoutes()?.length || 0}`}
+            selectedBaggages={''}
+            baggageCount={''}
+            selectedMeals={''}
+            mealCount={''}
+            onPress={() => {}}
+          />
+        </BottomSheet>
       </SafeAreaView>
     </Screen>
   );
@@ -274,5 +236,9 @@ export const SSNScreen: AuraStackScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+  },
+  transparentCover: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 });

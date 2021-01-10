@@ -1,7 +1,10 @@
 import React from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SCREEN_WIDTH } from 'src/components/Tables/util';
 import { Touchable } from 'src/components/Touchable';
+import { appColors } from 'src/styles/appColors';
+import { InfoLabel, SeatInfoLabel } from '../components/Labels';
+import PriceFooter from '../components/PriceFooter';
 
 const getBGColor = (availablityType: number) => {
   switch (availablityType) {
@@ -15,13 +18,11 @@ const getBGColor = (availablityType: number) => {
   }
 };
 
-const Seprator = () => {
-  return <View style={{ marginVertical: 10 }} />;
-};
+const Seprator = () => <View style={{ marginVertical: 10 }} />;
 
 const RenderColumnHeader = ({ index }) => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 16 }}>{index + 1}</Text>
     </View>
   );
@@ -53,8 +54,9 @@ const SeatsTab = ({
   dispatchToFlightReducer,
   totalTravellers,
   totalSeatsPrice,
-  renderRoutes,
-  renderTravellers
+  allRoutes,
+  selectedSeats,
+  currency,
 }) => {
   const data = seats.filter((_, i) => i !== 0);
 
@@ -65,7 +67,7 @@ const SeatsTab = ({
     const isSelected = selectedSeat?.code === code;
     let bgColor = getBGColor(availablityType);
     if (isSelected) {
-      bgColor = '#00BFFF';
+      bgColor = appColors.blue;
     }
     const isNotAvailable = availablityType !== 1;
     const handleSeatButtonPress = () =>
@@ -82,7 +84,7 @@ const SeatsTab = ({
           borderRadius: seatSize / 2,
           backgroundColor: bgColor,
           borderWidth: 1,
-          borderColor: availablityType === 1 && !isSelected ? 'black' : bgColor,
+          borderColor: availablityType === 1 && !isSelected ? appColors.black : bgColor,
           marginRight: index === 2 ? 10 : 0,
         }}
       />
@@ -105,60 +107,29 @@ const SeatsTab = ({
     );
   };
 
+  const getSelectedSeatCodes = () => {
+    return selectedSeats.map((seat) => seat?.code)?.join(', ');
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <FlatList style={{}} data={seats[0]?.seats} renderItem={renderRoutes} horizontal ListEmptyComponent={() => null}/>
-      <FlatList data={totalTravellers} renderItem={renderTravellers} horizontal ListEmptyComponent={() => null}/>
-
-      <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: 10,
-          }}
-        >
-          <View
-            style={{ height: 15, width: 15, backgroundColor: 'white', borderWidth: 1, margin: 5 }}
-          />
-          <Text>Free</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: 10,
-          }}
-        >
-          <View style={{ height: 15, width: 15, backgroundColor: '#EAEAEA', margin: 5 }} />
-          <Text>Occupied</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: 10,
-          }}
-        >
-          <View style={{ height: 15, width: 15, backgroundColor: '#00BFFF', margin: 5 }} />
-          <Text>Assigned</Text>
-        </View>
+      <View style={styles.infoContainer}>
+        <InfoLabel color={appColors.white} label="Free" />
+        <InfoLabel color={'#EAEAEA'} label="Occupied" />
+        <InfoLabel color={appColors.blue} label="Assigned" />
       </View>
 
       <View
         style={{
+          height: 0,
+          borderWidth: 0.5,
+          borderColor: appColors.lightGrey,
           width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
           marginVertical: 10,
         }}
-      >
-        <Text style={{ marginVertical: 5 }}>Tap and Select Premium Seats of your choice</Text>
-        <Text style={{ fontSize: 20, fontWeight: '700' }}>FRONT SIDE</Text>
-      </View>
+      />
+
+      <SeatInfoLabel />
 
       <FlatList
         data={data}
@@ -168,30 +139,22 @@ const SeatsTab = ({
         ListHeaderComponent={<RenderRowHeader columns={data?.[0]?.seats || []} />}
       />
 
-      <View
-        style={{
-          width: '100%',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: 10,
-          borderTopWidth: 1,
-          borderTopColor: 'grey',
-        }}
-      >
-        <View>
-          <Text>Seat(s) {selectedSeat?.code}</Text>
-          <Text>
-            {totalSeatsPrice?.seats} of {totalTravellers?.length} Selected
-          </Text>
-        </View>
-        <View>
-          <Text>{totalSeatsPrice?.price}</Text>
-          <Text>Add to Fare</Text>
-        </View>
-      </View>
+      <PriceFooter
+        headerLabel={`Seat(s) ${getSelectedSeatCodes()}`}
+        subHeaderLabel={`${selectedSeats?.length} of ${totalTravellers?.length * allRoutes?.length || 0} Seat(s) Selected`}
+        priceLabel={`${currency} ${totalSeatsPrice?.price}`}
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  infoContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+});
 
 export default React.memo(SeatsTab);
