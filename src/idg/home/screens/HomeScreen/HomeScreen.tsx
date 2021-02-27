@@ -19,7 +19,7 @@ import styles from './styles';
 import InputBox from './components/InputBox';
 import PlaceSearchField from './components/PlaceSearchField';
 import FlightClassDropdown from './components/FlightClassDropdown';
-import { debounce } from '../../../../utils/debounce';
+
 import { ApptNavigationProp } from 'src/navigation/RootNav';
 import { GetFlightParam } from 'src/idg/flight/flightApi';
 import { FlightPlaces } from 'src/idg/flight/FlightModel';
@@ -83,12 +83,18 @@ const HomeScreen: AuraStackScreen = () => {
   const [selectedTab, setSelectedTab] = useState(HeaderTabs.Flights);
   const [selectedTripType, setSelectedTripType] = useState(TripType.OneWay);
 
-  const handleSourceSearchChange = debounce((term: string) => {
-    dispatch(fetchFlightPlaces({ term }));
-  }, 500);
-  const handleDestinationSearchChange = debounce((term: string) => {
-    dispatch(fetchFlightPlaces({ term }));
-  }, 500);
+  const handleSourceSearchChange = useCallback(
+    (term: string) => {
+      term.length % 3 === 0 && dispatch(fetchFlightPlaces({ term }));
+    },
+    [dispatch]
+  );
+  const handleDestinationSearchChange = useCallback(
+    (term: string) => {
+      term.length % 3 === 0 && dispatch(fetchFlightPlaces({ term }));
+    },
+    [dispatch]
+  );
   const handleFlightsTabPress = () => setSelectedTab(HeaderTabs.Flights);
   const handleHotelsTabPress = () => setSelectedTab(HeaderTabs.Hotels);
   const handleClassChange = (value: ClassType) => setFlightClass(value);
@@ -225,6 +231,7 @@ const HomeScreen: AuraStackScreen = () => {
               <View style={styles.datesContainer}>
                 <DatePicker
                   containerStyle={{ flex: 1, paddingRight: 4 }}
+                  textColor="black"
                   onValueChange={toDateChange}
                   value={departureDate}
                   mode="date"
