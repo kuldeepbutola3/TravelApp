@@ -25,7 +25,7 @@ const PlaceSearchField: FC<any> = ({
   const placesAvailable =
     showInput && inputRef.current?.isFocused() && places instanceof Array && places.length > 0;
 
-  console.log('placesAvailable.......', placesAvailable, places);
+  console.log('placesAvailable.......', placesAvailable, places, showInput);
 
   return (
     <View>
@@ -37,17 +37,19 @@ const PlaceSearchField: FC<any> = ({
             <TextInput
               ref={inputRef}
               placeholderTextColor="white"
-              style={[styles.input,{flex : 1,width : '100%' }]}
+              style={[styles.input, { flex: 1, width: '100%' }]}
               onChangeText={onChangeText}
               placeholder={placeholder}
             />
             {!showInput && <Text style={styles.input}>{selectedPlace?.airportName}</Text>}
           </>
         ) : (
-          <TouchableOpacity style={{width : '100%' }} onPress={() => setShowInput(true)}>
+          <TouchableOpacity style={{ width: '100%' }} onPress={() => setShowInput(true)}>
             <View style={styles.containerInner}>
               <Text style={styles.cityNameLabel}>{selectedPlace.cityName}</Text>
-              <Text style={styles.cityCodeLabel}>{selectedPlace.cityCode}</Text>
+              <View style={styles.cityCodeLabelView}>
+                <Text style={styles.cityCodeLabel}>{selectedPlace.cityCode}</Text>
+              </View>
             </View>
             {!showInput && <Text style={styles.input}>{selectedPlace?.airportName}</Text>}
           </TouchableOpacity>
@@ -137,13 +139,15 @@ const styles = StyleSheet.create({
   airportLabel: {
     color: 'black',
   },
-  cityCodeLabel: {
-    color: 'white',
+  cityCodeLabelView: {
     borderWidth: 1.5,
     borderRadius: 5,
     paddingHorizontal: 5,
     marginLeft: 5,
     borderColor: 'white',
+  },
+  cityCodeLabel: {
+    color: 'white',
     fontWeight: '500',
     textAlign: 'center',
     textAlignVertical: 'center',
