@@ -80,7 +80,7 @@ export const SSNScreen: AuraStackScreen = () => {
   const { param } = useParams<AppRoutes, 'ReviewFlight'>();
   const { flightFare, travellerAdult, travellerChild } = useSliceSelector('flight');
 
-  // console.log('flightFare.......ss', JSON.stringify(flightFare?.artSSRResponse?.ssrInnerResponse?.seatDynamic?.[0]?.segmentSeat?.[0]?.rowSeats));
+  console.log('flightFare.......ss', JSON.stringify(flightFare));
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
   ]);
@@ -98,6 +98,7 @@ export const SSNScreen: AuraStackScreen = () => {
   const baggageData = useMemo(() => flightState?.baggage?.[flightState?.source] || {}, [
     flightState,
   ]);
+  console.log('seatsData.....', seatsData);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'seats', title: 'Seats' },

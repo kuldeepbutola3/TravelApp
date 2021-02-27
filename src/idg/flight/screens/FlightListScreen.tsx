@@ -14,6 +14,7 @@ import {
   ViewProps,
   FlatList,
   ListRenderItem,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Divider, ListItem, Tooltip, TooltipProps } from 'react-native-elements';
@@ -37,7 +38,7 @@ export const FlightListScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
   const dispatch = useThunkDispatch();
   const navigation = useNavigation<ApptNavigationProp>();
-  const { flightDetail } = useSliceSelector('flight');
+  const { loading, flightDetail } = useSliceSelector('flight');
   const { param } = useParams<AppRoutes, 'FlightSearch'>();
   console.log('flightDetail--------1', JSON.stringify(flightDetail?.results?.length));
 
@@ -64,12 +65,12 @@ export const FlightListScreen: AuraStackScreen = () => {
   const [maxRange, setMaxRange] = useState(maxPrice);
   const [minRange, setMinRange] = useState(minPrice);
 
-  useEffect(()=>{
-if (minRange === 0 && minRange === 0 && maxPrice !== 0 && minPrice !== 0) {
-setMaxRange(maxPrice);
-setMinRange(minPrice);
-}
-  },[minRange,minRange,maxPrice,minPrice])
+  useEffect(() => {
+    if (minRange === 0 && minRange === 0 && maxPrice !== 0 && minPrice !== 0) {
+      setMaxRange(maxPrice);
+      setMinRange(minPrice);
+    }
+  }, [minRange, minRange, maxPrice, minPrice]);
 
   /**  filter states */
   const [priceFilte, setPriceFilte] = useState(false);
@@ -507,39 +508,50 @@ setMinRange(minPrice);
     }
   }
   var RandomNumber = Math.floor(Math.random() * 10000) + 1;
+  if (loading === 'pending') {
+    <View></View>;
+  }
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <FlightHeader onPressBack={onPressBack} response={param} />
-        <View style={styles.container}>
-          {resultsArray.map((i,index) => (
-            <FlightList key={`FlightKey${RandomNumber}--${index}`} items={i} show={boolValue} />
-          ))}
-        </View>
-        {flightDetail?.results && (
-          <View style={styles.tabContainer}>
-            {buttonArray.map((item) => (
-              <View style={styles.tabInnerContainer} key={`TabBarButton${item.id}`}>
-                <Divider />
-                {item.id !== 0 && item.id !== 4 && (
-                  <Tooltip
-                    ref={
-                      item.id === 1
-                        ? tooltipRefNonStop
-                        : item.id === 2
-                        ? tooltipRefTime
-                        : tooltipRefAirline
-                    }
-                    {...popOverView(item.id)}
-                    closeOnlyOnBackdropPress
-                    overlayColor="rgba(0,0,0,0.5)"
-                  />
-                )}
-                <TabButtons {...item} onPress={tabButtonTapped} />
-                <Divider />
-              </View>
-            ))}
+        {loading === 'pending' ? (
+          <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+            <ActivityIndicator color={appColors.gray} />
           </View>
+        ) : (
+          <>
+            <View style={styles.container}>
+              {resultsArray.map((i, index) => (
+                <FlightList key={`FlightKey${RandomNumber}--${index}`} items={i} show={boolValue} />
+              ))}
+            </View>
+            {flightDetail?.results && (
+              <View style={styles.tabContainer}>
+                {buttonArray.map((item) => (
+                  <View style={styles.tabInnerContainer} key={`TabBarButton${item.id}`}>
+                    <Divider />
+                    {item.id !== 0 && item.id !== 4 && (
+                      <Tooltip
+                        ref={
+                          item.id === 1
+                            ? tooltipRefNonStop
+                            : item.id === 2
+                            ? tooltipRefTime
+                            : tooltipRefAirline
+                        }
+                        {...popOverView(item.id)}
+                        closeOnlyOnBackdropPress
+                        overlayColor="rgba(0,0,0,0.5)"
+                      />
+                    )}
+                    <TabButtons {...item} onPress={tabButtonTapped} />
+                    <Divider />
+                  </View>
+                ))}
+              </View>
+            )}
+          </>
         )}
       </SafeAreaView>
     </Screen>

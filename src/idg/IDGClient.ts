@@ -62,6 +62,11 @@ export const configureDefault = () => {
     Authorization: 'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
   };
 };
+export const configureUserDataDefault = () => {
+  getClient().defaults.headers = {
+    Authorization: 'Basic NDA4NjExMDAwMzI6N2I1ODYyNDYtZGEwNi00NmFhLTgwZmItNmNmZjM2YjNkOTRk',
+  };
+};
 
 configureBaseUrl('test');
 

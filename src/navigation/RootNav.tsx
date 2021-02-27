@@ -24,6 +24,7 @@ import {
   TreavellerScreen,
   TreavellerScreenProps,
 } from 'src/idg/traveller/screens/TreavellerScreen';
+import { PayUScreenProps, PayUScreenScreen } from 'src/idg/payment/screens/PayUScreen';
 
 export type AppRoutes = {
   Main: undefined;
@@ -36,6 +37,7 @@ export type AppRoutes = {
   TravelerDetail: TravellerDetailProps;
   AddTraveller: AddTravellerProps;
   SSN: SSNScreenProps;
+  Payment: PayUScreenProps;
 };
 
 export type ApptNavigationProp = NavigationProp<AppRoutes>;
@@ -78,6 +80,7 @@ const AppNav = () => {
       />
       <Stack.Screen name="AddTraveller" component={AddTraveller} options={{ headerShown: false }} />
       <Stack.Screen name="SSN" component={SSNScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Payment" component={PayUScreenScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

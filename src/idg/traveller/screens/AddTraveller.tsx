@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
 import { Header } from 'src/components/Header';
 import { flightSlice } from 'src/idg/flight/flightSlice';
-import { ButtonGroup, Divider, Input } from 'react-native-elements';
+import { ButtonGroup, Input } from 'react-native-elements';
 import { appColors } from 'src/styles/appColors';
 import { Gender } from '../TravelerModel';
 import { Button } from 'src/components/Button';
@@ -71,8 +71,7 @@ export const AddTraveller: AuraStackScreen = () => {
     setGender(index === 0 ? 'male' : 'female');
   }, []);
 
-  const disabled =
-    !!fName.length && !!dob && !!expDate && !!nationality.length && !!passportNo.length;
+  const disabled = !!fName.length; //&& !!dob && !!expDate && !!nationality.length && !!passportNo.length;
 
   return (
     <Screen>
@@ -117,6 +116,7 @@ export const AddTraveller: AuraStackScreen = () => {
                 />
                 <DatePicker
                   // containerStyle={{ flex: 1, backgroundColor: 'green' }}
+                  textColor={appColors.black}
                   onValueChange={setDob}
                   value={dob ?? new Date()}
                   mode="date"
@@ -146,6 +146,7 @@ export const AddTraveller: AuraStackScreen = () => {
                 />
                 <DatePicker
                   // containerStyle={{ flex: 1, backgroundColor: 'green' }}
+                  textColor={appColors.black}
                   onValueChange={setExpDate}
                   value={expDate ?? new Date()}
                   mode="date"

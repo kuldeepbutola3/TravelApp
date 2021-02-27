@@ -129,6 +129,8 @@ const HomeScreen: AuraStackScreen = () => {
   );
 
   const searchButtonTapped = useCallback(() => {
+    // navigation.navigate('Payment', {});
+    // return;
     if (selectedSource && selectedDestination && travellersCount) {
       const journeyPayLoad: GetFlightParam = {
         class: flightClass,
@@ -231,7 +233,7 @@ const HomeScreen: AuraStackScreen = () => {
               <View style={styles.datesContainer}>
                 <DatePicker
                   containerStyle={{ flex: 1, paddingRight: 4 }}
-                  textColor="black"
+                  textColor={appColors.black}
                   onValueChange={toDateChange}
                   value={departureDate}
                   mode="date"
@@ -249,6 +251,7 @@ const HomeScreen: AuraStackScreen = () => {
 
                 {selectedTripType === TripType.RoundTrip ? (
                   <DatePicker
+                    textColor={appColors.black}
                     containerStyle={{ flex: 1 }}
                     onValueChange={returnDateChange}
                     value={returnDate || new Date()}
@@ -314,7 +317,7 @@ const HomeScreen: AuraStackScreen = () => {
                 onPress={searchButtonTapped}
                 titleStyle={styles.buttonColor}
                 containerStyle={styles.buttonContainer}
-                disabled={searchDisable}
+                // disabled={searchDisable}
               />
 
               {/* <DatePicker
