@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { min } from 'moment';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,6 +12,9 @@ import { appColors } from 'src/styles/appColors';
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { TravellerCount } from '../TravelerModel';
+
+const maxTraveller = 8;
+const maxChildren = 5;
 
 export interface TreavellerScreenProps {
   numberOfTraveller: TravellerCount;
@@ -57,7 +61,19 @@ export const TreavellerScreen: AuraStackScreen = () => {
       </View>
     );
   };
+  const maxAdult = maxTraveller - (children + infant);
+  const maxChild = Math.min(maxTraveller - (adult + infant), maxChildren);
+  const maxInfant = Math.min(maxTraveller - (adult + children), adult);
 
+  const _setAdult = useCallback(
+    (value) => {
+      if (infant > value) {
+        setInfant(value);
+      }
+      setAdult(value);
+    },
+    [infant]
+  );
   return (
     <Screen>
       <SafeAreaView>
@@ -71,21 +87,21 @@ export const TreavellerScreen: AuraStackScreen = () => {
             subtitle={t('adultSubtitle')}
             footer={t('addNumberOfTravellers')}
           >
-            <AddingView maxNumber={9} newCount={setAdult} count={adult} />
+            <AddingView maxNumber={maxAdult} newCount={_setAdult} count={adult} minNumber={1} />
           </Cell>
           <Cell
             title={t('children')}
             subtitle={t('childrenSubtitle')}
             footer={t('addNumberOfTravellers')}
           >
-            <AddingView maxNumber={5} newCount={setChildren} count={children} />
+            <AddingView maxNumber={maxChild} newCount={setChildren} count={children} />
           </Cell>
           <Cell
             title={t('infant')}
             subtitle={t('infantSubtitle')}
             footer={t('addNumberOfTravellers')}
           >
-            <AddingView maxNumber={1} newCount={setInfant} count={infant} />
+            <AddingView maxNumber={maxInfant} newCount={setInfant} count={infant} />
           </Cell>
           <Button bgColor={appColors.pink} title={t('done')} onPress={doneTapped} />
         </View>
@@ -96,16 +112,17 @@ export const TreavellerScreen: AuraStackScreen = () => {
 interface AddingViewProps {
   newCount: (count: number) => void;
   maxNumber: number;
+  minNumber?: number;
   count: number;
 }
-const AddingView: React.FC<AddingViewProps> = ({ newCount, maxNumber, count }) => {
+const AddingView: React.FC<AddingViewProps> = ({ newCount, maxNumber, count, minNumber = 0 }) => {
   const _addPress = useCallback(() => {
     if (maxNumber > count) {
       newCount(count + 1);
     }
   }, [count, maxNumber, newCount]);
   const _deletePress = useCallback(() => {
-    if (count > 0) {
+    if (count > minNumber) {
       newCount(count - 1);
     }
   }, [count, newCount]);

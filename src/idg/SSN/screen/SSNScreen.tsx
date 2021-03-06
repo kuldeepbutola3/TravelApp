@@ -16,12 +16,13 @@ import MealsTab from './MealsTab';
 import BaggageTab from './BaggageTab';
 import { flightReducer } from '../flightReducer';
 import { Touchable } from 'src/components/Touchable';
+import { Traveller } from 'src/idg/traveller/TravelerModel';
 
 export interface SSNScreenProps {
   param: FlightSet;
 }
 
-function useSeatsPrice(travellers, store) {
+function useSeatsPrice(travellers: Array<Traveller>, store) {
   const [state, setState] = useState({ seats: 0, price: 0 });
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export const SSNScreen: AuraStackScreen = () => {
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
   ]);
-  const allTravellers = [...travellerAdult, ...travellerChild];
+  const allTravellers: Array<Traveller> = [...travellerAdult, ...travellerChild];
   const initialFlightState = {
     seats: {},
     meals: {},
@@ -215,7 +216,7 @@ export const SSNScreen: AuraStackScreen = () => {
 
   useEffect(() => {
     if (param.resultSessionId) {
-      console.log('api.......');
+      console.log('api.......', param.resultSessionId);
       dispatch(fetchFlightFare({ resultSessionId: [param.resultSessionId] }));
     }
   }, [dispatch, param]);
