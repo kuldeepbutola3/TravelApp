@@ -48,50 +48,52 @@ interface Seat {
 }
 interface Passenger {
   paxId: number;
-  ssr: [];
+  ssr: Array<any>;
   panrequired: boolean;
   passportRequired: boolean;
   title: string;
   firstName: string;
   lastName: string;
   passengerNumber: number;
-  //   docTypeCode: null;
-  //   docNumber: null;
-  //   expirationDate: null;
+  docTypeCode: string | null;
+  docNumber: string | null;
+  expirationDate: string | null;
+
   paxType: number;
-  //   dateOfBirth: null;
+  dateOfBirth: string;
   gender: number;
-  //   passportNo: null;
-  //   passportExpiry: null;
-  //   addressLine1: 'Koshambi';
-  //   addressLine2: null;
-  //   totalCost: null;
-  //   balanceDue: null;
-  //   issuedDate: null;
+  passportNo: string;
+  passportExpiry: string;
+  addressLine1: string;
+  addressLine2: string;
+  totalCost: string | null;
+  balanceDue: string | null;
+  issuedDate: string;
   seatDynamic: Array<Seat>;
   mealDynamic: Array<Meal>;
   baggage: Array<Baggage>;
   //   fare: null;
   city: string;
   countryCode: string;
-  //   countryName: null;
+  countryName: string;
   nationality: string;
   contactNo: string;
   email: string;
   isLeadPax: boolean;
-  //   fFAirlineCode: null;
-  //   fFNumber: null;
-  //   gSTCompanyAddress: null;
-  //   gSTCompanyContactNumber: null;
-  //   gSTCompanyName: null;
-  //   gSTNumber: null;
-  //   gSTCompanyEmail: null;
-  //   ticket: null;
-  //   SegmentAdditionalInfo: null;
-  //   items: null;
+
+  fFAirlineCode: string | null;
+  fFNumber: string | null;
+  gSTCompanyAddress: string | null;
+  gSTCompanyContactNumber: string | null;
+  gSTCompanyName: string | null;
+  gSTNumber: string | null;
+  gSTCompanyEmail: string | null;
+  ticket: string | null;
+  SegmentAdditionalInfo: string | null;
+  items: string | null;
   IsPANRequired: boolean;
   IsPassportRequired: boolean;
-  //   PAN: null;
+  PAN: string | null;
 }
 interface FlightDetails {
   origin: string;
@@ -144,7 +146,7 @@ interface FlightDetails {
 }
 export interface PaymentRequest {
   agency: string;
-  //   resultIndex: null;
+  resultIndex: string;
   resultSessionId: string;
   passengers: Array<Passenger>;
 
@@ -153,25 +155,27 @@ export interface PaymentRequest {
   //   traceId: null;
   contactNo: string;
   email: string;
-  //   gSTCompanyAddress: null;
-  //   gSTCompanyContactNumber: null;
-  //   gSTCompanyName: null;
-  //   gSTNumber: null;
-  //   gSTCompanyEmail: null;
+
+  gSTCompanyAddress: string | null;
+  gSTCompanyContactNumber: string | null;
+  gSTCompanyName: string | null;
+  gSTNumber: string | null;
+  gSTCompanyEmail: string | null;
+
   fareMismatch: boolean;
   passangerCount: number;
   publishedFare: number;
   offeredFare: number;
   pf: number;
-  lcc: true;
+  lcc: boolean;
   dobAirAshiya: boolean;
-  gSTDetailsRequired: string;
+  gSTDetailsRequired: boolean;
   //   supplierId: null;
   //   artSSRResponse: null;
-  flightDetailsRequest: FlightDetails;
+  // flightDetailsRequest: FlightDetails;
   //   sosSegment: null;
   //   adminremarks: '';
   pGUserMappingId: string;
-  pGUserId: string;
+  pGUserId?: number;
   //   encRequest: null;
 }

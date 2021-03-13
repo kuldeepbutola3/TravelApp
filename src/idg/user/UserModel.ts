@@ -48,7 +48,7 @@ export interface UserData {
   userID: number;
   firstName: string;
   middleName: string;
-  //   agency: null;
+  agency: string;
   website: string;
   lastName: string;
   address: string;

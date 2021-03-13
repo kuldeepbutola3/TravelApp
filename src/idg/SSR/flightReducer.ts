@@ -1,6 +1,8 @@
-export const flightReducer = (state, action) => {
+import { SelectionState } from './SsrModel';
+
+export const flightReducer = (state, action): SelectionState => {
   switch (action.type) {
-    case "ADD_SEAT":
+    case 'ADD_SEAT':
       if (state.seats?.[state.source]) {
         if (state.seats?.[state.source]?.[state.traveller]) {
           return {
@@ -35,7 +37,7 @@ export const flightReducer = (state, action) => {
         },
       };
 
-    case "REMOVE_SEAT":
+    case 'REMOVE_SEAT':
       return {
         ...state,
         seats: {
@@ -47,9 +49,7 @@ export const flightReducer = (state, action) => {
         },
       };
 
-
-
-    case "ADD_MEAL":
+    case 'ADD_MEAL':
       if (state.meals?.[state.source]) {
         if (state.meals?.[state.source]?.[state.traveller]) {
           return {
@@ -58,10 +58,7 @@ export const flightReducer = (state, action) => {
               ...state.meals,
               [state.source]: {
                 ...state.meals[state.source],
-                [state.traveller]: [
-                  ...state.meals[state.source][state.traveller],
-                  action.payload,
-                ],
+                [state.traveller]: [...state.meals[state.source][state.traveller], action.payload],
               },
             },
           };
@@ -86,11 +83,9 @@ export const flightReducer = (state, action) => {
           },
         },
       };
-    case "REMOVE_MEAL":
+    case 'REMOVE_MEAL':
       const meals = state.meals[state.source][state.traveller];
-      const mealsIndex = meals.findIndex(
-        (meal) => meal.code === action.payload.code,
-      );
+      const mealsIndex = meals.findIndex((meal) => meal.code === action.payload.code);
       meals.splice(mealsIndex, 1);
       return {
         ...state,
@@ -103,8 +98,7 @@ export const flightReducer = (state, action) => {
         },
       };
 
-
-    case "ADD_BAGGAGE":
+    case 'ADD_BAGGAGE':
       if (state.baggage?.[state.source]) {
         if (state.baggage?.[state.source]?.[state.traveller]) {
           return {
@@ -141,11 +135,9 @@ export const flightReducer = (state, action) => {
           },
         },
       };
-    case "REMOVE_BAGGAGE":
+    case 'REMOVE_BAGGAGE':
       const baggages = state.baggage[state.source][state.traveller];
-      const baggageIndex = baggages.findIndex(
-        (baggage) => baggage.code === action.payload.code,
-      );
+      const baggageIndex = baggages.findIndex((baggage) => baggage.code === action.payload.code);
       baggages.splice(baggageIndex, 1);
       return {
         ...state,
@@ -158,19 +150,17 @@ export const flightReducer = (state, action) => {
         },
       };
 
-
-    case "UPDATE_SOURCE":
+    case 'UPDATE_SOURCE':
       return {
         ...state,
-        source: action.payload
+        source: action.payload,
       };
 
-    case "UPDATE_TRAVELLER":
+    case 'UPDATE_TRAVELLER':
       return {
         ...state,
-        traveller: action.payload
+        traveller: action.payload,
       };
-
 
     default:
       return state;

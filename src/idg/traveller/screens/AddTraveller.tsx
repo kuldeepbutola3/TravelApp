@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
-import { useBindAction } from 'src/redux/hooks';
+import { useBindAction, useSliceSelector } from 'src/redux/hooks';
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuraTranslation } from 'src/utils/i18n';
