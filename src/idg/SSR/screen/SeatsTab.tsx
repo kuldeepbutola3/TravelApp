@@ -141,7 +141,9 @@ const SeatsTab = ({
 
       <PriceFooter
         headerLabel={`Seat(s) ${getSelectedSeatCodes()}`}
-        subHeaderLabel={`${selectedSeats?.length} of ${totalTravellers?.length * allRoutes?.length || 0} Seat(s) Selected`}
+        subHeaderLabel={`${selectedSeats?.length} of ${
+          totalTravellers?.length * allRoutes?.length || 0
+        } Seat(s) Selected`}
         priceLabel={`${currency} ${totalSeatsPrice?.price}`}
       />
     </View>

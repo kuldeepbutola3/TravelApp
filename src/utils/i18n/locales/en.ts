@@ -142,4 +142,9 @@ export default {
   adult: 'Adult',
   selected: 'Selected',
   childHeader: 'Child 2-12 years',
+
+  /**
+   * Traveller
+   */
+  payment: 'Payment',
 };

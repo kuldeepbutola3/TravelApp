@@ -1,5 +1,13 @@
 import React, { useState, useCallback } from 'react';
-import { View, ViewStyle, StyleSheet, Platform, TouchableOpacity, StyleProp } from 'react-native';
+import {
+  View,
+  ViewStyle,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+  StyleProp,
+  SafeAreaView,
+} from 'react-native';
 import DateTimePicker, {
   IOSNativeProps,
   AndroidNativeProps,
@@ -82,7 +90,7 @@ const IOSDatePicker: React.FC<DatePickerProps> = ({
       onPress={onPress}
       onRequestClose={onRequestClose}
     >
-      <View>
+      <SafeAreaView>
         <View style={styles.iosPickerHeader}>
           <Button
             style={styles.iosPickerHeaderButton}
@@ -92,7 +100,7 @@ const IOSDatePicker: React.FC<DatePickerProps> = ({
           />
         </View>
         <DateTimePicker onChange={_onChange} {...datePickerProps} value={localDate} />
-      </View>
+      </SafeAreaView>
     </IOSPicker>
   );
 };

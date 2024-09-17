@@ -21,7 +21,8 @@ import { TravellerView } from '../components/TravellerView';
 import { appColors } from 'src/styles/appColors';
 import { Button } from 'src/components/Button';
 import { Input } from 'react-native-elements';
-import { useSliceSelector } from 'src/redux/hooks';
+import { useBindAction, useSliceSelector } from 'src/redux/hooks';
+import { flightSlice } from 'src/idg/flight/flightSlice';
 
 export interface TravellerDetailProps {
   param: FlightSet;
@@ -32,7 +33,7 @@ export const TravellerDetail: AuraStackScreen = () => {
   const navigation = useNavigation<ApptNavigationProp>();
   const { param } = useParams<AppRoutes, 'Login'>();
   const { travellerChild, travellerAdult, travellerCount } = useSliceSelector('flight');
-
+  const addBookingInfo = useBindAction(flightSlice.actions.addBookingInfo);
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
 
@@ -40,14 +41,16 @@ export const TravellerDetail: AuraStackScreen = () => {
     navigation,
   ]);
 
-  const onPressContinue = useCallback(() => navigation.navigate('SSN', { param }), [
-    navigation,
-    param,
-  ]);
+  const onPressContinue = useCallback(() => {
+    addBookingInfo({ email, contactNumber: number });
+    navigation.navigate('SSR', { param });
+  }, [navigation, param, addBookingInfo, email, number]);
 
   const enableContinue =
     travellerCount.children === travellerChild.length &&
-    travellerCount.adult === travellerAdult.length;
+    travellerCount.adult === travellerAdult.length &&
+    email.length &&
+    number.length;
 
   return (
     <Screen>

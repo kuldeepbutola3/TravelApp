@@ -1,10 +1,20 @@
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import React from 'react';
 import { configureDefault, configureClient, setTokens } from 'src/idg/IDGClient';
+import { useOnMount, useThunkDispatch } from 'src/redux/hooks';
 import { E_REFRESH } from '../sessionAPI';
 import { IDGSession } from '../SessionModel';
+import { doFetchUserData } from '../sessionSlice';
 
 export const TokenManager: React.FC = ({ children }) => {
+  // fetching user details
+  const dispatch = useThunkDispatch();
+
+  useOnMount(() => {
+    console.log('useOnMount');
+    dispatch(doFetchUserData());
+  });
+
   const responseCallback = (
     axiosResponse: AxiosResponse,
     client: AxiosInstance,
@@ -75,7 +85,8 @@ export const TokenManager: React.FC = ({ children }) => {
     so the initial error can continue on it's original trajectory. */
     return error !== undefined ? Promise.reject(error) : Promise.resolve(axiosResponse);
   };
+
   configureClient({ responseCallback });
-  configureDefault();
+  // configureDefault();
   return <>{children}</>;
 };

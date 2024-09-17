@@ -1,38 +1,11 @@
 import { getClient } from 'src/idg/IDGClient';
+import { UserData } from '../user/UserModel';
 import { IDGSession } from './SessionModel';
 
-// export const E_LOGIN = '/api/client/sessions/login';
-// export const E_PROFILES = 'api/client/users/';
 export const E_REFRESH = '/v1/service/oauth2/tokens';
-export type SessionEndpoint =
-  // | typeof E_LOGIN
-  // | typeof E_PROFILES
-  typeof E_REFRESH;
+export const E_USER_DATA = '/v1/service/users/user-by-domain';
+export type SessionEndpoint = typeof E_USER_DATA | typeof E_REFRESH;
 export const getSessionClient = () => getClient<SessionEndpoint>();
-
-// export interface LoginParams {
-//   username: string;
-//   password: string;
-// }
-// export type AuthenticationResponse = {
-//   accessToken: string;
-//   refreshToken: string;
-// };
-
-// export function login({
-//   username,
-//   password,
-// }: LoginParams): Promise<AuthenticationResponse> {
-//   return getSessionClient()
-//     .post<AuthenticationResponse>(E_LOGIN, {username, password})
-//     .then(({data}) => data);
-// }
-
-// export function fetchProfile(userId: string): Promise<ProfileResponse> {
-//   return getClient()
-//     .get<ProfileResponse>(`${E_PROFILES}${userId}`)
-//     .then(({data}) => data);
-// }
 
 export async function refreshToken(): Promise<IDGSession> {
   const dict = {
@@ -43,5 +16,19 @@ export async function refreshToken(): Promise<IDGSession> {
     superAdmin: '16flightapi.besttoursofindia.in',
   };
   const { data } = await getSessionClient().post<IDGSession>(E_REFRESH, dict);
+  return data;
+}
+
+export async function userData(): Promise<UserData> {
+  const dict = {
+    agency: 'test.besttoursofindia.in',
+    mobileAppFlag: 'Y',
+  };
+  console.log('dict............', dict);
+  const { data } = await getSessionClient().put<UserData>(E_USER_DATA, dict);
+  // .catch((error) => {
+  //   console.log('wwwwwwwwwww', error);
+  // });
+  // });
   return data;
 }

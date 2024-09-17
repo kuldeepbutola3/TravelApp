@@ -3,7 +3,7 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
 import { Screen } from 'src/components/Screen';
 import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import SeatsTab from './SeatsTab';
 import MealsTab from './MealsTab';
 import BaggageTab from './BaggageTab';
 import { flightReducer } from '../flightReducer';
+import { Traveller } from 'src/idg/traveller/TravelerModel';
 import { appColors } from 'src/styles/appColors';
 import RectButton from '../components/Buttons';
 import {
@@ -27,28 +28,30 @@ import {
 import BottomSheet from 'src/components/BottomSheet/BottomSheet';
 import ReviewBooking from '../components/ReviewBooking';
 import TotalPriceFooter from '../components/TotalPriceFooter';
+import { SelectionState } from '../SsrModel';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
-export interface SSNScreenProps {
+export interface SSRScreenProps {
   param: FlightSet;
 }
 
-export const SSNScreen: AuraStackScreen = () => {
+export const SSRScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
   const dispatch = useThunkDispatch();
   const navigation = useNavigation<ApptNavigationProp>();
   const { param } = useParams<AppRoutes, 'ReviewFlight'>();
-  const { flightFare, travellerAdult, travellerChild } = useSliceSelector('flight');
-  const refRBSheet = useRef();
+  const { flightFare, travellerAdult, travellerChild, loading } = useSliceSelector('flight');
+  const refRBSheet = useRef<RBSheet>();
   // console.log('flightFare.......ss', JSON.stringify(flightFare?.artSSRResponse?.ssrInnerResponse?.seatDynamic?.[0]?.segmentSeat?.[0]?.rowSeats));
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,
   ]);
-  const allTravellers = [...travellerAdult, ...travellerChild];
-  const initialFlightState = {
+  const allTravellers: Array<Traveller> = [...travellerAdult, ...travellerChild];
+  const initialFlightState: SelectionState = {
     seats: {},
     meals: {},
     baggage: {},
-    traveller: allTravellers[0].fName,
+    traveller: `${allTravellers[0].fName}`,
     source: 'DEL',
   };
   const [flightState, dispatchToFlightReducer] = useReducer(flightReducer, initialFlightState);
@@ -56,11 +59,18 @@ export const SSNScreen: AuraStackScreen = () => {
   const mealsData = useMemo(() => flightState?.meals || {}, [flightState]);
   const baggageData = useMemo(() => flightState?.baggage || {}, [flightState]);
   const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+
+  // const [routes] = React.useState([
+  //   { key: 'seats', title: 'Seats' },
+  //   { key: 'meals', title: 'Meals' },
+  //   { key: 'baggage', title: 'Baggage' },
+  // ]);
+
+  const routes = [
     { key: 'seats', title: 'Seats' },
     { key: 'meals', title: 'Meals' },
     { key: 'baggage', title: 'Baggage' },
-  ]);
+  ];
 
   const currency = getCurrency(
     flightFare?.artSSRResponse?.ssrInnerResponse?.seatDynamic[0]?.segmentSeat[0].rowSeats[0]
@@ -153,7 +163,7 @@ export const SSNScreen: AuraStackScreen = () => {
 
   useEffect(() => {
     if (param.resultSessionId) {
-      console.log('api.......');
+      console.log('api.......', param.resultSessionId);
       dispatch(fetchFlightFare({ resultSessionId: [param.resultSessionId] }));
     }
   }, [dispatch, param]);
@@ -190,25 +200,43 @@ export const SSNScreen: AuraStackScreen = () => {
   const handleBottomSheetClose = () => {
     setIsBottomSheetOpen(false);
   };
-  
+
+  const nextTapped = useCallback(() => {
+    if (index === 2) {
+      refRBSheet?.current?.open();
+    } else {
+      setIndex(index + 1);
+    }
+  }, [index]);
+
+  console.log('flightState.....', flightState);
+
+  const continueTapped = useCallback(() => {
+    refRBSheet.current?.close();
+    navigation.navigate('Payment', { data: { ...flightState }, totalPrice, flight: param });
+  }, [navigation, flightState, totalPrice, param]);
+
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <Header onPressBack={onPressBack} title={t('ssrAdon')} />
+        {loading === 'pending' ? (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator color={appColors.gray} />
+          </View>
+        ) : (
+          <>
+            <TabView
+              navigationState={{ index, routes }}
+              renderScene={renderScene}
+              onIndexChange={setIndex}
+              style={{ backgroundColor: appColors.white }}
+              renderTabBar={renderTabBar}
+            />
 
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          style={{ backgroundColor: appColors.white }}
-          renderTabBar={renderTabBar}
-        />
-
-        <TotalPriceFooter
-          currency={currency}
-          price={totalPrice}
-          onPress={() => refRBSheet?.current?.open()}
-        />
+            <TotalPriceFooter currency={currency} price={totalPrice} onPress={nextTapped} />
+          </>
+        )}
 
         {isBottomSheetOpen && <View style={styles.transparentCover} />}
 
@@ -220,12 +248,14 @@ export const SSNScreen: AuraStackScreen = () => {
           <ReviewBooking
             onClose={() => refRBSheet.current?.close()}
             selectedSeats={`${selectedSeats.map((seat) => seat.code).join(', ')}`}
-            seatCount={`${selectedSeats?.length}/${allTravellers?.length * getRoutes()?.length || 0}`}
-            selectedBaggages={''}
+            seatCount={`${selectedSeats?.length}/${
+              allTravellers?.length * getRoutes()?.length || 0
+            }`}
+            selectedBaggages={totalMealsPrice.meals}
             baggageCount={''}
             selectedMeals={''}
             mealCount={''}
-            onPress={() => {}}
+            onPress={continueTapped}
           />
         </BottomSheet>
       </SafeAreaView>

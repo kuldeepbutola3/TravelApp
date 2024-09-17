@@ -14,7 +14,7 @@ import {
   TravellerDetail,
   TravellerDetailProps,
 } from 'src/idg/traveller/screens/TravellerDetailScreen';
-import { SSNScreen, SSNScreenProps } from 'src/idg/SSN/screen/SSNScreen';
+import { SSRScreen, SSRScreenProps } from 'src/idg/SSR/screen/SSRScreen';
 import { AddTraveller, AddTravellerProps } from 'src/idg/traveller/screens/AddTraveller';
 import {
   FlightFilterScreen,
@@ -24,6 +24,7 @@ import {
   TreavellerScreen,
   TreavellerScreenProps,
 } from 'src/idg/traveller/screens/TreavellerScreen';
+import { PayUScreenProps, PayUScreenScreen } from 'src/idg/payment/screens/PayUScreen';
 
 export type AppRoutes = {
   Main: undefined;
@@ -35,7 +36,8 @@ export type AppRoutes = {
   Login: LoginScreenProps;
   TravelerDetail: TravellerDetailProps;
   AddTraveller: AddTravellerProps;
-  SSN: SSNScreenProps;
+  SSR: SSRScreenProps;
+  Payment: PayUScreenProps;
 };
 
 export type ApptNavigationProp = NavigationProp<AppRoutes>;
@@ -77,7 +79,8 @@ const AppNav = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="AddTraveller" component={AddTraveller} options={{ headerShown: false }} />
-      <Stack.Screen name="SSN" component={SSNScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="SSR" component={SSRScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Payment" component={PayUScreenScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
