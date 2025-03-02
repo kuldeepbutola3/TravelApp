@@ -2,15 +2,26 @@ import { useNavigation } from '@react-navigation/native';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button } from 'src/components/Button';
-import { Header } from 'src/components/Header';
-import { Screen } from 'src/components/Screen';
-import { Touchable } from 'src/components/Touchable';
-import { AppRoutes } from 'src/navigation/RootNav';
-import { appColors } from 'src/styles/appColors';
-import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { Button } from 'src/components/Button';
+// import { Header } from 'src/components/Header';
+// import { Screen } from 'src/components/Screen';
+// import { Touchable } from 'src/components/Touchable';
+// import { AppRoutes } from 'src/navigation/RootNav';
+// import { appColors } from 'src/styles/appColors';
+// import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { TravellerCount } from '../TravelerModel';
+import { AuraStackScreen, useParams } from '../../../types/navigationTypes';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { AppRoutes } from '../../../navigation/RootNav';
+import { appColors } from '../../../styles/appColors';
+import { Screen } from '../../../components/Screen';
+import { Header } from '../../../components/Header';
+import { Button } from '../../../components/Button';
+import { Touchable } from '../../../components/Touchable';
+
+const maxTraveller = 8;
+const maxChildren = 5;
 
 export interface TreavellerScreenProps {
   numberOfTraveller: TravellerCount;
@@ -21,9 +32,10 @@ export const TreavellerScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
   const { numberOfTraveller, callBack } = useParams<AppRoutes, 'Traveller'>();
 
-  const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
-    navigation,
-  ]);
+  const onPressBack = useCallback(
+    () => navigation.canGoBack() && navigation.goBack(),
+    [navigation],
+  );
   const [adult, setAdult] = useState(numberOfTraveller.adult);
   const [children, setChildren] = useState(numberOfTraveller.children);
   const [infant, setInfant] = useState(numberOfTraveller.infant);
@@ -45,7 +57,12 @@ export const TreavellerScreen: AuraStackScreen = () => {
     footer: string;
   }> = ({ children, title, subtitle, footer }) => {
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 24,
+        }}>
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{title}</Text>
@@ -57,7 +74,19 @@ export const TreavellerScreen: AuraStackScreen = () => {
       </View>
     );
   };
+  const maxAdult = maxTraveller - (children + infant);
+  const maxChild = Math.min(maxTraveller - (adult + infant), maxChildren);
+  const maxInfant = Math.min(maxTraveller - (adult + children), adult);
 
+  const _setAdult = useCallback(
+    (value: number) => {
+      if (infant > value) {
+        setInfant(value);
+      }
+      setAdult(value);
+    },
+    [infant],
+  );
   return (
     <Screen>
       <SafeAreaView>
@@ -69,23 +98,20 @@ export const TreavellerScreen: AuraStackScreen = () => {
           <Cell
             title={t('adult')}
             subtitle={t('adultSubtitle')}
-            footer={t('addNumberOfTravellers')}
-          >
-            <AddingView maxNumber={9} newCount={setAdult} count={adult} />
+            footer={t('addNumberOfTravellers')}>
+            <AddingView maxNumber={maxAdult} newCount={_setAdult} count={adult} minNumber={1} />
           </Cell>
           <Cell
             title={t('children')}
             subtitle={t('childrenSubtitle')}
-            footer={t('addNumberOfTravellers')}
-          >
-            <AddingView maxNumber={5} newCount={setChildren} count={children} />
+            footer={t('addNumberOfTravellers')}>
+            <AddingView maxNumber={maxChild} newCount={setChildren} count={children} />
           </Cell>
           <Cell
             title={t('infant')}
             subtitle={t('infantSubtitle')}
-            footer={t('addNumberOfTravellers')}
-          >
-            <AddingView maxNumber={1} newCount={setInfant} count={infant} />
+            footer={t('addNumberOfTravellers')}>
+            <AddingView maxNumber={maxInfant} newCount={setInfant} count={infant} />
           </Cell>
           <Button bgColor={appColors.pink} title={t('done')} onPress={doneTapped} />
         </View>
@@ -96,16 +122,17 @@ export const TreavellerScreen: AuraStackScreen = () => {
 interface AddingViewProps {
   newCount: (count: number) => void;
   maxNumber: number;
+  minNumber?: number;
   count: number;
 }
-const AddingView: React.FC<AddingViewProps> = ({ newCount, maxNumber, count }) => {
+const AddingView: React.FC<AddingViewProps> = ({ newCount, maxNumber, count, minNumber = 0 }) => {
   const _addPress = useCallback(() => {
     if (maxNumber > count) {
       newCount(count + 1);
     }
   }, [count, maxNumber, newCount]);
   const _deletePress = useCallback(() => {
-    if (count > 0) {
+    if (count > minNumber) {
       newCount(count - 1);
     }
   }, [count, newCount]);
@@ -121,8 +148,7 @@ const AddingView: React.FC<AddingViewProps> = ({ newCount, maxNumber, count }) =
         borderRadius: 5,
         justifyContent: 'space-between',
         alignItems: 'center',
-      }}
-    >
+      }}>
       <Touchable
         style={{
           flex: 1,
@@ -132,8 +158,7 @@ const AddingView: React.FC<AddingViewProps> = ({ newCount, maxNumber, count }) =
           height: '100%',
         }}
         disabled={count === 0}
-        onPress={_deletePress}
-      >
+        onPress={_deletePress}>
         <Text style={{ fontSize: 20 }}>-</Text>
       </Touchable>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -148,8 +173,7 @@ const AddingView: React.FC<AddingViewProps> = ({ newCount, maxNumber, count }) =
           height: '100%',
         }}
         onPress={_addPress}
-        disabled={maxNumber < count}
-      >
+        disabled={maxNumber < count}>
         <Text style={{ fontSize: 20 }}>+</Text>
       </Touchable>
     </View>

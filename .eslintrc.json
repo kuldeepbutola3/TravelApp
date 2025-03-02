@@ -1,7 +1,0 @@
-{
-  "root": true,
-  "extends": ["@react-native-community", "prettier"],
-  "rules": {
-    "no-useless-escape": "off"
-  }
-}

@@ -3,8 +3,9 @@ import { BaseTableCellProps } from './types';
 import { TableCell } from './TableCell';
 import { flatten } from './util';
 import { HeadingText } from './HeadingText';
+import { ComponentProps } from '../../types/componentProps';
 
-type TableHeadingProps = BaseTableCellProps & {};
+type TableHeadingProps = BaseTableCellProps & ComponentProps;
 
 export const TableHeading: React.FC<TableHeadingProps> = (props) => {
   const children = props.children;

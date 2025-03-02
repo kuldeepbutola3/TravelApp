@@ -1,19 +1,29 @@
 import React, { useState, useCallback } from 'react';
-import { View, ViewStyle, StyleSheet, Platform, TouchableOpacity, StyleProp } from 'react-native';
+import {
+  View,
+  ViewStyle,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+  StyleProp,
+  SafeAreaView,
+} from 'react-native';
 import DateTimePicker, {
   IOSNativeProps,
   AndroidNativeProps,
 } from '@react-native-community/datetimepicker';
-import { IOSPicker } from 'src/components/IOSPicker';
+// import { IOSPicker } from 'src/components/IOSPicker';
 // import { TextInput, TextInputProps } from './TextInput';
 import { Button } from './Button';
+import { ComponentProps } from '../types/componentProps';
+import { IOSPicker } from './IOSPicker';
 
 export type DatePickerProps = (IOSNativeProps | AndroidNativeProps) & {
   containerStyle?: StyleProp<ViewStyle>;
   onValueChange: (value: Date) => void;
 };
 
-export const DatePicker: React.FC<DatePickerProps> = (props) => {
+export const DatePicker: React.FC<DatePickerProps & ComponentProps> = props => {
   return (
     Platform.select({
       ios: <IOSDatePicker {...props} />,
@@ -26,7 +36,7 @@ export const DatePicker: React.FC<DatePickerProps> = (props) => {
 //   return <TextInput pointerEvents="none" editable={false} {...props} />;
 // };
 
-const AndroidDatePicker: React.FC<DatePickerProps> = ({
+const AndroidDatePicker: React.FC<DatePickerProps & ComponentProps> = ({
   containerStyle,
   onValueChange: onChange,
   children,
@@ -40,7 +50,7 @@ const AndroidDatePicker: React.FC<DatePickerProps> = ({
       setShowPicker(false);
       value && onChange && onChange(value);
     },
-    [onChange]
+    [onChange],
   );
 
   return (
@@ -53,7 +63,7 @@ const AndroidDatePicker: React.FC<DatePickerProps> = ({
   );
 };
 
-const IOSDatePicker: React.FC<DatePickerProps> = ({
+const IOSDatePicker: React.FC<DatePickerProps & ComponentProps> = ({
   children,
   containerStyle,
   onValueChange,
@@ -80,9 +90,8 @@ const IOSDatePicker: React.FC<DatePickerProps> = ({
       style={containerStyle}
       showPicker={showPicker}
       onPress={onPress}
-      onRequestClose={onRequestClose}
-    >
-      <View>
+      onRequestClose={onRequestClose}>
+      <SafeAreaView>
         <View style={styles.iosPickerHeader}>
           <Button
             style={styles.iosPickerHeaderButton}
@@ -92,7 +101,7 @@ const IOSDatePicker: React.FC<DatePickerProps> = ({
           />
         </View>
         <DateTimePicker onChange={_onChange} {...datePickerProps} value={localDate} />
-      </View>
+      </SafeAreaView>
     </IOSPicker>
   );
 };

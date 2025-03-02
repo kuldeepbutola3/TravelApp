@@ -1,34 +1,52 @@
 import React, { useCallback, useState } from 'react';
 
-import { AuraStackScreen } from 'src/types/navigationTypes';
-import { Screen } from 'src/components/Screen';
-import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
+// import { AuraStackScreen } from 'src/types/navigationTypes';
+// import { Screen } from 'src/components/Screen';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { useStackOptions } from 'src/navigation/stackOptions';
-import { useBindAction, useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { fetchFlightPlaces, flightSlice } from 'src/idg/flight/flightSlice';
-import { Header } from 'src/navigation/homeScreenHeader';
-import { GradientBackground } from 'src/components/GradientBackground';
+// import { useStackOptions } from 'src/navigation/stackOptions';
+// import { useBindAction, useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
+// import { fetchFlightPlaces, flightSlice } from 'src/idg/flight/flightSlice';
+// import { Header } from 'src/navigation/homeScreenHeader';
+// import { GradientBackground } from 'src/components/GradientBackground';
 import { View } from 'react-native';
 import DateSelector from './components/DateSelector';
-import { TripType, HeaderTabs, ClassType } from 'src/constants/enums';
-import { formatDate } from 'src/utils/date-formatter';
-import { DatePicker, DatePickerProps } from 'src/components/DatePicker';
+// import { TripType, HeaderTabs, ClassType } from 'src/constants/enums';
+// import { formatDate } from 'src/utils/date-formatter';
+// import { DatePicker, DatePickerProps } from 'src/components/DatePicker';
 import TripTypeButton from './components/TripTypeButton';
 import styles from './styles';
 import InputBox from './components/InputBox';
 import PlaceSearchField from './components/PlaceSearchField';
 import FlightClassDropdown from './components/FlightClassDropdown';
 
-import { ApptNavigationProp } from 'src/navigation/RootNav';
-import { GetFlightParam } from 'src/idg/flight/flightApi';
-import { FlightPlaces } from 'src/idg/flight/FlightModel';
-import { Button } from 'src/components/Button';
-import { useAuraTranslation } from 'src/utils/i18n';
-import { appColors } from 'src/styles/appColors';
+// import { ApptNavigationProp } from 'src/navigation/RootNav';
+// import { GetFlightParam } from 'src/idg/flight/flightApi';
+// import { FlightPlaces } from 'src/idg/flight/FlightModel';
+// import { Button } from 'src/components/Button';
+// import { useAuraTranslation } from 'src/utils/i18n';
+// import { appColors } from 'src/styles/appColors';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Touchable } from 'src/components/Touchable';
-import { TravellerCount } from 'src/idg/traveller/TravelerModel';
+import { ClassType, HeaderTabs, TripType } from '../../../../constants/enums';
+import { AuraStackScreen } from '../../../../types/navigationTypes';
+import { useAuraTranslation } from '../../../../utils/i18n';
+import { ApptNavigationProp } from '../../../../navigation/RootNav';
+import { useBindAction, useSliceSelector, useThunkDispatch } from '../../../../redux/hooks';
+import { fetchFlightPlaces, flightSlice } from '../../../flight/flightSlice';
+import { Header } from '../../../../components/Header';
+import { FlightPlaces } from '../../../flight/FlightModel';
+import { TravellerCount } from '../../../traveller/TravelerModel';
+import { DatePicker, DatePickerProps } from '../../../../components/DatePicker';
+import { GetFlightParam } from '../../../flight/flightApi';
+import { formatDate } from '../../../../utils/date-formatter';
+import { appColors } from '../../../../styles/appColors';
+import { Touchable } from '../../../../components/Touchable';
+import { Button } from '../../../../components/Button';
+import { useStackOptions } from '../../../../navigation/stackOptions';
+import { Screen } from '../../../../components/Screen';
+import { GradientBackground } from '../../../../components/GradientBackground';
+// import { Touchable } from 'src/components/Touchable';
+// import { TravellerCount } from 'src/idg/traveller/TravelerModel';
 const CLASS: Array<{ value: ClassType }> = [
   {
     value: 'Economy',
@@ -61,13 +79,13 @@ const HomeScreen: AuraStackScreen = () => {
     headerTransparent: true,
     headerTitleAlign: 'center',
   });
-  const headerHeight = useHeaderHeight();
+  const headerHeight = 100; // useHeaderHeight();
   const dispatch = useThunkDispatch();
   const { places } = useSliceSelector('flight');
 
   const [selectedSource, setSelectedSource] = useState(undefined as FlightPlaces | undefined);
   const [selectedDestination, setSelectedDestination] = useState(
-    undefined as FlightPlaces | undefined
+    undefined as FlightPlaces | undefined,
   );
 
   const [departureDate, setDepartureDate] = useState(new Date());
@@ -87,13 +105,13 @@ const HomeScreen: AuraStackScreen = () => {
     (term: string) => {
       term.length % 3 === 0 && dispatch(fetchFlightPlaces({ term }));
     },
-    [dispatch]
+    [dispatch],
   );
   const handleDestinationSearchChange = useCallback(
     (term: string) => {
       term.length % 3 === 0 && dispatch(fetchFlightPlaces({ term }));
     },
-    [dispatch]
+    [dispatch],
   );
   const handleFlightsTabPress = () => setSelectedTab(HeaderTabs.Flights);
   const handleHotelsTabPress = () => setSelectedTab(HeaderTabs.Hotels);
@@ -109,7 +127,7 @@ const HomeScreen: AuraStackScreen = () => {
   };
 
   const toDateChange = useCallback<DatePickerProps['onValueChange']>(
-    (sender) => {
+    sender => {
       setDepartureDate(sender);
 
       console.log('time', returnDate.getTime(), sender.getTime());
@@ -118,17 +136,19 @@ const HomeScreen: AuraStackScreen = () => {
       }
       return true;
     },
-    [setDepartureDate, setReturnDate, returnDate]
+    [setDepartureDate, setReturnDate, returnDate],
   );
   const returnDateChange = useCallback<DatePickerProps['onValueChange']>(
-    (sender) => {
+    sender => {
       setReturnDate(sender);
       return true;
     },
-    [setReturnDate]
+    [setReturnDate],
   );
 
   const searchButtonTapped = useCallback(() => {
+    // navigation.navigate('Payment', {});
+    // return;
     if (selectedSource && selectedDestination && travellersCount) {
       const journeyPayLoad: GetFlightParam = {
         class: flightClass,
@@ -182,8 +202,7 @@ const HomeScreen: AuraStackScreen = () => {
     <View style={styles.container}>
       <GradientBackground
         style={styles.gradientBackground}
-        colors={['#4c669f', '#3b5998', '#192f6a']}
-      >
+        colors={['#4c669f', '#3b5998', '#192f6a']}>
         <Screen style={[styles.searchConatiner, { paddingTop: headerHeight }]}>
           <ScrollView>
             <View style={styles.tripButtonsContainer}>
@@ -231,12 +250,11 @@ const HomeScreen: AuraStackScreen = () => {
               <View style={styles.datesContainer}>
                 <DatePicker
                   containerStyle={{ flex: 1, paddingRight: 4 }}
-                  textColor="black"
+                  textColor={appColors.black}
                   onValueChange={toDateChange}
                   value={departureDate}
                   mode="date"
-                  minimumDate={new Date()}
-                >
+                  minimumDate={new Date()}>
                   <DateSelector
                     disabled={false}
                     label="DEPARTURE"
@@ -249,12 +267,12 @@ const HomeScreen: AuraStackScreen = () => {
 
                 {selectedTripType === TripType.RoundTrip ? (
                   <DatePicker
+                    textColor={appColors.black}
                     containerStyle={{ flex: 1 }}
                     onValueChange={returnDateChange}
                     value={returnDate || new Date()}
                     mode="date"
-                    minimumDate={departureDate}
-                  >
+                    minimumDate={departureDate}>
                     <DateSelector
                       label="RETURN"
                       date={formatDate(returnDate, 'DD MMM YYYY')}
@@ -314,7 +332,7 @@ const HomeScreen: AuraStackScreen = () => {
                 onPress={searchButtonTapped}
                 titleStyle={styles.buttonColor}
                 containerStyle={styles.buttonContainer}
-                disabled={searchDisable}
+                // disabled={searchDisable}
               />
 
               {/* <DatePicker

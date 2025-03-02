@@ -4,26 +4,58 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 
 import { MainNav } from './MainNav';
 import { navigationRef } from './NavigationService';
-import { FlightListScreen, FlightListScreenProps } from 'src/idg/flight/screens/FlightListScreen';
-import {
-  ReviewFlightScreen,
-  ReviewFlightScreenProps,
-} from 'src/idg/flight/screens/ReviewFlightScreen';
-import { LoginScreen, LoginScreenProps } from 'src/idg/login/screens/LoginScreen';
-import {
-  TravellerDetail,
-  TravellerDetailProps,
-} from 'src/idg/traveller/screens/TravellerDetailScreen';
-import { SSNScreen, SSNScreenProps } from 'src/idg/SSN/screen/SSNScreen';
-import { AddTraveller, AddTravellerProps } from 'src/idg/traveller/screens/AddTraveller';
+// import {
+//   FlightListScreen,
+//   FlightListScreenProps,
+// } from 'src/idg/flight/screens/FlightListScreen';
+// import {
+//   ReviewFlightScreen,
+//   ReviewFlightScreenProps,
+// } from 'src/idg/flight/screens/ReviewFlightScreen';
+// import {
+//   LoginScreen,
+//   LoginScreenProps,
+// } from 'src/idg/login/screens/LoginScreen';
+// import {
+//   TravellerDetail,
+//   TravellerDetailProps,
+// } from 'src/idg/traveller/screens/TravellerDetailScreen';
+// import { SSRScreen, SSRScreenProps } from 'src/idg/SSR/screen/SSRScreen';
+// import {
+//   AddTraveller,
+//   AddTravellerProps,
+// } from 'src/idg/traveller/screens/AddTraveller';
+// import {
+//   FlightFilterScreen,
+//   FlightFilterScreenProps,
+// } from 'src/idg/flight/screens/FlightFilterScreen';
+// import {
+//   TreavellerScreen,
+//   TreavellerScreenProps,
+// } from 'src/idg/traveller/screens/TreavellerScreen';
+// import {
+//   PayUScreenProps,
+//   PayUScreenScreen,
+// } from 'src/idg/payment/screens/PayUScreen';
+import { TreavellerScreen, TreavellerScreenProps } from '../idg/traveller/screens/TreavellerScreen';
+import { FlightListScreen, FlightListScreenProps } from '../idg/flight/screens/FlightListScreen';
 import {
   FlightFilterScreen,
   FlightFilterScreenProps,
-} from 'src/idg/flight/screens/FlightFilterScreen';
+} from '../idg/flight/screens/FlightFilterScreen';
 import {
-  TreavellerScreen,
-  TreavellerScreenProps,
-} from 'src/idg/traveller/screens/TreavellerScreen';
+  ReviewFlightScreen,
+  ReviewFlightScreenProps,
+} from '../idg/flight/screens/ReviewFlightScreen';
+import { LoginScreen, LoginScreenProps } from '../idg/login/screens/LoginScreen';
+import {
+  TravellerDetail,
+  TravellerDetailProps,
+} from '../idg/traveller/screens/TravellerDetailScreen';
+import { AddTraveller, AddTravellerProps } from '../idg/traveller/screens/AddTraveller';
+import { SSRScreen, SSRScreenProps } from '../idg/SSR/screen/SSRScreen';
+import { PayUScreenProps, PayUScreenScreen } from '../idg/payment/screens/PayUScreen';
+import { View } from 'react-native';
 
 export type AppRoutes = {
   Main: undefined;
@@ -35,7 +67,8 @@ export type AppRoutes = {
   Login: LoginScreenProps;
   TravelerDetail: TravellerDetailProps;
   AddTraveller: AddTravellerProps;
-  SSN: SSNScreenProps;
+  SSR: SSRScreenProps;
+  Payment: PayUScreenProps;
 };
 
 export type ApptNavigationProp = NavigationProp<AppRoutes>;
@@ -77,7 +110,8 @@ const AppNav = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="AddTraveller" component={AddTraveller} options={{ headerShown: false }} />
-      <Stack.Screen name="SSN" component={SSNScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="SSR" component={SSRScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Payment" component={PayUScreenScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
@@ -88,9 +122,12 @@ export const RootNav = () => {
       linking={{
         prefixes: ['TravelApp://'],
       }}
-      ref={navigationRef}
-    >
+      ref={navigationRef}>
       <AppNav />
     </NavigationContainer>
   );
+};
+
+const Hom = () => {
+  return <View style={{ flex: 1, backgroundColor: 'red' }} />;
 };

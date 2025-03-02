@@ -2,6 +2,8 @@
  * This module exports the data model for the IDG Session
  */
 
+import { UserData } from '../user/UserModel';
+
 export interface IDGSession {
   tokenId: string;
   expiryDate: string;
@@ -115,6 +117,7 @@ export interface IDGSession {
 }
 
 export interface SessionState {
+  userData?: UserData;
   session?: IDGSession;
   loading: 'idle' | 'pending';
   error: string | null;

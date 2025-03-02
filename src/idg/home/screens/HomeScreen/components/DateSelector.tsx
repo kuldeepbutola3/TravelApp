@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import { Touchable } from 'src/components/Touchable';
+import { Touchable } from '../../../../../components/Touchable';
+// import { Touchable } from 'src/components/Touchable';
 
 interface IDateDateSelector {
   label: string;

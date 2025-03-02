@@ -2,7 +2,8 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Text, StyleSheet, TextStyle, ViewStyle, View, Platform, StatusBar } from 'react-native';
 import Popover from 'react-native-popover-view';
 import { Icon } from 'react-native-elements';
-import { fonts } from 'src/styles';
+import { fonts } from '../../styles';
+// import { fonts } from 'src/styles';
 
 type AlertTooltipProps = {
   text: string;

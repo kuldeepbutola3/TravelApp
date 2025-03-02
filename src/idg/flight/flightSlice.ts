@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootStateObj } from 'src/redux/rootReducer';
-import { Traveller, TravellerCount } from '../traveller/TravelerModel';
+import { BookingInfo, Traveller, TravellerCount } from '../traveller/TravelerModel';
 import {
   FlightFareParam,
   getFlight,
@@ -22,6 +22,8 @@ interface FlightState {
   travellerAdult: Array<Traveller>;
   travellerChild: Array<Traveller>;
   travellerCount: TravellerCount;
+  bookingInfo?: BookingInfo;
+  currentTravellerId: number;
 }
 
 const initialState: FlightState = {
@@ -33,6 +35,8 @@ const initialState: FlightState = {
   travellerAdult: [],
   travellerChild: [],
   travellerCount: { adult: 1, children: 0, infant: 0 },
+  bookingInfo: undefined,
+  currentTravellerId: 1,
 };
 
 export const fetchFlight = createAsyncThunk<
@@ -66,48 +70,53 @@ export const fetchFlightFare = createAsyncThunk<
 >('flight/fare', async (param) => {
   return getFlightFare(param);
 });
-
+type AddTraveller = Omit<Traveller, 'id'>;
 export const flightSlice = createSlice({
   name: 'flight',
   initialState,
   reducers: {
+    addBookingInfo: (state, action: PayloadAction<BookingInfo>) => {
+      state.bookingInfo = action.payload;
+    },
     addTravellerCount: (state, action: PayloadAction<TravellerCount>) => {
       state.travellerCount = action.payload;
     },
 
-    addTravelerInfo: (state, action: PayloadAction<Traveller>) => {
+    addTravelerInfo: (state, action: PayloadAction<AddTraveller>) => {
+      const id = state.currentTravellerId;
       if (action.payload.isChild) {
-        state.travellerChild = [...state.travellerChild, action.payload];
+        state.travellerChild = [...state.travellerChild, { ...action.payload, id }];
       } else {
-        state.travellerAdult = [...state.travellerAdult, action.payload];
+        state.travellerAdult = [...state.travellerAdult, { ...action.payload, id }];
       }
+      state.currentTravellerId = id + 1;
     },
     deleteTraveller: (state, action: PayloadAction<Traveller>) => {
       if (action.payload.isChild) {
         const array = [...state.travellerChild];
         const index = array.findIndex(
-          (i) =>
-            action.payload.dob === i.dob &&
-            action.payload.expDate === i.expDate &&
-            action.payload.fName === i.fName &&
-            action.payload.lName === i.lName &&
-            action.payload.nationality === i.nationality &&
-            action.payload.passportNo === i.passportNo &&
-            action.payload.gender === i.gender
+          (i) => action.payload.id === i.id
+          // action.payload.dob === i.dob &&
+          // action.payload.expDate === i.expDate &&
+          // action.payload.fName === i.fName &&
+          // action.payload.lName === i.lName &&
+          // action.payload.nationality === i.nationality &&
+          // action.payload.passportNo === i.passportNo &&
+          // action.payload.gender === i.gender
         );
         array.splice(index, 1);
         state.travellerChild = [...array];
       } else {
         const array = [...state.travellerAdult];
         const index = array.findIndex(
-          (i) =>
-            action.payload.dob === i.dob &&
-            action.payload.expDate === i.expDate &&
-            action.payload.fName === i.fName &&
-            action.payload.lName === i.lName &&
-            action.payload.nationality === i.nationality &&
-            action.payload.passportNo === i.passportNo &&
-            action.payload.gender === i.gender
+          (i) => action.payload.id === i.id
+          // action.payload.dob === i.dob &&
+          // action.payload.expDate === i.expDate &&
+          // action.payload.fName === i.fName &&
+          // action.payload.lName === i.lName &&
+          // action.payload.nationality === i.nationality &&
+          // action.payload.passportNo === i.passportNo &&
+          // action.payload.gender === i.gender
         );
         array.splice(index, 1);
         state.travellerAdult = [...array];

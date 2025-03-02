@@ -1,6 +1,7 @@
 import React from 'react';
 import { ViewStyle, StyleSheet, TextStyle, StyleProp, View } from 'react-native';
-import { Text } from 'src/components/Text';
+import { Text } from '../Text';
+// import { Text } from 'src/components/Text';
 
 type SectionSubHeaderProps = {
   children: React.ReactNode;

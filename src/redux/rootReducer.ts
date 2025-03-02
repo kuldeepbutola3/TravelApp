@@ -1,11 +1,14 @@
 import { combineReducers, Reducer } from '@reduxjs/toolkit';
-import { flightSlice } from 'src/idg/flight/flightSlice';
+// import { flightSlice } from 'src/idg/flight/flightSlice';
 // import {familyParticipantSlice} from 'src/idg/family/FamilySlice';
-import { genericSlice } from 'src/idg/generic/genericSlice';
-import { toastSlice } from 'src/idg/toast/ToastSlice';
+// import { genericSlice } from 'src/idg/generic/genericSlice';
+// import { toastSlice } from 'src/idg/toast/ToastSlice';
 import { appSlice } from '../appSlice';
 import { homeSlice } from '../idg/home/homeSlice';
 import { sessionSlice } from '../idg/session/sessionSlice';
+import { genericSlice } from '../idg/generic/genericSlice';
+import { toastSlice } from '../idg/toast/ToastSlice';
+import { flightSlice } from '../idg/flight/flightSlice';
 // import {ftmSlice} from '../idg/ftm/ftmSlice';
 
 const combineReducer = combineReducers({

@@ -1,9 +1,22 @@
-import { configureStore, getDefaultMiddleware, Selector } from '@reduxjs/toolkit';
-import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistReducer } from 'redux-persist';
+import { configureStore, Selector } from '@reduxjs/toolkit';
+import {
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  persistReducer,
+} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 // import { fetchTransactions } from 'src/idg/ftm/ftmSlice';
-import { configureSubscriber, Subscribe, Callback } from '../utils/redux-subscriber';
+import {
+  configureSubscriber,
+  Subscribe,
+  Callback,
+} from '../utils/redux-subscriber';
 import rootReducer, { RootState } from './rootReducer';
+// import logger from 'redux-logger';
 
 // See https://github.com/reduxjs/redux-toolkit/issues/121
 const persistConfig = {
@@ -18,24 +31,32 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [
-        FLUSH,
-        REHYDRATE,
-        PAUSE,
-        PERSIST,
-        PURGE,
-        REGISTER,
-        // fetchTransactions.pending.type,
-        // fetchTransactions.rejected.type,
-        // fetchTransactions.fulfilled.type,
-      ],
-    },
-    immutableCheck: {
-      ignoredPaths: ['ftm.transactions'],
-    },
-  }),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+          // fetchTransactions.pending.type,
+          // fetchTransactions.rejected.type,
+          // fetchTransactions.fulfilled.type,
+        ],
+      },
+      immutableCheck: {
+        ignoredPaths: ['ftm.transactions'],
+      },
+    }),
+  // middleware: getDefaultMiddleware =>
+  //   getDefaultMiddleware({
+  //     // thunk: {
+  //     //   extraArgument: myCustomApiService,
+  //     // },
+  //     serializableCheck: false,
+  //   }),
 });
 
 export type Store = typeof store;
@@ -49,7 +70,7 @@ to access it.
 const subscriber = configureSubscriber(store);
 export const subscribe = <Value>(
   selector: Selector<RootState, Value>,
-  callback: Callback<RootState, Value>
+  callback: Callback<RootState, Value>,
 ) => {
   return (subscriber as Subscribe<RootState, Value>)(selector, callback);
 };

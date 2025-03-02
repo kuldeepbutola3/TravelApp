@@ -2,13 +2,19 @@ import { useNavigation } from '@react-navigation/native';
 import React, { FC, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, ListItem, Text } from 'react-native-elements';
-import { Button } from 'src/components/Button';
-import { flightSlice } from 'src/idg/flight/flightSlice';
-import { ApptNavigationProp } from 'src/navigation/RootNav';
-import { useBindAction, useSliceSelector } from 'src/redux/hooks';
-import { appColors } from 'src/styles/appColors';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { Button } from 'src/components/Button';
+// import { flightSlice } from 'src/idg/flight/flightSlice';
+// import { ApptNavigationProp } from 'src/navigation/RootNav';
+// import { useBindAction, useSliceSelector } from 'src/redux/hooks';
+// import { appColors } from 'src/styles/appColors';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { Traveller } from '../TravelerModel';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { useBindAction, useSliceSelector } from '../../../redux/hooks';
+import { flightSlice } from '../../flight/flightSlice';
+import { ApptNavigationProp } from '../../../navigation/RootNav';
+import { Button } from '../../../components/Button';
+import { appColors } from '../../../styles/appColors';
 
 export interface TravellerViewProps {
   isChild: boolean;
@@ -20,10 +26,10 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
   //   const totalCount = isChild ? 1 : 3;
   //   const selectedCount = isChild ? travellerChild.length : travellerAdult.length;
   const navigation = useNavigation<ApptNavigationProp>();
-  const addTraveller = useCallback(() => navigation.navigate('AddTraveller', { isChild }), [
-    navigation,
-    isChild,
-  ]);
+  const addTraveller = useCallback(
+    () => navigation.navigate('AddTraveller', { isChild }),
+    [navigation, isChild],
+  );
 
   const onPressDelete = (item: Traveller) => {
     return () => {
@@ -38,8 +44,7 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
           <ListItem
             key={`child-${index}`}
             title={item.fName + ' ' + item.lName + '\n' + item.gender}
-            rightElement={<Icon name="delete" onPress={onPressDelete(item)} />}
-          >
+            rightElement={<Icon name="delete" onPress={onPressDelete(item)} />}>
             {/* <Text>{item.gender}</Text> */}
           </ListItem>
         );
@@ -49,8 +54,7 @@ export const TravellerView: FC<TravellerViewProps> = ({ isChild }) => {
           <ListItem
             key={`adult-${index}`}
             title={item.fName + ' ' + item.lName + '\n' + item.gender}
-            rightElement={<Icon name="delete" onPress={onPressDelete(item)} />}
-          >
+            rightElement={<Icon name="delete" onPress={onPressDelete(item)} />}>
             {/* <Text>{item.gender}</Text> */}
           </ListItem>
         );

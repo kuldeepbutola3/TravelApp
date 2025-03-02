@@ -1,13 +1,14 @@
-import { formatDate } from 'src/utils/date-formatter';
+// import { formatDate } from 'src/utils/date-formatter';
+import { formatDate } from '../../utils/date-formatter';
 import { ReviewCardProps } from './component/ReviewCard';
-import { flightImagePath, FlightSet } from './FlightModel';
+import { FlightSet } from './FlightModel';
 
 export interface ReviewViewModel extends ReviewCardProps {
   item: FlightSet['segments'][number][number];
 }
 
 export function makeReviewViewModel(
-  flightDetail: FlightSet['segments'][number][number]
+  flightDetail: FlightSet['segments'][number][number],
 ): ReviewViewModel {
   console.log('ddddd', JSON.stringify(flightDetail));
   const flightName = flightDetail?.airline?.airlineName;
@@ -57,7 +58,7 @@ export function makeReviewViewModel(
     checkInBag,
     cabinBag,
     refundable,
-    imagename
+    imagename,
   };
 
   return item;

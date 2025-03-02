@@ -14,7 +14,8 @@ const resources: Resource = {
 };
 
 const nativeLanguageCode = () => {
-  const languageInfo = RNLocalize.findBestAvailableLanguage(Object.keys(resources));
+  // const languageInfo = RNLocalize.findBestAvailableLanguage(Object.keys(resources));
+  const languageInfo = RNLocalize.findBestLanguageTag(Object.keys(resources));
   return (languageInfo && languageInfo.languageTag) || 'en';
 };
 

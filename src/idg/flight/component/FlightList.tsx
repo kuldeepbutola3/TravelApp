@@ -1,11 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { FC, useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import { ApptNavigationProp } from 'src/navigation/RootNav';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { ApptNavigationProp } from 'src/navigation/RootNav';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { FlightSet } from '../FlightModel';
 import { FlightViewModel, makeFlightViewModel } from '../FlightViewModel';
 import { FlightCardList } from './FlightCardList';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { ApptNavigationProp } from '../../../navigation/RootNav';
 
 interface FlightListProps {
   show: boolean;
@@ -22,12 +24,11 @@ export const FlightList: FC<FlightListProps> = ({ items, show }) => {
 
   const cellTapped = useCallback(
     (flightSet: FlightSet) => navigation.navigate('ReviewFlight', { param: flightSet }),
-    [navigation]
+    [navigation],
   );
-  const renderItem = useCallback<ListRenderItem<Item>>(({ item }) => <CardItem {...item} />, []);
-
-  const CardItem: React.FC<Item> = ({ viewModel }) => (
-    <FlightCardList data={viewModel} show={show} />
+  const renderItem = useCallback<ListRenderItem<Item>>(
+    ({ item }) => <CardItem show={show} {...item} />,
+    [],
   );
 
   if (!items.length) {
@@ -43,3 +44,7 @@ export const FlightList: FC<FlightListProps> = ({ items, show }) => {
 
   return <FlatList data={rowData} renderItem={renderItem} />;
 };
+
+const CardItem: React.FC<Item & { show: boolean }> = ({ viewModel, show }) => (
+  <FlightCardList data={viewModel} show={show} />
+);

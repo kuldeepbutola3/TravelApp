@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
-import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
-import { Screen } from 'src/components/Screen';
-import { Text } from 'src/components/Text';
-import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { doFetchRefreshToken } from 'src/idg/session/sessionSlice';
-import { fetchFlight } from 'src/idg/flight/flightSlice';
+// import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
+// import { Screen } from 'src/components/Screen';
+// import { Text } from 'src/components/Text';
+// import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
+// import { doFetchRefreshToken } from 'src/idg/session/sessionSlice';
+// import { fetchFlight } from 'src/idg/flight/flightSlice';
 import {
   StyleSheet,
   View,
@@ -14,22 +14,32 @@ import {
   ViewProps,
   FlatList,
   ListRenderItem,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Divider, ListItem, Tooltip, TooltipProps } from 'react-native-elements';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
-import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
+// import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
 import { FlightList } from '../component/FlightList';
 import { FlightHeader } from '../component/FlightHeader';
 import { TabButtonProps, TabButtons } from '../component/FlightTabButton';
-import { appColors } from 'src/styles/appColors';
+// import { appColors } from 'src/styles/appColors';
 import { FlightDepartureFilter } from '../component/FlightDepartureFilter';
 import { GetFlightParam } from '../flightApi';
 import { FilterModel, TimeSplit } from '../filterModel';
 import { FlightSet } from '../FlightModel';
-import { formatDate } from 'src/utils/date-formatter';
-import { Button as _Button } from 'src/components/Button';
+import { AuraStackScreen, useParams } from '../../../types/navigationTypes';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { useSliceSelector, useThunkDispatch } from '../../../redux/hooks';
+import { AppRoutes, ApptNavigationProp } from '../../../navigation/RootNav';
+import { doFetchRefreshToken } from '../../session/sessionSlice';
+import { fetchFlight } from '../flightSlice';
+import { appColors } from '../../../styles/appColors';
+import { formatDate } from '../../../utils/date-formatter';
+import { Screen } from '../../../components/Screen';
+// import { formatDate } from 'src/utils/date-formatter';
+// import { Button as _Button } from 'src/components/Button';
 export interface FlightListScreenProps {
   param: GetFlightParam;
 }
@@ -37,20 +47,20 @@ export const FlightListScreen: AuraStackScreen = () => {
   const { t } = useAuraTranslation();
   const dispatch = useThunkDispatch();
   const navigation = useNavigation<ApptNavigationProp>();
-  const { flightDetail } = useSliceSelector('flight');
+  const { loading, flightDetail } = useSliceSelector('flight');
   const { param } = useParams<AppRoutes, 'FlightSearch'>();
   console.log('flightDetail--------1', JSON.stringify(flightDetail?.results?.length));
 
-  const tooltipRefNonStop = useRef<Tooltip>(null);
-  const tooltipRefTime = useRef<Tooltip>(null);
-  const tooltipRefAirline = useRef<Tooltip>(null);
+  const tooltipRefNonStop = useRef<typeof Tooltip>(null);
+  const tooltipRefTime = useRef<typeof Tooltip>(null);
+  const tooltipRefAirline = useRef<typeof Tooltip>(null);
 
   /**max min range */
   const maxPrice =
     flightDetail?.results && flightDetail?.results?.length > 1
       ? Math.max(
           flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0,
-          flightDetail?.results[1][flightDetail?.results[1].length - 1].fare.publishedFare ?? 0
+          flightDetail?.results[1][flightDetail?.results[1].length - 1].fare.publishedFare ?? 0,
         )
       : flightDetail?.results[0][flightDetail?.results[0].length - 1].fare.publishedFare ?? 0;
 
@@ -58,18 +68,18 @@ export const FlightListScreen: AuraStackScreen = () => {
     flightDetail?.results && flightDetail?.results?.length > 1
       ? Math.min(
           flightDetail?.results[0][0].fare.publishedFare ?? 0,
-          flightDetail?.results[1][0].fare.publishedFare ?? 0
+          flightDetail?.results[1][0].fare.publishedFare ?? 0,
         )
       : flightDetail?.results[0][0].fare.publishedFare ?? 0;
   const [maxRange, setMaxRange] = useState(maxPrice);
   const [minRange, setMinRange] = useState(minPrice);
 
-  useEffect(()=>{
-if (minRange === 0 && minRange === 0 && maxPrice !== 0 && minPrice !== 0) {
-setMaxRange(maxPrice);
-setMinRange(minPrice);
-}
-  },[minRange,minRange,maxPrice,minPrice])
+  useEffect(() => {
+    if (minRange === 0 && minRange === 0 && maxPrice !== 0 && minPrice !== 0) {
+      setMaxRange(maxPrice);
+      setMinRange(minPrice);
+    }
+  }, [minRange, maxPrice, minPrice]);
 
   /**  filter states */
   const [priceFilte, setPriceFilte] = useState(false);
@@ -82,19 +92,19 @@ setMinRange(minPrice);
   const uniqueFlightSet = flightDetail?.uniqueFlightSet;
   const uniqueFlightSetList = Array.isArray(uniqueFlightSet) ? uniqueFlightSet : [];
   const flightFilterList: Array<string> = [];
-  uniqueFlightSetList?.map((i) =>
-    i.segments.map((j) =>
-      j.map((k) => {
+  uniqueFlightSetList?.map(i =>
+    i.segments.map(j =>
+      j.map(k => {
         const ind = flightFilterList.indexOf(k.airline.airlineName);
         if (ind < 0) {
           flightFilterList.push(k.airline.airlineName);
         }
-      })
-    )
+      }),
+    ),
   );
 
   useEffect(() => {
-    dispatch(doFetchRefreshToken()).then((_) => {
+    dispatch(doFetchRefreshToken()).then(_ => {
       dispatch(fetchFlight(param));
     });
   }, [dispatch, param]);
@@ -124,7 +134,7 @@ setMinRange(minPrice);
       setStops(params?.stops ?? -1);
       setFlightArray(params?.flightArray ?? []);
     },
-    [setMaxRange, setMinRange, setTimeSelected1, setTimeSelected2, setStops, setFlightArray]
+    [setMaxRange, setMinRange, setTimeSelected1, setTimeSelected2, setStops, setFlightArray],
   );
 
   const navigateToFilter = useCallback(() => {
@@ -171,12 +181,13 @@ setMinRange(minPrice);
       setPriceFilte,
       priceFilte,
       navigateToFilter,
-    ]
+    ],
   );
 
-  const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
-    navigation,
-  ]);
+  const onPressBack = useCallback(
+    () => navigation.canGoBack() && navigation.goBack(),
+    [navigation],
+  );
 
   const FlightListView: FC<ViewProps> = ({ style }) => {
     const [flightA, setFlightA] = useState(flightArray);
@@ -211,7 +222,7 @@ setMinRange(minPrice);
           />
         );
       },
-      [flightA]
+      [flightA],
     );
 
     return (
@@ -396,8 +407,8 @@ setMinRange(minPrice);
   /** get stops filter */
   const getFilterData = () => {
     const arrayStops: Array<Array<FlightSet>> = [];
-    flightDetail?.results.map((data) =>
-      arrayStops.push(data.filter((i) => i.segments[0].length === stops + 1))
+    flightDetail?.results.map(data =>
+      arrayStops.push(data.filter(i => i.segments[0].length === stops + 1)),
     );
     return arrayStops;
   };
@@ -409,7 +420,7 @@ setMinRange(minPrice);
     if (timeSelected1 && itm.length) {
       const array1 = itm[0];
       array.push(
-        array1.filter((i) => {
+        array1.filter(i => {
           const time = Number(formatDate(i.segments[0][0].origin.depTime, 'HH'));
           console.log('timeeeee', time);
           if (timeSelected1 === '12-6am') {
@@ -422,7 +433,7 @@ setMinRange(minPrice);
             return time > 18 && time < 24;
           }
           return true;
-        })
+        }),
       );
     } else {
       if (itm.length) {
@@ -433,7 +444,7 @@ setMinRange(minPrice);
     if (timeSelected2 && itm.length > 1) {
       const array1 = itm[1];
       array.push(
-        array1.filter((i) => {
+        array1.filter(i => {
           const time = Number(formatDate(i.segments[0][0].origin.depTime, 'HH'));
           if (timeSelected2 === '12-6am') {
             return time > 0 && time < 5;
@@ -445,7 +456,7 @@ setMinRange(minPrice);
             return time > 18 && time < 24;
           }
           return true;
-        })
+        }),
       );
     } else {
       if (itm.length > 1) {
@@ -459,12 +470,12 @@ setMinRange(minPrice);
   /** price range filter */
   const getPriceRangeData = (itm: Array<Array<FlightSet>>) => {
     const array: Array<Array<FlightSet>> = [];
-    itm.map((a) => {
+    itm.map(a => {
       array.push(
-        a.filter((i) => {
+        a.filter(i => {
           const price = i.fare.publishedFare;
           return minPrice && maxPrice ? price >= minRange && price <= maxRange : true;
-        })
+        }),
       );
     });
     return array;
@@ -474,9 +485,9 @@ setMinRange(minPrice);
   const filterWithFlightName = (itm: Array<Array<FlightSet>>) => {
     if (flightArray.length > 0) {
       const flghtSearch: Array<Array<FlightSet>> = [];
-      itm.map((data) => {
+      itm.map(data => {
         flghtSearch.push(
-          data.filter((i) => flightArray.indexOf(i.segments[0][0].airline?.airlineName ?? '') >= 0)
+          data.filter(i => flightArray.indexOf(i.segments[0][0].airline?.airlineName ?? '') >= 0),
         );
       });
       return flghtSearch;
@@ -499,7 +510,7 @@ setMinRange(minPrice);
 
     /** applying price filter accending decending*/
     if (priceFilte && filteredData) {
-      filteredData.map((d) => {
+      filteredData.map(d => {
         resultsArray.push([...d].reverse());
       });
     } else {
@@ -507,39 +518,50 @@ setMinRange(minPrice);
     }
   }
   var RandomNumber = Math.floor(Math.random() * 10000) + 1;
+  if (loading === 'pending') {
+    <View></View>;
+  }
   return (
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <FlightHeader onPressBack={onPressBack} response={param} />
-        <View style={styles.container}>
-          {resultsArray.map((i,index) => (
-            <FlightList key={`FlightKey${RandomNumber}--${index}`} items={i} show={boolValue} />
-          ))}
-        </View>
-        {flightDetail?.results && (
-          <View style={styles.tabContainer}>
-            {buttonArray.map((item) => (
-              <View style={styles.tabInnerContainer} key={`TabBarButton${item.id}`}>
-                <Divider />
-                {item.id !== 0 && item.id !== 4 && (
-                  <Tooltip
-                    ref={
-                      item.id === 1
-                        ? tooltipRefNonStop
-                        : item.id === 2
-                        ? tooltipRefTime
-                        : tooltipRefAirline
-                    }
-                    {...popOverView(item.id)}
-                    closeOnlyOnBackdropPress
-                    overlayColor="rgba(0,0,0,0.5)"
-                  />
-                )}
-                <TabButtons {...item} onPress={tabButtonTapped} />
-                <Divider />
-              </View>
-            ))}
+        {loading === 'pending' ? (
+          <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+            <ActivityIndicator color={appColors.gray} />
           </View>
+        ) : (
+          <>
+            <View style={styles.container}>
+              {resultsArray.map((i, index) => (
+                <FlightList key={`FlightKey${RandomNumber}--${index}`} items={i} show={boolValue} />
+              ))}
+            </View>
+            {flightDetail?.results && (
+              <View style={styles.tabContainer}>
+                {buttonArray.map(item => (
+                  <View style={styles.tabInnerContainer} key={`TabBarButton${item.id}`}>
+                    <Divider />
+                    {item.id !== 0 && item.id !== 4 && (
+                      <Tooltip
+                        ref={
+                          item.id === 1
+                            ? tooltipRefNonStop
+                            : item.id === 2
+                            ? tooltipRefTime
+                            : tooltipRefAirline
+                        }
+                        {...popOverView(item.id)}
+                        closeOnlyOnBackdropPress
+                        overlayColor="rgba(0,0,0,0.5)"
+                      />
+                    )}
+                    <TabButtons {...item} onPress={tabButtonTapped} />
+                    <Divider />
+                  </View>
+                ))}
+              </View>
+            )}
+          </>
         )}
       </SafeAreaView>
     </Screen>

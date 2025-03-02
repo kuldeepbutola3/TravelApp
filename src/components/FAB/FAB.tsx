@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-
 import { TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
 import { Icon } from 'react-native-elements';
 

@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
-import { View, ViewStyle, StyleSheet, Platform, Picker, PickerIOS, StyleProp } from 'react-native';
-import { IOSPicker } from '../IOSPicker';
+import React, { useCallback } from 'react';
+import { View, ViewStyle, StyleSheet, StyleProp } from 'react-native';
+// import { IOSPicker } from '../IOSPicker';
+import { Picker } from '@react-native-picker/picker';
 
 export type PickerItem = {
   // `value` must be the unique "id" of the element selected
@@ -31,24 +32,25 @@ export type DropdownPickerProps<Item extends PickerItem = PickerItem> = {
  * random resuable parts would make this component quite confusing.
  */
 export const DropdownPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>) => {
-  return (
-    Platform.select({
-      ios: <IOSDropdownPicker<Item> {...props} />,
-      android: <AndroidPicker<Item> {...props} />,
-    }) || <></>
-  );
+  return <AndroidPicker<Item> {...props} />;
+  // return (
+  //   Platform.select({
+  //     ios: <IOSDropdownPicker<Item> {...props} />,
+  //     android: <AndroidPicker<Item> {...props} />,
+  //   }) || <></>
+  // );
 };
 
 const AndroidPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>) => {
   const { onValueChange, items, children, selectedItem, style } = props;
 
   const _onValueChanged = useCallback(
-    (value: React.ReactText) => {
-      const index = items.findIndex((item) => item.value === value);
+    (value: string) => {
+      const index = items.findIndex(item => item.value === value);
       const item = items[index];
       onValueChange && onValueChange(item, index);
     },
-    [items, onValueChange]
+    [items, onValueChange],
   );
 
   return (
@@ -57,9 +59,8 @@ const AndroidPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>
       <Picker
         style={[styles.androidPicker]}
         selectedValue={selectedItem?.value}
-        onValueChange={_onValueChanged}
-      >
-        {items.map((item) => (
+        onValueChange={_onValueChanged}>
+        {items.map(item => (
           <Picker.Item key={item.value} label={item.label || item.value} value={item.value} />
         ))}
       </Picker>
@@ -67,38 +68,38 @@ const AndroidPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>
   );
 };
 
-const IOSDropdownPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>) => {
-  const { onValueChange, items, selectedItem, style, children } = props;
-  const [showPicker, setShowPicker] = useState(false);
-  const onDropDownPress = useCallback(() => setShowPicker(true), []);
-  const onRequestClose = useCallback(() => setShowPicker(false), []);
+// const IOSDropdownPicker = <Item extends PickerItem>(props: DropdownPickerProps<Item>) => {
+//   const { onValueChange, items, selectedItem, style, children } = props;
+//   const [showPicker, setShowPicker] = useState(false);
+//   const onDropDownPress = useCallback(() => setShowPicker(true), []);
+//   const onRequestClose = useCallback(() => setShowPicker(false), []);
 
-  const _onValueChanged = useCallback(
-    (value: React.ReactText) => {
-      const index = items.findIndex((item) => item.value === value);
-      const item = items[index];
-      const keepOpen = onValueChange && onValueChange(item, index);
-      setShowPicker(!!keepOpen);
-    },
-    [items, onValueChange]
-  );
+//   const _onValueChanged = useCallback(
+//     (value: React.ReactText) => {
+//       const index = items.findIndex((item) => item.value === value);
+//       const item = items[index];
+//       const keepOpen = onValueChange && onValueChange(item, index);
+//       setShowPicker(!!keepOpen);
+//     },
+//     [items, onValueChange]
+//   );
 
-  return (
-    <IOSPicker
-      touchableContent={children}
-      style={style}
-      showPicker={showPicker}
-      onPress={onDropDownPress}
-      onRequestClose={onRequestClose}
-    >
-      <PickerIOS selectedValue={selectedItem?.value} onValueChange={_onValueChanged}>
-        {items.map((item) => (
-          <Picker.Item key={item.value} label={item.label || item.value} value={item.value} />
-        ))}
-      </PickerIOS>
-    </IOSPicker>
-  );
-};
+//   return (
+//     <IOSPicker
+//       touchableContent={children}
+//       style={style}
+//       showPicker={showPicker}
+//       onPress={onDropDownPress}
+//       onRequestClose={onRequestClose}
+//     >
+//       <PickerIOS selectedValue={selectedItem?.value} onValueChange={_onValueChanged}>
+//         {items.map((item) => (
+//           <Picker.Item key={item.value} label={item.label || item.value} value={item.value} />
+//         ))}
+//       </PickerIOS>
+//     </IOSPicker>
+//   );
+// };
 
 const styles = StyleSheet.create({
   container: {} as ViewStyle,

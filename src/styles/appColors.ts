@@ -6,6 +6,6 @@ export const appColors = {
   red: 'rgb(236,73,84)',
   transparent: 'transparent',
   gray: 'gray',
-  lightGrey : 'lightgrey',
-  blue: '#00BFFF'
+  lightGrey: 'lightgrey',
+  blue: '#00BFFF',
 };

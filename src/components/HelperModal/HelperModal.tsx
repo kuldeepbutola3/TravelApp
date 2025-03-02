@@ -1,11 +1,10 @@
 import React from 'react';
 import { ViewStyle, StyleSheet, View, ScrollView } from 'react-native';
-
 import { Icon as ThemedIcon } from 'react-native-elements';
-import { Text } from 'src/components/Text';
+// import { Text } from 'src/components/Text';
 import { Button } from 'react-native-elements';
-
 import { Overlay, OverlayProps } from './Overlay';
+import { Text } from '../Text';
 
 export type HelperModalProps = {
   isVisible: OverlayProps['isVisible'];
@@ -44,8 +43,7 @@ export const HelperModal: React.FC<HelperModalProps> = ({
       overlayStyle={styles.overlay}
       // width={screen.width - 36 * 2}
       // height={screen.height - (insets.top + 36 * 2)}
-      onDismiss={onDismiss}
-    >
+      onDismiss={onDismiss}>
       <View style={styles.content}>
         {typeof icon === 'string' ? <ThemedIcon name={icon} /> : icon}
         <Text>{headline}</Text>

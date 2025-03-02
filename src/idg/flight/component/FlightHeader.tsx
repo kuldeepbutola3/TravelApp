@@ -2,12 +2,16 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-import { Header, HeaderProps } from 'src/components/Header';
-import { Text } from 'src/components/Text';
-import { useSliceSelector } from 'src/redux/hooks';
-import { formatDate } from 'src/utils/date-formatter';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { Header, HeaderProps } from 'src/components/Header';
+// import { Text } from 'src/components/Text';
+// import { useSliceSelector } from 'src/redux/hooks';
+// import { formatDate } from 'src/utils/date-formatter';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { GetFlightParam } from '../flightApi';
+import { Header, HeaderProps } from '../../../components/Header';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { Text } from '../../../components/Text';
+import { formatDate } from '../../../utils/date-formatter';
 interface FlightHeaderProps {
   onPressBack: HeaderProps['onPressBack'];
   response: GetFlightParam;

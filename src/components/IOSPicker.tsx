@@ -8,6 +8,8 @@ import {
   StyleProp,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { ComponentProps } from '../types/componentProps';
+// import { ComponentProps } from 'src/types/componentProps';
 
 export type IOSPickerProps = {
   touchableContent: React.ReactNode;
@@ -15,7 +17,7 @@ export type IOSPickerProps = {
   showPicker: boolean;
   onPress: () => void;
   onRequestClose: () => void;
-};
+} & ComponentProps;
 
 export const IOSPicker: React.FC<IOSPickerProps> = ({
   touchableContent,
@@ -30,7 +32,11 @@ export const IOSPicker: React.FC<IOSPickerProps> = ({
       <TouchableOpacity onPress={onPress}>
         <View style={styles.touchableContent}>{touchableContent}</View>
       </TouchableOpacity>
-      <Modal animationType="fade" transparent visible={showPicker} onRequestClose={onRequestClose}>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={showPicker}
+        onRequestClose={onRequestClose}>
         <View style={[styles.modal]}>
           <TouchableWithoutFeedback onPress={onRequestClose}>
             <View style={[styles.modalSpacer]} />

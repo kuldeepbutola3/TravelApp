@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { appColors } from 'src/styles/appColors';
+import { appColors } from '../../styles/appColors';
+// import { appColors } from 'src/styles/appColors';
 
 const BottomSheet = ({ children, refRBSheet, onOpen, onClose }) => {
   return (
@@ -11,8 +12,7 @@ const BottomSheet = ({ children, refRBSheet, onOpen, onClose }) => {
       height={330}
       onOpen={onOpen}
       onClose={onClose}
-      customStyles={styles}
-    >
+      customStyles={styles}>
       {children}
     </RBSheet>
   );
@@ -31,4 +31,4 @@ const styles = {
   },
 };
 
-export default BottomSheet
+export default BottomSheet;

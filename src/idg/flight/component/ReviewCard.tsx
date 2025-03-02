@@ -1,10 +1,13 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider, Image } from 'react-native-elements';
-import { Text } from 'src/components/Text';
-import { appColors } from 'src/styles/appColors';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { Text } from 'src/components/Text';
+// import { appColors } from 'src/styles/appColors';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { flightImagePath } from '../FlightModel';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { Text } from '../../../components/Text';
+import { appColors } from '../../../styles/appColors';
 
 export interface ReviewCardProps {
   flightName: string;
@@ -27,7 +30,7 @@ export interface ReviewCardProps {
   checkInBag: string;
   cabinBag: string;
   refundable: string;
-  imagename : string;
+  imagename: string;
 }
 export const ReviewCard: FC<ReviewCardProps> = ({
   flightName,
@@ -49,30 +52,12 @@ export const ReviewCard: FC<ReviewCardProps> = ({
   cabinBag,
   checkInBag,
   refundable,
-  imagename
+  imagename,
 }) => {
   const { t } = useAuraTranslation();
 
-  const RowElement: FC<{ title: string; subtitle: string; fontSize: number }> = ({
-    title,
-    subtitle,
-    fontSize,
-  }) => {
-    const style = { fontSize };
-    return (
-      <View style={styles.rowElementContainer}>
-        <View style={styles.rowElementView1}>
-          <Text style={[styles.rowElemenText1, style]}>{title}</Text>
-        </View>
-        <View style={styles.rowElementView2}>
-          <Text style={[styles.rowElemenText2, style]}>{subtitle}</Text>
-        </View>
-      </View>
-    );
-  };
-
-  // require(`src/assets/images/${imagename}.png`) ?? 
-const im = require(`src/assets/images/0D.png`);
+  // require(`src/assets/images/${imagename}.png`) ??
+  // const im = require(`src/assets/images/0D.png`);
 
   return (
     <View>
@@ -87,12 +72,13 @@ const im = require(`src/assets/images/0D.png`);
         </View>
       </View>
       <View style={styles.headerView}>
-
-        <Image source={flightImagePath(imagename)} style={{width : 30 , height : 30 , marginRight : 10}}/>
+        <Image
+          source={flightImagePath(imagename)}
+          style={{ width: 30, height: 30, marginRight: 10 }}
+        />
         <Text style={styles.header}>
           {flightName} <Text style={styles.headerCont}>|{flightCode}</Text>
         </Text>
-        
       </View>
       <RowElement
         title={`${startCity} ${startDestination}`}
@@ -114,6 +100,24 @@ const im = require(`src/assets/images/0D.png`);
         fontSize={12}
       />
       <RowElement title={`${t('checkInBag')} ${checkInBag}`} subtitle="" fontSize={12} />
+    </View>
+  );
+};
+
+const RowElement: FC<{ title: string; subtitle: string; fontSize: number }> = ({
+  title,
+  subtitle,
+  fontSize,
+}) => {
+  const style = { fontSize };
+  return (
+    <View style={styles.rowElementContainer}>
+      <View style={styles.rowElementView1}>
+        <Text style={[styles.rowElemenText1, style]}>{title}</Text>
+      </View>
+      <View style={styles.rowElementView2}>
+        <Text style={[styles.rowElemenText2, style]}>{subtitle}</Text>
+      </View>
     </View>
   );
 };
@@ -153,9 +157,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   headerView: {
-    flexDirection : 'row',
+    flexDirection: 'row',
     padding: 20,
-    alignItems : 'center'
+    alignItems: 'center',
   },
   header: {
     fontSize: 14,

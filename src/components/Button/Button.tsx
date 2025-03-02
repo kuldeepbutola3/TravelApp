@@ -1,6 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { Button as RNEButton, ButtonProps as RNEButtonProps } from 'react-native-elements';
+import {
+  Button as RNEButton,
+  ButtonProps as RNEButtonProps,
+} from 'react-native-elements';
 
 export type ButtonProps = RNEButtonProps & {
   bgColor?: string;
@@ -20,14 +23,14 @@ export const Button: React.FC<ButtonProps> = ({
       setFocused(true);
       onFocus && onFocus(e);
     },
-    [onFocus]
+    [onFocus],
   );
   const _onBlur = useCallback(
     (e: Parameters<Exclude<RNEButtonProps['onBlur'], undefined>>[0]) => {
       setFocused(false);
       onBlur && onBlur(e);
     },
-    [onBlur]
+    [onBlur],
   );
 
   const color = bgColor ? { backgroundColor: bgColor } : {};

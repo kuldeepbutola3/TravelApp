@@ -1,14 +1,27 @@
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import React from 'react';
-import { configureDefault, configureClient, setTokens } from 'src/idg/IDGClient';
+// import { configureClient, setTokens } from 'src/idg/IDGClient';
+// import { useOnMount, useThunkDispatch } from 'src/redux/hooks';
 import { E_REFRESH } from '../sessionAPI';
 import { IDGSession } from '../SessionModel';
+import { doFetchUserData } from '../sessionSlice';
+import { ComponentProps } from './../../../types/componentProps';
+import { configureClient, setTokens } from '../../IDGClient';
+import { useOnMount, useThunkDispatch } from '../../../redux/hooks';
 
-export const TokenManager: React.FC = ({ children }) => {
+export const TokenManager: React.FC<ComponentProps> = ({ children }) => {
+  // fetching user details
+  const dispatch = useThunkDispatch();
+
+  useOnMount(() => {
+    console.log('useOnMount');
+    dispatch(doFetchUserData());
+  });
+
   const responseCallback = (
     axiosResponse: AxiosResponse,
     client: AxiosInstance,
-    error?: AxiosError
+    error?: AxiosError,
   ) => {
     console.log('url', axiosResponse.config.url);
     if (axiosResponse.config.url) {
@@ -75,7 +88,8 @@ export const TokenManager: React.FC = ({ children }) => {
     so the initial error can continue on it's original trajectory. */
     return error !== undefined ? Promise.reject(error) : Promise.resolve(axiosResponse);
   };
+
   configureClient({ responseCallback });
-  configureDefault();
+  // configureDefault();
   return <>{children}</>;
 };
