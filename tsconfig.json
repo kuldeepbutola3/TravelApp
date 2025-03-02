@@ -1,15 +1,15 @@
 {
+  "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "react-native",
-    "lib": ["es7"],
-    "moduleResolution": "node",
+    // "lib": ["es7"],
+    "moduleResolution": "node16",
+    "module": "Node16",
     "noEmit": true,
     "strict": true,
-    "target": "es2015",
     "sourceMap": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
@@ -17,11 +17,16 @@
       {
         "name": "typescript-styled-plugin"
       }
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "src": ["src"]
-    }
+    ]
+    // "rootDir": "src",
+    // "baseUrl": "."
+    // "paths": {
+    //   "src": ["./src"]
+    // }
+    // "baseUrl": "./src",
+    // "paths": {
+    //   "@reduxjs/toolkit": ["node_modules/@reduxjs/toolkit"]
+    // }
   },
   "exclude": [
     "node_modules"

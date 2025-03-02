@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Touchable } from 'src/components/Touchable';
-import { appColors } from 'src/styles/appColors';
+import { Touchable } from '../../../components/Touchable';
+import { appColors } from '../../../styles/appColors';
+// import { Touchable } from 'src/components/Touchable';
+// import { appColors } from 'src/styles/appColors';
 
 const TotalPriceFooter = ({ currency, price, onPress }) => {
   return (

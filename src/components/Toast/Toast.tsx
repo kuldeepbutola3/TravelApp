@@ -1,8 +1,10 @@
 import React, { useEffect, useCallback, useMemo, useRef } from 'react';
 import { View, Dimensions, Animated, StyleSheet, ViewStyle } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Text } from 'src/components/Text';
-import { useAuraTranslation } from 'src/utils/i18n';
+import { useAuraTranslation } from '../../utils/i18n';
+import { Text } from '../Text';
+// import { Text } from 'src/components/Text';
+// import { useAuraTranslation } from 'src/utils/i18n';
 
 type ToastType = 'general' | 'undo';
 
@@ -33,7 +35,7 @@ export const Toast: React.FC<ToastProps> = ({ currentToast, toastId, completion,
   const { t } = useAuraTranslation();
 
   function usePrevious(value: number) {
-    const ref = useRef<number>();
+    const ref = useRef<number>(0);
     useEffect(() => {
       ref.current = value;
     });

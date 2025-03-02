@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Dropdown } from 'react-native-material-dropdown'; // 'react-native-material-dropdown';
+// import { Dropdown } from 'react-native-material-dropdown'; // 'react-native-material-dropdown';
 
 const FlightClassDropdown: FC<any> = ({ data, value, onChangeText, containerStyle, label }) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={styles.label}>{label}</Text>
-      <Dropdown
+      {/* <Dropdown
         selectedItemColor="black"
         baseColor="transparent"
         fontSize={20}
@@ -15,7 +15,7 @@ const FlightClassDropdown: FC<any> = ({ data, value, onChangeText, containerStyl
         value={value}
         onChangeText={onChangeText}
         containerStyle={styles.containerStyle}
-      />
+      /> */}
     </View>
   );
 };
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'white',
     borderWidth: 1,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(113, 27, 27, 0.2)',
     justifyContent: 'space-around',
     alignItems: 'flex-start',
     paddingVertical: 10,

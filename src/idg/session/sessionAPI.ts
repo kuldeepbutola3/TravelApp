@@ -1,4 +1,5 @@
-import { getClient } from 'src/idg/IDGClient';
+// import { getClient } from 'src/idg/IDGClient';
+import { getClient } from '../IDGClient';
 import { UserData } from '../user/UserModel';
 import { IDGSession } from './SessionModel';
 

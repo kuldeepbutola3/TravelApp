@@ -1,9 +1,11 @@
 import React, { FC, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
-import { appColors } from 'src/styles/appColors';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { appColors } from 'src/styles/appColors';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { TimeSplit } from '../filterModel';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { appColors } from '../../../styles/appColors';
 
 interface FlightDepartureFilterProp {
   city: string;
@@ -20,43 +22,6 @@ export const FlightDepartureFilter: FC<FlightDepartureFilterProp> = ({
   timeSelected,
 }) => {
   const { t } = useAuraTranslation();
-
-  const TimeButton: FC<{
-    title: string;
-    subTitle: string;
-    innnerType: TimeSplit;
-    onPress: (type: TimeSplit) => void;
-  }> = ({ title, subTitle, innnerType, onPress }) => {
-    const _onPress = useCallback(() => {
-      onPress(innnerType);
-    }, [innnerType, onPress]);
-    return (
-      <TouchableOpacity
-        style={[
-          styles.filterSegmentInnerView,
-          type === innnerType ? styles.selected : styles.unSelected,
-        ]}
-        onPress={_onPress}
-      >
-        <Text
-          style={[
-            styles.titleStyle,
-            type === innnerType ? styles.titleSelected : styles.titleUnSelected,
-          ]}
-        >
-          {title}
-        </Text>
-        <Text
-          style={[
-            styles.subtitleStyle,
-            type === innnerType ? styles.titleSelected : styles.titleUnSelected,
-          ]}
-        >
-          {subTitle}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
 
   return (
     <View style={[styles.filterContainer]}>
@@ -75,12 +40,14 @@ export const FlightDepartureFilter: FC<FlightDepartureFilterProp> = ({
           title={t('earlyMorning')}
           subTitle={t('12-6am')}
           onPress={timeSelected}
+          type={type}
         />
         <TimeButton
           innnerType="6-12am"
           title={t('morning')}
           subTitle={t('6-12am')}
           onPress={timeSelected}
+          type={type}
         />
       </View>
 
@@ -91,12 +58,14 @@ export const FlightDepartureFilter: FC<FlightDepartureFilterProp> = ({
           title={t('afternoon')}
           subTitle={t('12-6pm')}
           onPress={timeSelected}
+          type={type}
         />
         <TimeButton
           innnerType="6-12pm"
           title={t('night')}
           subTitle={t('6-12pm')}
           onPress={timeSelected}
+          type={type}
         />
       </View>
 
@@ -106,6 +75,42 @@ export const FlightDepartureFilter: FC<FlightDepartureFilterProp> = ({
           <View style={styles.filterSegmentInnerView}></View>
         </View> */}
     </View>
+  );
+};
+
+const TimeButton: FC<{
+  title: string;
+  subTitle: string;
+  innnerType: TimeSplit;
+  type?: TimeSplit;
+  onPress: (type: TimeSplit) => void;
+}> = ({ title, subTitle, innnerType, onPress, type }) => {
+  const _onPress = useCallback(() => {
+    onPress(innnerType);
+  }, [innnerType, onPress]);
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.filterSegmentInnerView,
+        type === innnerType ? styles.selected : styles.unSelected,
+      ]}
+      onPress={_onPress}>
+      <Text
+        style={[
+          styles.titleStyle,
+          type === innnerType ? styles.titleSelected : styles.titleUnSelected,
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.subtitleStyle,
+          type === innnerType ? styles.titleSelected : styles.titleUnSelected,
+        ]}>
+        {subTitle}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
@@ -126,7 +131,6 @@ const styles = StyleSheet.create({
   filterSegment: {
     flexDirection: 'row',
     marginTop: 10,
-    // justifyContent: '',
   },
   filterSegmentInnerView: {
     flex: 1,

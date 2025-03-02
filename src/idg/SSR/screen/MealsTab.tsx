@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Touchable } from 'src/components/Touchable';
+// import { Touchable } from 'src/components/Touchable';
 import { AddButton, AddSubtractButton } from '../components/Buttons';
 import PriceFooter from '../components/PriceFooter';
 

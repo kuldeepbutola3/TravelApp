@@ -1,11 +1,12 @@
 import React from 'react';
-import { TranslationKeys, useAuraTranslation } from 'src/utils/i18n';
+// import { TranslationKeys, useAuraTranslation } from 'src/utils/i18n';
 import { StackNavigationOptions, TransitionPresets } from '@react-navigation/stack';
 import { Icon } from 'react-native-elements';
 import { StyleSheet, TextStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // import {homeHeaderOptionsWithDrawer} from './MainNav';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { TranslationKeys, useAuraTranslation } from '../utils/i18n';
 
 export const useScreenOptions = () => {
   return () => {

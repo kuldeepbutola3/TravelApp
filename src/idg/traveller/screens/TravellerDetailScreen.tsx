@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
-import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
-import { Screen } from 'src/components/Screen';
+// import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
+// import { Screen } from 'src/components/Screen';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -12,17 +12,27 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
-import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
-import { Header } from 'src/components/Header';
-import { FlightSet } from 'src/idg/flight/FlightModel';
+// import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
+// import { Header } from 'src/components/Header';
+// import { FlightSet } from 'src/idg/flight/FlightModel';
 import { TravellerView } from '../components/TravellerView';
-import { appColors } from 'src/styles/appColors';
-import { Button } from 'src/components/Button';
+// import { appColors } from 'src/styles/appColors';
+// import { Button } from 'src/components/Button';
 import { Input } from 'react-native-elements';
-import { useBindAction, useSliceSelector } from 'src/redux/hooks';
-import { flightSlice } from 'src/idg/flight/flightSlice';
+import { FlightSet } from '../../flight/FlightModel';
+import { AuraStackScreen, useParams } from '../../../types/navigationTypes';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { AppRoutes, ApptNavigationProp } from '../../../navigation/RootNav';
+import { useBindAction, useSliceSelector } from '../../../redux/hooks';
+import { flightSlice } from '../../flight/flightSlice';
+import { Screen } from '../../../components/Screen';
+import { Header } from '../../../components/Header';
+import { Button } from '../../../components/Button';
+import { appColors } from '../../../styles/appColors';
+// import { useBindAction, useSliceSelector } from 'src/redux/hooks';
+// import { flightSlice } from 'src/idg/flight/flightSlice';
 
 export interface TravellerDetailProps {
   param: FlightSet;
@@ -37,9 +47,10 @@ export const TravellerDetail: AuraStackScreen = () => {
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
 
-  const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
-    navigation,
-  ]);
+  const onPressBack = useCallback(
+    () => navigation.canGoBack() && navigation.goBack(),
+    [navigation],
+  );
 
   const onPressContinue = useCallback(() => {
     addBookingInfo({ email, contactNumber: number });
@@ -58,8 +69,7 @@ export const TravellerDetail: AuraStackScreen = () => {
         <Header onPressBack={onPressBack} title={t('travellerDetails')} />
         <KeyboardAvoidingView
           style={{ flex: 1 }}
-          {...(Platform.OS === 'ios' && { behavior: 'padding' })}
-        >
+          {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
           <ScrollView contentContainerStyle={styles.bodyContainer}>
             <Text style={styles.addTraveler}>{t('addTravellers')}</Text>
             <TravellerView isChild={false} />

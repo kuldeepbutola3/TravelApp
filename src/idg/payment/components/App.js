@@ -24,9 +24,11 @@ import {
   DeviceEventEmitter,
   NativeEventEmitter,
 } from 'react-native';
-import { Button } from 'src/components/Button';
+// import { Button } from 'src/components/Button';
 import { sha512 } from 'js-sha512';
-import { appColors } from 'src/styles/appColors';
+import { Button } from '../../../components/Button';
+import { appColors } from '../../../styles/appColors';
+// import { appColors } from 'src/styles/appColors';
 const { PayUBizSdk } = NativeModules;
 
 export default class App extends Component {
@@ -77,16 +79,16 @@ export default class App extends Component {
     }
     this.state.showAlert = false;
   };
-  toggleAutoApproveOTP = (value) => {
+  toggleAutoApproveOTP = value => {
     this.setState({ autoApprove: value });
   };
-  toggleSelectOTP = (value) => {
+  toggleSelectOTP = value => {
     this.setState({ autoSelectOtp: value });
   };
-  toggleViewPort = (value) => {
+  toggleViewPort = value => {
     this.setState({ viewPortWideEnable: value });
   };
-  togglePermission = (value) => {
+  togglePermission = value => {
     this.setState({ merchantSMSPermission: value });
     this.requestSMSPermission();
   };
@@ -121,26 +123,26 @@ export default class App extends Component {
     this.iOSGenerateHash = eventEmitter.addListener('generateHash', this.generateHash);
   }
 
-  onPaymentSuccess = (e) => {
+  onPaymentSuccess = e => {
     console.log(e.merchantResponse);
     console.log(e.payuResponse);
     this.displayAlert('onPaymentSuccess', JSON.stringify(e));
   };
-  onPaymentFailure = (e) => {
+  onPaymentFailure = e => {
     console.log(e);
     console.log(e.merchantResponse);
     console.log(e.payuResponse);
     this.displayAlert('onPaymentFailure', JSON.stringify(e));
   };
-  onPaymentCancel = (e) => {
+  onPaymentCancel = e => {
     console.log('onPaymentCancel isTxnInitiated -' + e);
     this.displayAlert('onPaymentCancel', JSON.stringify(e));
   };
-  onError = (e) => {
+  onError = e => {
     console.log(e);
     this.displayAlert('onError', JSON.stringify(e));
   };
-  generateHash = (e) => {
+  generateHash = e => {
     console.log(e.hashName);
     console.log(e.hashString);
     this.sendBackHash(e.hashName, e.hashString + this.state.merchantSalt);
@@ -373,17 +375,17 @@ export default class App extends Component {
         '|' +
         this.state.udf5 +
         '||||||' +
-        this.state.merchantSalt
+        this.state.merchantSalt,
     );
     var vasHash = this.calculateHash(
-      this.state.key + '|vas_for_mobile_sdk|' + 'default' + '|' + this.state.merchantSalt
+      this.state.key + '|vas_for_mobile_sdk|' + 'default' + '|' + this.state.merchantSalt,
     );
     var paymentDetailsHash = this.calculateHash(
       this.state.key +
         '|payment_related_details_for_mobile_sdk|' +
         this.state.userCredential +
         '|' +
-        this.state.merchantSalt
+        this.state.merchantSalt,
     );
 
     var payUPaymentParams = {
@@ -442,7 +444,7 @@ export default class App extends Component {
     console.log(result);
     PayUBizSdk.hashGenerated(result);
   };
-  calculateHash = (data) => {
+  calculateHash = data => {
     console.log(data);
     var result = sha512(data);
     console.log(result);

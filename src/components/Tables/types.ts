@@ -1,4 +1,5 @@
 import { ViewStyle, StyleProp } from 'react-native';
+import { ComponentProps } from '../../types/componentProps';
 
 export type ColumnHeading = string;
 export type DataValue = string | number | boolean | Date;
@@ -15,4 +16,4 @@ export type BaseTableCellProps = {
   borders?: BorderSetting;
   borderColor?: ViewStyle['borderColor'];
   borderWidth?: ViewStyle['borderWidth'];
-};
+} & ComponentProps;

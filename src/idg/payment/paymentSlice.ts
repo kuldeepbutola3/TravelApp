@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootStateObj } from 'src/redux/rootReducer';
-
+// import { RootStateObj } from 'src/redux/rootReducer';
 import { PaymentReponse } from './PaymentReponseModel';
 import { PaymentRequest } from './PaymentRequestModel';
 import { paymentRequest } from './paymentApi';
+import { RootStateObj } from '../../redux/rootReducer';
 
 interface PaymentState {
   paymentReponse?: PaymentReponse;
@@ -23,7 +23,7 @@ export const doFetchPaymentParam = createAsyncThunk<
   PaymentRequest,
   // Types for ThunkAPI
   RootStateObj
->('payment/fetchpayment', async (params) => {
+>('payment/fetchpayment', async params => {
   return paymentRequest(params);
 });
 
@@ -31,9 +31,9 @@ export const paymentSlice = createSlice({
   name: 'flight',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(doFetchPaymentParam.pending, (state) => {
+      .addCase(doFetchPaymentParam.pending, state => {
         if (state.loading === 'idle') {
           state.loading = 'pending';
         }

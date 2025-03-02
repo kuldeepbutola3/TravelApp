@@ -8,8 +8,9 @@ import {
   Animated,
 } from 'react-native';
 
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { Text } from '../Text';
+import { useAuraTranslation } from '../../utils/i18n';
 
 interface SwitchProps extends ViewProps {
   onValueChange: (value: boolean) => void;

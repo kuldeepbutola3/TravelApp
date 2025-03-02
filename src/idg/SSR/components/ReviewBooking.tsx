@@ -1,12 +1,25 @@
-import React from "react";
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { appColors } from 'src/styles/appColors';
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import { Touchable } from 'src/components/Touchable';
+// import { appColors } from 'src/styles/appColors';
+// import Icon from 'react-native-vector-icons';
+import { appColors } from '../../../styles/appColors';
+import { Touchable } from '../../../components/Touchable';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+// import { Touchable } from 'src/components/Touchable';
 
 const Seperator = () => <View style={styles.seperator} />;
 
-const ReviewBooking = ({ onClose, selectedSeats, selectedMeals, mealCount, selectedBaggages, baggageCount, seatCount, onPress }) => {
+const ReviewBooking = ({
+  onClose,
+  selectedSeats,
+  selectedMeals,
+  mealCount,
+  selectedBaggages,
+  baggageCount,
+  seatCount,
+  onPress,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>

@@ -1,7 +1,8 @@
+import { ClassType, TripType } from '../../constants/enums';
 import { getClient } from '../IDGClient';
 import { FlightFareResponse, FlightPlaces, FlightResponse } from './FlightModel';
-import { formatDate } from 'src/utils/date-formatter';
-import { ClassType, TripType } from 'src/constants/enums';
+// import { formatDate } from 'src/utils/date-formatter';
+// import { ClassType, TripType } from 'src/constants/enums';
 
 const FLIGHT_SEARCH = 'v1/service/search/flights';
 const FLIGHT_PLACES = 'v1/service/search/get_itemName_list';
@@ -171,7 +172,7 @@ export async function getFlight(params: GetFlightParam): Promise<FlightResponse>
 export async function searchPlaces(param: PlacesParam): Promise<Array<FlightPlaces>> {
   console.log('hit searchPlaces:::', getSessionClient().defaults.headers);
   const { data } = await getClient().get<Array<FlightPlaces>>(
-    `${FLIGHT_PLACES}?term=${param.term}`
+    `${FLIGHT_PLACES}?term=${param.term}`,
   );
   console.log('result ::', data);
   return data;

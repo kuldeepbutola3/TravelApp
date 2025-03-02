@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useBindAction } from 'src/redux/hooks';
+// import { useBindAction } from 'src/redux/hooks';
 import { ToastModel } from '../../components/Toast';
+import { useBindAction } from '../../redux/hooks';
 
 export interface ReqType {
   // deleteAdult?: { id: string };
@@ -38,7 +39,7 @@ export const toastSlice = createSlice({
         state.currentId = state.currentId + 1;
       }
     },
-    removeToast: (state) => {
+    removeToast: state => {
       if (state.allToast.length > 0) {
         const removedArray = [...state.allToast];
         removedArray.splice(0, 1);

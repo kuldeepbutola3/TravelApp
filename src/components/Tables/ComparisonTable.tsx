@@ -8,6 +8,7 @@ import { TableCell } from './TableCell';
 import { StringOrComp } from './StringOrComp';
 import { DataValue } from './types';
 import { flatten } from './util';
+import { ComponentProps } from '../../types/componentProps';
 
 type AccessoryHeadingProps = {
   title: string;
@@ -22,23 +23,21 @@ const AccessoryHeading: React.FC<AccessoryHeadingProps> = ({ title, accessory })
   <TableHeading
     containerStyle={styles.accessoryContainer}
     key={`compare.rowHeading.${title}`}
-    horizontalAlignment={'center'}
-  >
+    horizontalAlignment={'center'}>
     <View style={styles.accessory}>{accessory}</View>
     <HeadingText>{title}</HeadingText>
     <View style={styles.accessoryRightSpacer} />
   </TableHeading>
 );
 
-type ComparisonColumnTitleProps = {};
+type ComparisonColumnTitleProps = ComponentProps;
 
 const ComparisonColumnTitle: React.FC<ComparisonColumnTitleProps> = ({ children }) => {
   return (
     <TableCell
       containerStyle={[styles.title]}
       horizontalAlignment="center"
-      borders={['left', 'right', 'bottom']}
-    >
+      borders={['left', 'right', 'bottom']}>
       <StringOrComp possibleComponent={children}>
         <Text>{children}</Text>
       </StringOrComp>
@@ -99,7 +98,7 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ titles, rows, 
   return (
     <View style={flatten(styles.container, style)}>
       {titles && <ComparisonTitleRow titles={titles} />}
-      {rows.map((row) => (
+      {rows.map(row => (
         <ComparisonRow key={`row.${row.heading}`} row={row} />
       ))}
     </View>

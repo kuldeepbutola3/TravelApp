@@ -1,22 +1,22 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useState, useRef } from 'react';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
-import { Screen } from 'src/components/Screen';
-import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
+// import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
+// import { Screen } from 'src/components/Screen';
+// import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
-import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
-import { Header } from 'src/components/Header';
-import { FlightSet } from 'src/idg/flight/FlightModel';
-import { fetchFlightFare } from 'src/idg/flight/flightSlice';
+// import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
+// import { Header } from 'src/components/Header';
+// import { FlightSet } from 'src/idg/flight/FlightModel';
+// import { fetchFlightFare } from 'src/idg/flight/flightSlice';
 import SeatsTab from './SeatsTab';
 import MealsTab from './MealsTab';
 import BaggageTab from './BaggageTab';
 import { flightReducer } from '../flightReducer';
-import { Traveller } from 'src/idg/traveller/TravelerModel';
-import { appColors } from 'src/styles/appColors';
+// import { Traveller } from 'src/idg/traveller/TravelerModel';
+// import { appColors } from 'src/styles/appColors';
 import RectButton from '../components/Buttons';
 import {
   getCurrency,
@@ -25,11 +25,21 @@ import {
   useSeatsPrice,
   useSelectedSeatCodes,
 } from '../utilityHooks';
-import BottomSheet from 'src/components/BottomSheet/BottomSheet';
+// import BottomSheet from 'src/components/BottomSheet/BottomSheet';
 import ReviewBooking from '../components/ReviewBooking';
 import TotalPriceFooter from '../components/TotalPriceFooter';
 import { SelectionState } from '../SsrModel';
-import RBSheet from 'react-native-raw-bottom-sheet';
+// import RBSheet from 'react-native-raw-bottom-sheet';
+import { FlightSet } from '../../flight/FlightModel';
+import { AuraStackScreen, useParams } from '../../../types/navigationTypes';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { useSliceSelector, useThunkDispatch } from '../../../redux/hooks';
+import { AppRoutes, ApptNavigationProp } from '../../../navigation/RootNav';
+import BottomSheet from '../../../components/BottomSheet/BottomSheet';
+import { appColors } from '../../../styles/appColors';
+import { fetchFlightFare } from '../../flight/flightSlice';
+import { Screen } from '../../../components/Screen';
+import { Header } from '../../../components/Header';
 
 export interface SSRScreenProps {
   param: FlightSet;
@@ -41,7 +51,7 @@ export const SSRScreen: AuraStackScreen = () => {
   const navigation = useNavigation<ApptNavigationProp>();
   const { param } = useParams<AppRoutes, 'ReviewFlight'>();
   const { flightFare, travellerAdult, travellerChild, loading } = useSliceSelector('flight');
-  const refRBSheet = useRef<RBSheet>();
+  const refRBSheet = useRef< RBSheetRef>();
   // console.log('flightFare.......ss', JSON.stringify(flightFare?.artSSRResponse?.ssrInnerResponse?.seatDynamic?.[0]?.segmentSeat?.[0]?.rowSeats));
   const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
     navigation,

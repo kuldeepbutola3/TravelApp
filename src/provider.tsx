@@ -1,8 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { JSX, ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
-// import { TokenManager } from './idg/session/TokenManager';
 import { store } from './redux/store';
 import { TokenManager } from './idg/session/TokenManager/TokenManager';
 

@@ -1,21 +1,29 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { ReactNode, useCallback, useState } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import React, { useCallback } from 'react';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button } from 'src/components/Button';
-import { Header } from 'src/components/Header';
-import { Screen } from 'src/components/Screen';
-import { Touchable } from 'src/components/Touchable';
-import { FlightSet } from 'src/idg/flight/FlightModel';
-import { SelectionState } from 'src/idg/SSR/SsrModel';
-import { AppRoutes } from 'src/navigation/RootNav';
-import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
-import { appColors } from 'src/styles/appColors';
-import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { Button } from 'src/components/Button';
+// import { Header } from 'src/components/Header';
+// import { Screen } from 'src/components/Screen';
+// import { Touchable } from 'src/components/Touchable';
+// import { FlightSet } from 'src/idg/flight/FlightModel';
+// import { SelectionState } from 'src/idg/SSR/SsrModel';
+// import { AppRoutes } from 'src/navigation/RootNav';
+// import { useSliceSelector, useThunkDispatch } from 'src/redux/hooks';
+// import { appColors } from 'src/styles/appColors';
+// import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import App from '../components/App';
 import { PaymentRequest } from '../PaymentRequestModel';
-import { doFetchPaymentParam } from '../paymentSlice';
+import { SelectionState } from '../../SSR/SsrModel';
+import { FlightSet } from '../../flight/FlightModel';
+import { AuraStackScreen, useParams } from '../../../types/navigationTypes';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { AppRoutes } from '../../../navigation/RootNav';
+import { useSliceSelector } from '../../../redux/hooks';
+import { Screen } from '../../../components/Screen';
+import { Header } from '../../../components/Header';
+// import { doFetchPaymentParam } from '../paymentSlice';
 // import { TravellerCount } from '../TravelerModel';
 
 export interface PayUScreenProps {
@@ -36,9 +44,10 @@ export const PayUScreenScreen: AuraStackScreen = () => {
   //   const [paymentIndex, setPaymentIndex] = useState(-1);
   console.log('userData............', userData, data, flightDetail);
 
-  const onPressBack = useCallback(() => navigation.canGoBack() && navigation.goBack(), [
-    navigation,
-  ]);
+  const onPressBack = useCallback(
+    () => navigation.canGoBack() && navigation.goBack(),
+    [navigation],
+  );
 
   const param = (index: number): PaymentRequest => {
     const passenger: PaymentRequest['passengers'][0] =

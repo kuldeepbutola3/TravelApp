@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootStateObj } from 'src/redux/rootReducer';
+// import { RootStateObj } from 'src/redux/rootReducer';
 import { IDGSession, SessionState } from './SessionModel';
 import { refreshToken, userData } from './sessionAPI';
 import { configureDefault, configureUserDataDefault } from '../IDGClient';
 import { UserData } from '../user/UserModel';
+import { RootStateObj } from '../../redux/rootReducer';
 
 // Requesting a session with loading state, and only one request at a time
 const initialState: SessionState = {
@@ -47,9 +48,9 @@ export const sessionSlice = createSlice({
     //   const newTokens = action.payload;
     // },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(doFetchRefreshToken.pending, (state) => {
+      .addCase(doFetchRefreshToken.pending, state => {
         if (state.loading === 'idle') {
           state.loading = 'pending';
         }
@@ -66,7 +67,7 @@ export const sessionSlice = createSlice({
           state.error = action.error.message || null;
         }
       })
-      .addCase(doFetchUserData.pending, (state) => {
+      .addCase(doFetchUserData.pending, state => {
         if (state.loading === 'idle') {
           state.loading = 'pending';
         }

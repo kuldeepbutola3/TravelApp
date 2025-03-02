@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { appColors } from 'src/styles/appColors';
+import { appColors } from '../../../styles/appColors';
+// import { appColors } from 'src/styles/appColors';
 
 export const InfoLabel = ({ color, label }) => {
   return (
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   indicatorBox: {
     height: 15,
@@ -42,6 +43,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
 });

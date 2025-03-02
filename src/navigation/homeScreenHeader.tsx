@@ -1,11 +1,13 @@
 import { StyleSheet, View } from 'react-native';
 import React, { FC } from 'react';
-import { Touchable } from 'src/components/Touchable';
+// import { Touchable } from 'src/components/Touchable';
 import { Text } from 'src/components/Text';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import { HeaderTabs } from 'src/constants/enums';
+import { Touchable } from '../components/Touchable';
+import { HeaderTabs } from '../constants/enums';
+// import { HeaderTabs } from 'src/constants/enums';
 
-export const Header: FC<any> = (props) => {
+export const Header: FC<any> = props => {
   return (
     <View style={styles.container}>
       <Touchable
@@ -14,8 +16,7 @@ export const Header: FC<any> = (props) => {
         style={[
           styles.buttonContainer,
           props.selectedTab === HeaderTabs.Flights && tabHighlightStyle,
-        ]}
-      >
+        ]}>
         <Icon name="plane" size={icon.size} color={icon.color} />
         <Text style={styles.buttonLabel}>Flights</Text>
       </Touchable>
@@ -25,8 +26,7 @@ export const Header: FC<any> = (props) => {
         style={[
           styles.buttonContainer,
           props.selectedTab === HeaderTabs.Hotels && tabHighlightStyle,
-        ]}
-      >
+        ]}>
         <Icon name="home" size={icon.size} color={icon.color} />
         <Text style={styles.buttonLabel}>Hotels</Text>
       </Touchable>

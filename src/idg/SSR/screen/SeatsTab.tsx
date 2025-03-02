@@ -1,10 +1,13 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { SCREEN_WIDTH } from 'src/components/Tables/util';
-import { Touchable } from 'src/components/Touchable';
-import { appColors } from 'src/styles/appColors';
+// import { SCREEN_WIDTH } from 'src/components/Tables/util';
+// import { Touchable } from 'src/components/Touchable';
+// import { appColors } from 'src/styles/appColors';
 import { InfoLabel, SeatInfoLabel } from '../components/Labels';
 import PriceFooter from '../components/PriceFooter';
+import { SCREEN_WIDTH } from '../../../components/Tables/util';
+import { appColors } from '../../../styles/appColors';
+import { Touchable } from '../../../components/Touchable';
 
 const getBGColor = (availablityType: number) => {
   switch (availablityType) {
@@ -37,8 +40,7 @@ const RenderRowHeader = ({ columns }) => {
         alignItems: 'center',
         flexDirection: 'row',
         marginHorizontal: 25 + 10,
-      }}
-    >
+      }}>
       {columns?.map((_, index) => (
         <Text style={{ flex: 1, textAlign: 'center', fontSize: 18 }}>
           {String.fromCharCode(65 + index)}
@@ -108,7 +110,7 @@ const SeatsTab = ({
   };
 
   const getSelectedSeatCodes = () => {
-    return selectedSeats.map((seat) => seat?.code)?.join(', ');
+    return selectedSeats.map(seat => seat?.code)?.join(', ');
   };
 
   return (

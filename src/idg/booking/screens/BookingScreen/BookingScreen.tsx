@@ -1,13 +1,17 @@
 import React from 'react';
 
 // import {useDispatch} from 'react-redux';
-import { AuraStackScreen } from 'src/types/navigationTypes';
-import { Screen } from 'src/components/Screen';
+// import { AuraStackScreen } from 'src/types/navigationTypes';
+// import { Screen } from 'src/components/Screen';
 // import {useSliceSelector} from 'src/redux/hooks';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationProp } from '@react-navigation/native';
-import { useStackOptions } from 'src/navigation/stackOptions';
-import { Text } from 'src/components/Text';
+import { AuraStackScreen } from '../../../../types/navigationTypes';
+import { Screen } from '../../../../components/Screen';
+import { Text } from '../../../../components/Text';
+import { useStackOptions } from '../../../../navigation/stackOptions';
+// import { useStackOptions } from 'src/navigation/stackOptions';
+// import { Text } from 'src/components/Text';
 
 const BookingScreen: AuraStackScreen = () => {
   return (

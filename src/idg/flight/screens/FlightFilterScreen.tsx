@@ -1,20 +1,28 @@
 import React, { useCallback, useState } from 'react';
 
-import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
-import { Screen } from 'src/components/Screen';
+// import { AuraStackScreen, useParams } from 'src/types/navigationTypes';
+// import { Screen } from 'src/components/Screen';
 import { SafeAreaView, ScrollView, View, StyleSheet, Dimensions } from 'react-native';
-import { useAuraTranslation } from 'src/utils/i18n';
+// import { useAuraTranslation } from 'src/utils/i18n';
 import { useNavigation } from '@react-navigation/native';
-import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
-import { Header } from 'src/components/Header';
-import { Text } from 'src/components/Text';
+// import { AppRoutes, ApptNavigationProp } from 'src/navigation/RootNav';
+// import { Header } from 'src/components/Header';
+// import { Text } from 'src/components/Text';
 import { Button, ListItem } from 'react-native-elements';
-import { Button as _Button } from 'src/components/Button';
+import { Button as _Button } from '../../../components/Button';
 import { FilterModel, TimeSplit } from '../filterModel';
-import { appColors } from 'src/styles/appColors';
+// import { appColors } from 'src/styles/appColors';
 import { FlightDepartureFilter } from '../component/FlightDepartureFilter';
-import { useSliceSelector } from 'src/redux/hooks';
+// import { useSliceSelector } from 'src/redux/hooks';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import { AuraStackScreen, useParams } from '../../../types/navigationTypes';
+import { useAuraTranslation } from '../../../utils/i18n';
+import { AppRoutes, ApptNavigationProp } from '../../../navigation/RootNav';
+import { useSliceSelector } from '../../../redux/hooks';
+import { Screen } from '../../../components/Screen';
+import { Header } from '../../../components/Header';
+import { Text } from '../../../components/Text';
+import { appColors } from '../../../styles/appColors';
 export interface FlightFilterScreenProps {
   param: FilterModel;
   onPress: (param: FilterModel) => void;

@@ -1,12 +1,14 @@
-import { RootState } from 'src/redux/rootReducer';
+// import { RootState } from 'src/redux/rootReducer';
 import { useSelector, useDispatch, useStore as useReduxStore } from 'react-redux';
 import { ActionCreator, bindActionCreators, Action, AnyAction } from '@reduxjs/toolkit';
-import { Store } from 'src/redux/store';
+// import { Store } from 'src/redux/store';
 import { persistStore, Persistor } from 'redux-persist';
 import { useEffect, EffectCallback } from 'react';
+import { RootState } from './rootReducer';
+import { Store } from './store';
 
 export const useSliceSelector = <Slice extends keyof RootState>(slice: Slice): RootState[Slice] => {
-  return useSelector<RootState, RootState[Slice]>((state) => state[slice]);
+  return useSelector<RootState, RootState[Slice]>(state => state[slice]);
 };
 
 // See https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-redux/index.d.ts#L499

@@ -1,8 +1,9 @@
 import React, { ReactNode, FC } from 'react';
 import { View, ViewStyle, StyleSheet, ViewProps } from 'react-native';
 import { Button } from 'react-native-elements';
-import { appColors } from 'src/styles/appColors';
+// import { appColors } from 'src/styles/appColors';
 import { Text } from '../Text';
+import { appColors } from '../../styles/appColors';
 
 export interface HeaderProps extends ViewProps {
   children?: ReactNode;
@@ -10,7 +11,7 @@ export interface HeaderProps extends ViewProps {
   title?: string;
 }
 
-export const Header: FC<HeaderProps> = (props) => {
+export const Header: FC<HeaderProps> = props => {
   const { children, onPressBack, title } = props;
 
   return (
