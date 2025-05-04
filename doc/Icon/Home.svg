@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-Home">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="Home" clip-path="url(#clip-Home)">
+    <rect width="64" height="64" fill="#fff"/>
+    <path id="Path_586" data-name="Path 586" d="M103.555,928h-16a4.281,4.281,0,0,1-4.445-4.1V909.117a3.424,3.424,0,0,0-3.555-3.283h-7.11a3.424,3.424,0,0,0-3.555,3.283v14.768A4.283,4.283,0,0,1,64.445,928h-16A4.281,4.281,0,0,1,44,923.9V892.574a11.992,11.992,0,0,1,5.082-9.67l25.28-18.377a2.856,2.856,0,0,1,3.3,0l25.28,18.377A11.984,11.984,0,0,1,108,892.571V923.9A4.281,4.281,0,0,1,103.555,928Z" transform="translate(-44 -864.001)"/>
+  </g>
+</svg>

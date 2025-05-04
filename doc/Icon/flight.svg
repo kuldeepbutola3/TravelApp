@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-flight">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="flight" clip-path="url(#clip-flight)">
+    <rect width="64" height="64" fill="#fff"/>
+    <path id="Vector" d="M53.474,25.4a4.112,4.112,0,0,0-4.011-4.011H34.758L21.389,0H16.042l6.684,21.389H8.021L4.011,16.042H0L2.674,25.4,0,34.758H4.011l4.011-5.347H22.726L16.042,50.8h5.347L34.758,29.411H49.463A4.112,4.112,0,0,0,53.474,25.4Z" transform="translate(5.763 7.2)"/>
+  </g>
+</svg>

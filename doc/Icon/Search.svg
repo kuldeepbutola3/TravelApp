@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-Search">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="Search" clip-path="url(#clip-Search)">
+    <rect width="64" height="64" fill="#fff"/>
+    <g id="_Icons_9_search" data-name="_Icons / 9 search">
+      <g id="Icon_24px_Search" data-name="Icon/24px/Search">
+        <g id="Layer_3" data-name="Layer 3">
+          <path id="Vector" d="M0,0H64V64H0Z" fill="#fff" opacity="0"/>
+        </g>
+      </g>
+      <g id="_Icons_1_Search" data-name="_Icons / 1 Search" transform="translate(3.817 3.817)">
+        <path id="_1_Search" data-name="1 Search" d="M49.65,56.367A6.676,6.676,0,0,1,44.9,54.4l-9.082-9.1A24.152,24.152,0,1,1,24.16,0,24.153,24.153,0,0,1,45.3,35.817L54.4,44.9A6.719,6.719,0,0,1,49.65,56.367ZM24.157,6.713A17.442,17.442,0,1,0,41.6,24.157,17.464,17.464,0,0,0,24.157,6.713Z" transform="translate(0)" fill="#022541"/>
+      </g>
+    </g>
+  </g>
+</svg>

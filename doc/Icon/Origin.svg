@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-Origin">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="Origin" clip-path="url(#clip-Origin)">
+    <rect width="64" height="64" fill="#fff"/>
+    <path id="flight_takeoff_24dp_FILL0_wght400_GRAD0_opsz24" d="M83.208-750v-7.377h57.744V-750Zm5.935-18.444L80-786.335l4.972-1.107,5.614,5.718,15.4-4.8L92.992-811.787,99.248-814l21.975,22.686,16.04-4.98a4.427,4.427,0,0,1,4.652,1.106A6.711,6.711,0,0,1,144-790.023a6.175,6.175,0,0,1-1.083,3.6,5.332,5.332,0,0,1-2.767,2.121Z" transform="translate(-80 814)"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-Booking">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="Booking" clip-path="url(#clip-Booking)">
+    <rect width="64" height="64" fill="#fff"/>
+    <path id="ticket-svgrepo-com_1_" data-name="ticket-svgrepo-com (1)" d="M44.382,18.862H50.3V6.287A6.287,6.287,0,0,0,44.011,0H34.58a9.431,9.431,0,0,1-9.431,9.431A9.431,9.431,0,0,1,15.718,0H6.287A6.287,6.287,0,0,0,0,6.287V18.862H5.916a3.144,3.144,0,1,1,0,6.287H0V56.586a6.287,6.287,0,0,0,6.287,6.287H44.011A6.287,6.287,0,0,0,50.3,56.586V25.149H44.382a3.144,3.144,0,0,1,0-6.287ZM20.71,25.149H14.794a3.144,3.144,0,1,1,0-6.287H20.71a3.144,3.144,0,1,1,0,6.287Zm14.794,0H29.588a3.144,3.144,0,0,1,0-6.287H35.5a3.144,3.144,0,0,1,0,6.287Z" transform="matrix(0.017, 1, -1, 0.017, 62.864, 6)"/>
+  </g>
+</svg>

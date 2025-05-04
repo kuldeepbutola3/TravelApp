@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-close">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="close" clip-path="url(#clip-close)">
+    <rect width="64" height="64" fill="#fff"/>
+    <g id="Add_1" data-name="Add – 1" transform="translate(32.255 -13) rotate(45)">
+      <path id="Union_1" data-name="Union 1" d="M28,64V36H0V28H28V0h8V28H64v8H36V64Z"/>
+    </g>
+  </g>
+</svg>

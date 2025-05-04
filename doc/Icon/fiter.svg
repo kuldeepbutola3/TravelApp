@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-fiter">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="fiter" clip-path="url(#clip-fiter)">
+    <rect width="64" height="64" fill="#fff"/>
+    <path id="filter" d="M46.848,0,32.817,17.923H20.949l-9-11.949H29.791L34.759,0H0L20.91,27.757V44.808l11.946,8.962V27.757L53.769,0Z" transform="translate(5 5)" fill-rule="evenodd"/>
+  </g>
+</svg>

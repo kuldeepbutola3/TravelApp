@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-left">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="left" clip-path="url(#clip-left)">
+    <rect width="64" height="64" fill="#fff"/>
+    <path id="arrow_back_24dp_FILL0_wght400_GRAD0_opsz24" d="M175.3-764l3.87,3.87L197.7-741.6,192-736l-32-32,32-32,5.7,5.6L175.3-772H224v8Z" transform="translate(-160 800)"/>
+  </g>
+</svg>
